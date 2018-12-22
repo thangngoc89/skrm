@@ -1,12 +1,13 @@
+import { Grommet } from "grommet";
 import React, { Component } from "react";
-import RR_App from "./RR_App.bs.js";
+import RRApp from "./RR_App.bs.js";
 
 class App extends Component {
   render() {
     return (
-      <div>
-        <RR_App message="Hello World" />
-      </div>
+      <Grommet>
+        <RRApp />
+      </Grommet>
     );
   }
 }

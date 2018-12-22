@@ -1,5 +1,3 @@
-open React;
-
 let component = ReasonReact.statelessComponent("Form");
 
 let schema = Types.phieu_dieu_tra;

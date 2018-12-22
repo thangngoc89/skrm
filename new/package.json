@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "bs-ant-design": "^2.1.0",
+    "antd": "^3.11.3",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
-    "reason-react": "^0.5.3"
+    "reason-react": "https://github.com/reasonml/reason-react"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -17,9 +17,6 @@
     "bsb": "bsb -make-world",
     "bsb:watch": "bsb -make-world -w",
     "bsb:clean": "bsb -clean-world"
-  },
-  "resolutions": {
-    "reason-react": "https://github.com/reasonml/reason-react"
   },
   "eslintConfig": {},
   "browserslist": [

@@ -1,3 +1,5 @@
+module FormItem = Antd.Form.Item;
+module Input = Antd.Input;
 open React;
 let component = ReasonReact.statelessComponent("Form_section");
 
@@ -10,7 +12,9 @@ let make = (~section: Types.items_section('a), _children) => {
        ->Belt.List.map(item =>
            switch (item.typ) {
            | `date =>
-             <Antd.Form.Item label={item.label}> "date"->str </Antd.Form.Item>
+             <FormItem label={item.label}>
+               <Input placeholder="input placeholder" />
+             </FormItem>
            | `string => "string"->str
            | `number => "number"->str
            | `select_one(_choices) => "select_one"->str

@@ -142,7 +142,7 @@ type items_section('a) = {
 
 let phieu_dieu_tra = [
   {
-    title: {j|Phần hành chính|j},
+    title: {j|Hành chính|j},
     items: [
       {id: `ngay_kham, label: {j|Ngày khám|j}, typ: `date},
       {id: `so_ho_so, label: {j|Số hồ sơ|j}, typ: `string},
@@ -172,25 +172,16 @@ let phieu_dieu_tra = [
   },
 ];
 
-/* let encoder = section => {
-     let items = section.items;
-
-     items
-     |> Array.map(item =>
-          switch (item.id) {
-          | `ngay_kham => "ngay_kham"
-          | `so_ho_so => "so_ho_so"
-          | `nguoi_kham => "nguoi_kham"
-          | `tuoi => "tuoi"
-          | `gioi => "gioi"
-          | `dan_toc => "dan_toc"
-          | `lop => "lop"
-          | `truong => "truong"
-          | `dia_chi => "dia_chi"
-          | `ttnc_ham_tren => "ttnc_ham_tren"
-          | `ttnc_ham_duoi => "ttnc_ham_duoi"
-          }
-        );
-   };
-
-   Js.log(encoder(phieu_dieu_tra[0])); */
+let text_of_id =
+  fun
+  | `ngay_kham => "ngay_kham"
+  | `so_ho_so => "so_ho_so"
+  | `nguoi_kham => "nguoi_kham"
+  | `tuoi => "tuoi"
+  | `gioi => "gioi"
+  | `dan_toc => "dan_toc"
+  | `lop => "lop"
+  | `truong => "truong"
+  | `dia_chi => "dia_chi"
+  | `ttnc_ham_tren => "ttnc_ham_tren"
+  | `ttnc_ham_duoi => "ttnc_ham_duoi";

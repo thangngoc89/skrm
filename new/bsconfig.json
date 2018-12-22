@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "skrm",
   "reason": {
     "react-jsx": 2
   },
@@ -17,6 +17,6 @@
   ],
   "suffix": ".bs.js",
   "namespace": true,
-  "bs-dependencies": ["reason-react"],
+  "bs-dependencies": ["reason-react", "bs-ant-design"],
   "refmt": 3
 }

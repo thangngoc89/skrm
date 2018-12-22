@@ -9,7 +9,7 @@ let make = _children => {
     <div>
       <form>
         {schema
-         ->(Belt.List.map(section => <h2> section.title->str </h2>))
+         ->(Belt.List.map(section => <Form_section section />))
          ->Belt.List.toArray
          ->ReasonReact.array}
       </form>

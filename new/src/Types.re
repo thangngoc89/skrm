@@ -130,7 +130,7 @@ type item('a) = {
     | `string
     | `date
     | `number
-    | `array(array(string))
+    | `select_one(list(string))
     | `tinh_trang_nhu_cau
   ],
 };
@@ -151,7 +151,7 @@ let phieu_dieu_tra = [
       {
         id: `gioi,
         label: {j|Giới tính|j},
-        typ: `array([|{j|Nam|j}, {j|Nữ|j}|]),
+        typ: `select_one([{j|Nam|j}, {j|Nữ|j}]),
       },
       {id: `dan_toc, label: "Dan toc", typ: `string},
       {id: `lop, label: "Lop", typ: `string},

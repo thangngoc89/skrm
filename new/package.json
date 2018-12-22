@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "bs-ant-design": "^2.1.0",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
     "react-scripts": "2.1.1",
@@ -17,9 +18,10 @@
     "bsb:watch": "bsb -make-world -w",
     "bsb:clean": "bsb -clean-world"
   },
-  "eslintConfig": {
-    "extends": "react-app"
+  "resolutions": {
+    "reason-react": "https://github.com/reasonml/reason-react"
   },
+  "eslintConfig": {},
   "browserslist": [
     ">0.2%",
     "not dead",

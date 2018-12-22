@@ -50,8 +50,8 @@ let make =
   );
 
 module TextArea = {
-  [@bs.module "antd/es/input"]
-  external reactClass: ReasonReact.reactClass = "TextArea";
+  [@bs.module "antd/es/input/TextArea"]
+  external reactClass: ReasonReact.reactClass = "default";
   let make =
       (
         ~htmlType=?,

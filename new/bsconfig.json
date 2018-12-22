@@ -17,6 +17,6 @@
   ],
   "suffix": ".bs.js",
   "namespace": true,
-  "bs-dependencies": ["reason-react", "bs-ant-design"],
+  "bs-dependencies": ["reason-react", "re-classnames"],
   "refmt": 3
 }

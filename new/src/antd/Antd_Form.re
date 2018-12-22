@@ -1,53 +1,56 @@
-[@bs.module] external form : ReasonReact.reactClass = "antd/es/form";
+[@bs.module "antd/es/form"] external form: ReasonReact.reactClass = "default";
 
 [%bs.raw {|require("antd/es/form/style")|}];
 
 [@bs.obj]
 external makeProps:
   (
+    ~layout: string=?,
     ~onSubmit: ReactEvent.Form.t => unit=?,
     ~hideRequiredMark: bool=?,
     ~id: string=?,
     ~className: string=?,
     ~style: ReactDOMRe.Style.t=?,
-      ~colon: bool=?,
-      ~validateStatus: string=?,
-      ~extra: string=?,
-      ~required: bool=?,
-      ~label: string=?,
-      ~help: string=?,
-      ~hasFeedback: bool=?,
+    ~colon: bool=?,
+    ~validateStatus: string=?,
+    ~extra: string=?,
+    ~required: bool=?,
+    ~label: string=?,
+    ~help: string=?,
+    ~hasFeedback: bool=?,
     unit
   ) =>
   _ =
   "";
 
-let make = 
-  (
-    ~onSubmit=?,
-    ~hideRequiredMark=?,
-    ~id=?,
-    ~className=?,
-    ~style=?,
+let make =
+    (
+      ~layout=?,
+      ~onSubmit=?,
+      ~hideRequiredMark=?,
+      ~id=?,
+      ~className=?,
+      ~style=?,
+      children,
+    ) =>
+  ReasonReact.wrapJsForReason(
+    ~reactClass=form,
+    ~props=
+      makeProps(
+        ~layout?,
+        ~onSubmit?,
+        ~hideRequiredMark?,
+        ~id?,
+        ~className?,
+        ~style?,
+        (),
+      ),
     children,
-  ) =>
-ReasonReact.wrapJsForReason(
-  ~reactClass=form,
-  ~props=
-    makeProps(
-      ~onSubmit?,
-      ~hideRequiredMark?,
-      ~id?,
-      ~className?,
-      ~style?,
-      (),
-    ),
-  children,
-);
+  );
 
 module Item = {
   [@bs.module "antd/es/form/FormItem"]
-  external item : ReasonReact.reactClass = "default";
+  external item: ReasonReact.reactClass = "default";
   let make =
       (
         ~colon=?,

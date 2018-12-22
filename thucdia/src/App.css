@@ -1,0 +1,81 @@
+@import "~antd/dist/antd.css";
+
+.App h1 {
+  text-align: center;
+}
+.App hr {
+  margin: 2rem auto;
+  border: 0;
+  width: 80%;
+  color: #eee !important;
+  background-color: #eee !important;
+  height: 5px;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 150px;
+  padding: 20px;
+  color: white;
+}
+
+.Form-table {
+  width: 100% !important;
+  text-align: center;
+}
+.Form-table th,
+.Form-table td {
+  border: 1px solid black;
+  min-width: 30px;
+  padding: 0;
+}
+.Form-table input {
+  width: 100%;
+  border: none;
+  padding: 0 0.5rem;
+  text-align: right;
+}
+.Form-table input:focus {
+  background: hsla(0, 0%, 80%, 0.2);
+}
+.Form-table input:disabled {
+  background: grey;
+}
+
+.Form-table-OHIS input {
+  text-align: center;
+}
+.Form-table-khochiu td {
+  height: 48px;
+  text-align: center;
+}
+
+.data-grid {
+  width: 100%;
+}
+.data-editor {
+  height: 21px !important;
+}
+
+.Form_thoiquen_CSRM row {
+  background: lightblue !important;
+}
+
+.loading-screen {
+  position: fixed;
+  z-index: 1000;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #fff;
+  opacity: 0.5;
+}

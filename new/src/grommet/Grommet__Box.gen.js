@@ -4,7 +4,9 @@ import GBox from './GBox';
 
 import * as React from 'react';
 
+const $$toJS658478831 = {"-129112121": "xxsmall", "-96584369": "xsmall", "-9768761": "small", "-20425611": "medium", "-272944197": "large", "-359759805": "xlarge", "-1010505329": "full", "-989320781": "half", "802877217": "oneThird", "-1012272581": "twoThird", "619062391": "oneForth", "951396241": "twoForth", "772622207": "threeForth", "-1065951377": "auto"};
+
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(a11yTitle, align, alignContent, alignSelf, animation, as, background, basis, border, direction, elevation, fill, flex, gap, gridArea, height, justify, margin, overflow, pad, responsive, round, width, wrap, children) { return ReasonReact.wrapJsForReason(GBox, {a11yTitle: a11yTitle, align: align, alignContent: alignContent, alignSelf: alignSelf, animation: animation, as: as, background: background, basis: basis, border: border, direction: direction, elevation: elevation, fill: fill, flex: flex, gap: gap, gridArea: gridArea, height: height, justify: justify, margin: margin, overflow: overflow, pad: pad, responsive: responsive, round: round, width: width, wrap: wrap}, children); };
+export const make = function _(a11yTitle, align, alignContent, alignSelf, animation, as, background, basis, border, direction, elevation, fill, flex, gap, gridArea, height, justify, margin, overflow, pad, responsive, round, width, wrap, children) { return ReasonReact.wrapJsForReason(GBox, {a11yTitle: a11yTitle, align: align, alignContent: alignContent, alignSelf: alignSelf, animation: animation, as: as, background: background, basis: (basis == null ? basis : $$toJS658478831[basis]), border: border, direction: direction, elevation: elevation, fill: fill, flex: flex, gap: gap, gridArea: gridArea, height: height, justify: justify, margin: margin, overflow: overflow, pad: pad, responsive: responsive, round: round, width: width, wrap: wrap}, children); };

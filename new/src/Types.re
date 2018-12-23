@@ -150,7 +150,7 @@ let phieu_dieu_tra = [
       {id: `ho_va_ten, label: {j|Họ và tên|j}, typ: `string},
       {id: `tuoi, label: {j|Tuổi|j}, typ: `number},
       {
-        id: `gioi,
+        id: `gioi_tinh,
         label: {j|Giới tính|j},
         typ: `select_one([{j|Nam|j}, {j|Nữ|j}]),
       },
@@ -180,10 +180,75 @@ let text_of_id =
   | `nguoi_kham => "nguoi_kham"
   | `ho_va_ten => "ho_va_ten"
   | `tuoi => "tuoi"
-  | `gioi => "gioi"
+  | `gioi_tinh => "gioi_tinh"
   | `dan_toc => "dan_toc"
   | `lop => "lop"
   | `truong => "truong"
   | `dia_chi => "dia_chi"
   | `ttnc_ham_tren => "ttnc_ham_tren"
   | `ttnc_ham_duoi => "ttnc_ham_duoi";
+
+type basis = [
+  | `xxsmall
+  | `xsmall
+  | `small
+  | `medium
+  | `large
+  | `xlarge
+  | `full
+  | `half
+  | `oneThird
+  | `twoThird
+  | `oneForth
+  | `twoForth
+  | `threeForth
+  | `auto
+];
+
+type col('a) = (basis, 'a);
+type row('a) = list(col('a));
+type group('a) = {
+  title: string,
+  items: list(row('a)),
+};
+type layout('a) = list(group('a));
+/* type layout('a) =
+   | Group(string, list(layout('a)))
+   | Row(list(layout('a)))
+   | Col(basis, 'a); */
+
+/* let phieu_dieu_tra_layout = [
+     Row([
+       Col(`oneThird, `ngay_kham),
+       Col(`oneThird, `so_ho_so),
+       Col(`oneThird, `nguoi_kham),
+     ]),
+     Row([Col(`full, `ho_va_ten)]),
+     Row([
+       Col(`oneThird, `tuoi),
+       Col(`oneThird, `gioi_tinh),
+       Col(`oneThird, `dan_toc),
+     ]),
+     Row([Col(`oneThird, `lop), Col(`twoThird, `truong)]),
+     Row([Col(`full, `dia_chi)]),
+   ]; */
+let phieu_dieu_tra_layout = [
+  {
+    title: {j|Hành chính|j},
+    items: [
+      [
+        (`oneThird, `ngay_kham),
+        (`oneThird, `so_ho_so),
+        (`oneThird, `nguoi_kham),
+      ],
+      [(`full, `ho_va_ten)],
+      [(`oneThird, `tuoi), (`oneThird, `gioi_tinh), (`oneThird, `dan_toc)],
+      [(`oneThird, `lop), (`twoThird, `truong)],
+      [(`full, `dia_chi)],
+    ],
+  },
+  {
+    title: {j|Tình trạng và nhu cầu|j},
+    items: [[(`half, `ttnc_ham_tren), (`half, `ttnc_ham_duoi)]],
+  },
+];

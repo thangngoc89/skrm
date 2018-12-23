@@ -8,9 +8,6 @@ class App extends Component {
     return (
       <Grommet>
         <RRApp />
-        <FormField label="test" htmlFor="text-input" {...this.props}>
-          <TextInput id="text-input" placeholder="placeholder" />
-        </FormField>
       </Grommet>
     );
   }

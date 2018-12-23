@@ -147,6 +147,7 @@ let phieu_dieu_tra = [
       {id: `ngay_kham, label: {j|Ngày khám|j}, typ: `date},
       {id: `so_ho_so, label: {j|Số hồ sơ|j}, typ: `string},
       {id: `nguoi_kham, label: {j|Người khám|j}, typ: `string},
+      {id: `ho_va_ten, label: {j|Họ và tên|j}, typ: `string},
       {id: `tuoi, label: {j|Tuổi|j}, typ: `number},
       {
         id: `gioi,
@@ -177,6 +178,7 @@ let text_of_id =
   | `ngay_kham => "ngay_kham"
   | `so_ho_so => "so_ho_so"
   | `nguoi_kham => "nguoi_kham"
+  | `ho_va_ten => "ho_va_ten"
   | `tuoi => "tuoi"
   | `gioi => "gioi"
   | `dan_toc => "dan_toc"

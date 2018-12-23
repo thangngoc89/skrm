@@ -1,4 +1,4 @@
-open Grommet;
+module Box = Grommet__Box;
 let component = ReasonReact.statelessComponent("Form");
 
 let schema = Types.phieu_dieu_tra;

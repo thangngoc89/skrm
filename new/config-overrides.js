@@ -1,10 +1,6 @@
-const { injectBabelPlugin } = require("react-app-rewired");
-const rewireLess = require("react-app-rewire-less");
+const rewireReactHotLoader = require('react-app-rewire-hot-loader');
 
 module.exports = function override(config, env) {
-  config = rewireLess.withLoaderOptions({
-    modifyVars: {},
-    javascriptEnabled: true,
-  })(config, env);
+  config = rewireReactHotLoader(config, env);
   return config;
-};
+}

@@ -7,4 +7,4 @@ import * as React from 'react';
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(pad, children) { return ReasonReact.wrapJsForReason(GBox, {pad: pad}, children); };
+export const make = function _(a11yTitle, align, alignContent, alignSelf, animation, as, background, basis, border, direction, elevation, fill, flex, gap, gridArea, height, justify, margin, overflow, pad, responsive, round, width, wrap, children) { return ReasonReact.wrapJsForReason(GBox, {a11yTitle: a11yTitle, align: align, alignContent: alignContent, alignSelf: alignSelf, animation: animation, as: as, background: background, basis: basis, border: border, direction: direction, elevation: elevation, fill: fill, flex: flex, gap: gap, gridArea: gridArea, height: height, justify: justify, margin: margin, overflow: overflow, pad: pad, responsive: responsive, round: round, width: width, wrap: wrap}, children); };

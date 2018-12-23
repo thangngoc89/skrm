@@ -15,7 +15,6 @@ export const make = function _(error, help, htmlFor, label, children) {
       help: help,
       htmlFor: htmlFor,
       label: label,
-      
     },
     children
   );

@@ -1,4 +1,5 @@
-open Grommet;
+module FormField = Grommet__FormField;
+module TextInput = Grommet__TextInput;
 open React;
 let component = ReasonReact.statelessComponent("Form_section");
 

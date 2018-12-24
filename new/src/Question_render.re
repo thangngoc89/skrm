@@ -12,20 +12,19 @@ let dottedLine =
       (),
     )}
   />;
-let renderQuestionHeader = (q_id, q_display) => {
+
+let render_id = q_id =>
+  q_id->Types_questions.Id.to_string->Js.String.toLocaleUpperCase ++ ".";
+
+let render_question_header = (q_id, q_display) => {
   <Box basis=`half>
     <span>
-      <strong>
-        {(
-           q_id->Types_questions.Id.to_string->Js.String.toLocaleUpperCase
-           ++ "."
-         )
-         ->str}
-      </strong>
+      <Text color="brand" weight=`bold> {render_id(q_id)->str} </Text>
       <Markdown> q_display->str </Markdown>
     </span>
   </Box>;
 };
+
 let make = _children => {
   ...component,
   render: _self => {
@@ -34,7 +33,7 @@ let make = _children => {
          switch (q) {
          | Select_one({q_id, q_display, q_content}) =>
            <Box direction=`row_responsive gap=`xsmall margin=`medium>
-             {renderQuestionHeader(q_id, q_display)}
+             {render_question_header(q_id, q_display)}
              <Box basis=`half gap=`small>
                {q_content
                 ->Belt.Array.map(
@@ -60,13 +59,35 @@ let make = _children => {
            </Box>
          | Select_many({q_id, q_display, q_content}) =>
            <Box direction=`row_responsive gap=`xsmall margin=`medium>
-             {renderQuestionHeader(q_id, q_display)}
+             {render_question_header(q_id, q_display)}
+             <Box basis=`half gap=`small>
+               {q_content
+                ->Belt.Array.map(
+                    fun
+                    | A_Predefined((value, label)) =>
+                      <CheckBox
+                        key=label
+                        label={
+                          <Box
+                            direction=`row
+                            style={ReactDOMRe.Style.make(~flex="1", ())}>
+                            label->str
+                            dottedLine
+                            <Text> {value->string_of_int->str} </Text>
+                          </Box>
+                        }
+                        checked=true
+                      />
+                    | _ => "Unhandled answer type"->str,
+                  )
+                ->ReasonReact.array}
+             </Box>
            </Box>
          /* TODO: Handle this case */
          | Group({q_id, q_display, q_content}) =>
            <Box direction=`column gap=`xsmall margin=`medium>
              /* TODO: Handle this case */
-              {renderQuestionHeader(q_id, q_display)} </Box>
+              {render_question_header(q_id, q_display)} </Box>
          }
        )}
     </Box>;

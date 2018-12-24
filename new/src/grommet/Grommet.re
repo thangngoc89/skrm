@@ -4,4 +4,5 @@ module FormField = Grommet__FormField;
 module TextInput = Grommet__TextInput;
 module Text = Grommet__Text;
 module RadioButton = Grommet__RadioButton;
+module CheckBox = Grommet__CheckBox;
 module Markdown = Grommet__Markdown;

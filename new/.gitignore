@@ -27,3 +27,4 @@ yarn-error.log*
 lib
 .bsb.lock
 *.bs.js
+**.bs.js

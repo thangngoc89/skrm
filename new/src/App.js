@@ -6,7 +6,7 @@ class App extends Component {
   render() {
     return (
       <Grommet>
-        <Box direction="row-responsive" gap="small">
+        {/* <Box direction="row-responsive" gap="small">
           <Box basis="2/3">
             <FormField label="City">
               <TextInput value="foo" />
@@ -17,7 +17,7 @@ class App extends Component {
               <TextInput value="bar" />
             </FormField>
           </Box>
-        </Box>
+        </Box> */}
         <RRApp />
       </Grommet>
     );

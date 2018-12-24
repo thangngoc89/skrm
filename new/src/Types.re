@@ -135,42 +135,24 @@ type item('a) = {
   ],
 };
 
-type items_section('a) = {
-  title: string,
-  items: list(item('a)),
-};
-
 let phieu_dieu_tra = [
+  {id: `ngay_kham, label: {j|Ngày khám|j}, typ: `date},
+  {id: `so_ho_so, label: {j|Số hồ sơ|j}, typ: `string},
+  {id: `nguoi_kham, label: {j|Người khám|j}, typ: `string},
+  {id: `ho_va_ten, label: {j|Họ và tên|j}, typ: `string},
+  {id: `tuoi, label: {j|Tuổi|j}, typ: `number},
   {
-    title: {j|Hành chính|j},
-    items: [
-      {id: `ngay_kham, label: {j|Ngày khám|j}, typ: `date},
-      {id: `so_ho_so, label: {j|Số hồ sơ|j}, typ: `string},
-      {id: `nguoi_kham, label: {j|Người khám|j}, typ: `string},
-      {id: `ho_va_ten, label: {j|Họ và tên|j}, typ: `string},
-      {id: `tuoi, label: {j|Tuổi|j}, typ: `number},
-      {
-        id: `gioi_tinh,
-        label: {j|Giới tính|j},
-        typ: `select_one([{j|Nam|j}, {j|Nữ|j}]),
-      },
-      {id: `dan_toc, label: {j|Dân tộc|j}, typ: `string},
-      {id: `lop, label: {j|Lớp|j}, typ: `string},
-      {id: `truong, label: {j|Trường|j}, typ: `string},
-      {id: `dia_chi, label: {j|Địa chỉ|j}, typ: `string},
-    ],
+    id: `gioi_tinh,
+    label: {j|Giới tính|j},
+    typ: `select_one([{j|Nam|j}, {j|Nữ|j}]),
   },
-  {
-    title: {j|Tình trạng và nhu cầu|j},
-    items: [
-      {id: `ttnc_ham_tren, label: {j|Hàm trên|j}, typ: `tinh_trang_nhu_cau},
-      {
-        id: `ttnc_ham_duoi,
-        label: {j|Hàm dưới|j},
-        typ: `tinh_trang_nhu_cau,
-      },
-    ],
-  },
+  {id: `dan_toc, label: {j|Dân tộc|j}, typ: `string},
+  {id: `lop, label: {j|Lớp|j}, typ: `string},
+  {id: `truong, label: {j|Trường|j}, typ: `string},
+  {id: `dia_chi, label: {j|Địa chỉ|j}, typ: `string},
+  /* ====== */
+  {id: `ttnc_ham_tren, label: {j|Hàm trên|j}, typ: `tinh_trang_nhu_cau},
+  {id: `ttnc_ham_duoi, label: {j|Hàm dưới|j}, typ: `tinh_trang_nhu_cau},
 ];
 
 let text_of_id =
@@ -205,34 +187,17 @@ type basis = [
   | `auto
 ];
 
-type col('a) = (basis, 'a);
-type row('a) = list(col('a));
-type group('a) = {
-  title: string,
-  items: list(row('a)),
+module Layout = {
+  type col('a) = (basis, 'a);
+  type row('a) = list(col('a));
+  type group('a) = {
+    title: string,
+    items: list(row('a)),
+  };
+  type t('a) = list(group('a));
 };
-type layout('a) = list(group('a));
-/* type layout('a) =
-   | Group(string, list(layout('a)))
-   | Row(list(layout('a)))
-   | Col(basis, 'a); */
 
-/* let phieu_dieu_tra_layout = [
-     Row([
-       Col(`oneThird, `ngay_kham),
-       Col(`oneThird, `so_ho_so),
-       Col(`oneThird, `nguoi_kham),
-     ]),
-     Row([Col(`full, `ho_va_ten)]),
-     Row([
-       Col(`oneThird, `tuoi),
-       Col(`oneThird, `gioi_tinh),
-       Col(`oneThird, `dan_toc),
-     ]),
-     Row([Col(`oneThird, `lop), Col(`twoThird, `truong)]),
-     Row([Col(`full, `dia_chi)]),
-   ]; */
-let phieu_dieu_tra_layout = [
+let phieu_dieu_tra_layout: Layout.t('a) = [
   {
     title: {j|Hành chính|j},
     items: [
@@ -242,7 +207,7 @@ let phieu_dieu_tra_layout = [
         (`oneThird, `nguoi_kham),
       ],
       [(`full, `ho_va_ten)],
-      [(`oneThird, `tuoi), (`oneThird, `gioi_tinh), (`oneThird, `dan_toc)],
+      [(`oneThird, `tuoi), (`oneThird, `dan_toc), (`oneThird, `gioi_tinh)],
       [(`oneThird, `lop), (`twoThird, `truong)],
       [(`full, `dia_chi)],
     ],

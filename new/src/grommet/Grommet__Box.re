@@ -1,4 +1,3 @@
-
 [@genType]
 type direction = [
   | `row
@@ -62,7 +61,8 @@ external make:
     ~responsive: bool=?,
     ~round: string=?,
     ~width: string=?,
-    ~wrap: bool=?
+    ~wrap: bool=?,
+    ~style: ReactDOMRe.Style.t=?
   ) =>
   [@genType.as "as"] (
     (~as_: string=?, 'a) =>

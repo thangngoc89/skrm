@@ -70,7 +70,7 @@ let data = [|
   }),
   Select_one({
     q_id: Id.make("b9"),
-    q_display: {j|Trong năm vừa qua cháu có khi nào phải nghỉ học vì thường xuyên hay vài ngày vì bị đau răng không?|j},
+    q_display: {j|Trong năm vừa qua cháu có khi nào phải nghỉ học thường xuyên hay vài ngày vì bị đau răng không?|j},
     q_content: [|
       A_Predefined((1, {j|Có|j})),
       A_Predefined((2, {j|Không|j})),
@@ -98,6 +98,134 @@ let data = [|
           {j|Răng của cháu cần chỉnh lại cho đều đặn|j},
         ),
         (Id.make_sub("b10", 6), {j|Răng của cháu tốt lắm|j}),
+      |],
+    },
+  }),
+  Select_one({
+    q_id: Id.make("b11"),
+    q_display: {j|Trong 12 tháng vừa qua, cháu đã đi nha sĩ khám răng mấy lần?|j},
+    q_content: [|
+      A_Predefined((1, {j|1 lần|j})),
+      A_Predefined((2, {j|2 lần|j})),
+      A_Predefined((3, {j|3 lần|j})),
+      A_Predefined((4, {j|4 lần|j})),
+      A_Predefined((5, {j|Nhiều hơn 4 lần|j})),
+      A_Predefined((6, {j|Không đến khám trong 12 tháng trước|j})),
+      A_Predefined((
+        7,
+        {j|Không nhận được sự chăm sóc răng miệng nào hoặc không gặp nha sĩ nào|j},
+      )),
+    |],
+  }),
+  Select_one({
+    q_id: Id.make("b12"),
+    q_display: {j|Lý do của lần đến khám nha sĩ gần đây nhất là gì? (chọn 1 ô duy nhất)|j},
+    q_content: [|
+      A_Predefined((
+        1,
+        {j|Đau, hay có vấn đề với răng, nướu và miệng|j},
+      )),
+      A_Predefined((2, {j|Điều trị/ tái khám|j})),
+      A_Predefined((3, {j|Kiểm tra định kỳ|j})),
+      A_Predefined((9, {j|Không biết/ không nhớ|j})),
+    |],
+  }),
+  Select_many({
+    q_id: Id.make("b13"),
+    q_display: {j|Cháu hãy ráng nhớ xem nha sĩ đã làm gì cho cháu trong lần khám đó? Nha sĩ/ Y sĩ đã làm...|j},
+    q_content: [|
+      A_Predefined((1, {j|Trám răng|j})),
+      A_Predefined((2, {j|Cạo vôi răng|j})),
+      A_Predefined((3, {j|Nhổ răng|j})),
+      A_Predefined((4, {j|Khám răng|j})),
+      A_Predefined((5, {j|Chụp phim răng|j})),
+      A_Predefined((6, {j|Lấy tủy răng|j})),
+      A_Predefined((7, {j|HD VSRM|j})),
+      A_Custom((8, {j|Điều trị khác (ghi rõ)|j})),
+    |],
+  }),
+  Select_one({
+    q_id: Id.make("b14"),
+    q_display: {j|Trong lần khám này, ai đã đi với cháu?|j},
+    q_content: [|
+      A_Predefined((1, {j|Không có ai|j})),
+      A_Predefined((2, {j|Mẹ cháu|j})),
+      A_Predefined((3, {j|Ba cháu|j})),
+      A_Predefined((4, {j|Anh/Chị của cháu|j})),
+      A_Predefined((5, {j|Một người lớn khác|j})),
+      A_Predefined((6, {j|Bạn cháu|j})),
+    |],
+  }),
+  Select_one({
+    q_id: Id.make("b15"),
+    q_display: {j|Cháu đánh răng bao nhiêu lần? (Chọn 1 ô duy nhất)|j},
+    q_content: [|
+      A_Predefined((1, {j|Không bao giờ|j})),
+      A_Predefined((2, {j|2-3 lần mỗi tháng|j})),
+      A_Predefined((3, {j|Mỗi tuần một lần|j})),
+      A_Predefined((4, {j|2-6 lần mỗi tuần|j})),
+      A_Predefined((5, {j|Mỗi ngày một lần|j})),
+      A_Predefined((6, {j|Mỗi ngày ít nhất là hai lần|j})),
+    |],
+  }),
+  Select_many({
+    q_id: Id.make("b16"),
+    q_display: {j|Cháu sử dụng vật dụng nào dưới đây để đánh răng? (đọc tên tửng vật dụng)|j},
+    q_content: [|
+      A_Predefined((1, {j|Bàn chải|j})),
+      A_Predefined((2, {j|Tăm tre|j})),
+      A_Predefined((3, {j|Tăm nhựa|j})),
+      A_Predefined((4, {j|Chỉ tơ nha khoa|j})),
+      A_Predefined((5, {j|Than|j})),
+      A_Predefined((6, {j|Vỏ cau|j})),
+      A_Custom((7, {j|Vật dụng khác (vui lòng ghi rõ)|j})),
+    |],
+  }),
+  Select_one({
+    q_id: Id.make("b17"),
+    q_display: {j|Cháu có sử dụng kem đánh răng để chải răng không?|j},
+    q_content: [|
+      A_Predefined((1, {j|Có|j})),
+      A_Predefined((2, {j|Không|j})),
+    |],
+  }),
+  Select_one({
+    q_id: Id.make("b18"),
+    q_display: {j|Cháu có dùng kem đánh răng có Fluor không?|j},
+    q_content: [|
+      A_Predefined((1, {j|Có|j})),
+      A_Predefined((2, {j|Không|j})),
+      A_Predefined((9, {j|Không biết|j})),
+    |],
+  }),
+  Group({
+    q_id: Id.make("b19"),
+    q_display: {j|Cháu có thường ăn hay uống những thức ăn sau đây, dù là ăn/ uống rất ít không? (đọc từng thứ)|j},
+    q_content: {
+      values: [|
+        (6, {j|Vài lần/ngày|j}),
+        (5, {j|Mỗi ngày|j}),
+        (4, {j|Vài lần/tuần|j}),
+        (3, {j|1 lần/tuần|j}),
+        (2, {j|Vài lần/tháng|j}),
+        (1, {j|Không bao giờ|j}),
+      |],
+      sub_questions: [|
+        (Id.make_sub("b19", 1), {j|Trái cây tươi|j}),
+        (
+          Id.make_sub("b19", 2),
+          {j|Bánh quy, bông lan, bánh kem, bánh ngọt|j},
+        ),
+        (
+          Id.make_sub("b19", 3),
+          {j|Nước chanh, nước ngọt có gas (Coca)|j},
+        ),
+        (Id.make_sub("b19", 4), {j|Mứt, mật ong|j}),
+        (Id.make_sub("b19", 5), {j|kẹo cao su có đường|j}),
+        (Id.make_sub("b19", 6), {j|Kẹo/mè xửng|j}),
+        (Id.make_sub("b19", 7), {j|Sữa có đường|j}),
+        (Id.make_sub("b19", 8), {j|Trà có đường|j}),
+        (Id.make_sub("b19", 9), {j|Cà phê có đường|j}),
       |],
     },
   }),

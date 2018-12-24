@@ -37,13 +37,19 @@ let make = _children => {
                 ->Belt.Array.map(
                     fun
                     | A_Predefined((value, label)) =>
-                      <Box direction=`row>
-                        <Box>
-                          <RadioButton key=label label={label->str} value />
-                        </Box>
-                        dottedLine
-                        <Text> {value->string_of_int->str} </Text>
-                      </Box>
+                      <RadioButton
+                        key=label
+                        label={
+                          <Box
+                            direction=`row
+                            style={ReactDOMRe.Style.make(~flex="1", ())}>
+                            label->str
+                            dottedLine
+                            <Text> {value->string_of_int->str} </Text>
+                          </Box>
+                        }
+                        value
+                      />
                     | _ => "Unhandled answer type"->str,
                   )
                 ->ReasonReact.array}

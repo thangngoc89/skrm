@@ -8,6 +8,7 @@ external make:
     ~name: string=?,
     ~value: 'value,
     ~onChange: ReactEvent.Form.t => unit=?,
+    ~style: ReactDOMRe.Style.t=?,
     'children
   ) =>
   ReasonReact.component(

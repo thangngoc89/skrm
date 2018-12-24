@@ -1,20 +1,19 @@
 module Id: {
   type t = pri string;
   let make: string => t;
+  let make_sub: (string, int) => t;
   let to_string: t => string;
 } = {
   type t = string;
   let make = t => t;
+  let make_sub = (string, sub) => string ++ "-" ++ sub->string_of_int;
   let to_string = t => t;
 };
 
-type answer_content = {
-  a_value: int,
-  a_display: string,
-};
+type value_pair = (int, string);
 type answer =
-  | Predefined(answer_content)
-  | Custom(answer_content, option(string));
+  | A_Predefined(value_pair)
+  | A_Custom(value_pair);
 
 type question_content('a) = {
   q_id: Id.t,
@@ -25,7 +24,7 @@ type question_content('a) = {
 type question_single = question_content(array(answer));
 
 type question_many_data = {
-  values: array((int, string)),
+  values: array(value_pair),
   sub_questions: array((Id.t, string)),
 };
 

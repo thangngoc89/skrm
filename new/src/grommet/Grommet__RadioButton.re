@@ -6,9 +6,9 @@ external make:
     ~id: string=?,
     ~label: ReasonReact.reactElement=?,
     ~name: string=?,
-    ~value: string,
+    ~value: 'value,
     ~onChange: ReactEvent.Form.t => unit=?,
-    'a
+    'children
   ) =>
   ReasonReact.component(
     ReasonReact.stateless,

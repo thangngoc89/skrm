@@ -50,7 +50,7 @@ let make = (~itemId, _children) => {
         | [] => ReasonReact.null
         | _ =>
           <Box pad="small" gap=`xsmall responsive=true>
-            <Text weight={`number(900)} as_="label"> item.label->str </Text>
+            <Text weight=`bold as_="label"> item.label->str </Text>
             <Box pad="none" gap=`medium direction=`row_responsive>
               {choices
                ->Belt.List.map(value =>

@@ -50,6 +50,7 @@ let make = _children => {
                             <Text> {value->string_of_int->str} </Text>
                           </Box>
                         }
+                        checked=false
                         value
                       />
                     | _ => "Unhandled answer type"->str,
@@ -84,7 +85,7 @@ let make = _children => {
              </Box>
            </Box>
          /* TODO: Handle this case */
-         | Group({q_id, q_display, q_content}) =>
+         | Group({q_id, q_display, q_content: _}) =>
            <Box direction=`column gap=`xsmall margin=`medium>
              /* TODO: Handle this case */
               {render_question_header(q_id, q_display)} </Box>

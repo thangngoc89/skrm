@@ -78,7 +78,7 @@ let data = [|
   }),
   Group({
     q_id: Id.make("b10"),
-    q_display: {j|Nếu bây giờ cháu phải đến khám ở một phòng nha, thì cháu nghĩ nha sĩ sẽ nói với cháu điều gì? Nha sĩ sẽ nói với cháy rằng (đọc từng câu một):|j},
+    q_display: {j|Nếu bây giờ cháu phải đến khám ở một phòng nha, thì cháu nghĩ nha sĩ sẽ nói với cháu điều gì? Nha sĩ sẽ nói với cháu rằng (đọc từng câu một):|j},
     q_content: {
       values: [|
         (1, {j|Có|j}),
@@ -170,7 +170,7 @@ let data = [|
   }),
   Select_many({
     q_id: Id.make("b16"),
-    q_display: {j|Cháu sử dụng vật dụng nào dưới đây để đánh răng? (đọc tên tửng vật dụng)|j},
+    q_display: {j|Cháu sử dụng vật dụng nào dưới đây để đánh răng? (đọc tên từng vật dụng)|j},
     q_content: [|
       A_Predefined((1, {j|Bàn chải|j})),
       A_Predefined((2, {j|Tăm tre|j})),

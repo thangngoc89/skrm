@@ -12,6 +12,20 @@ let dottedLine =
       (),
     )}
   />;
+let renderQuestionHeader = (q_id, q_display) => {
+  <Box basis=`half>
+    <span>
+      <strong>
+        {(
+           q_id->Types_questions.Id.to_string->Js.String.toLocaleUpperCase
+           ++ "."
+         )
+         ->str}
+      </strong>
+      <Markdown> q_display->str </Markdown>
+    </span>
+  </Box>;
+};
 let make = _children => {
   ...component,
   render: _self => {
@@ -19,19 +33,8 @@ let make = _children => {
       {data->Belt.Array.map(q =>
          switch (q) {
          | Select_one({q_id, q_display, q_content}) =>
-           <Box direction=`row_responsive gap=`xsmall margin="small">
-             <Box basis=`half>
-               <Text weight=`bold>
-                 {(
-                    q_id
-                    ->Types_questions.Id.to_string
-                    ->Js.String.toLocaleUpperCase
-                    ++ "."
-                  )
-                  ->str}
-                 <Text weight=`normal> q_display->str </Text>
-               </Text>
-             </Box>
+           <Box direction=`row_responsive gap=`xsmall margin=`medium>
+             {renderQuestionHeader(q_id, q_display)}
              <Box basis=`half gap=`small>
                {q_content
                 ->Belt.Array.map(
@@ -55,7 +58,15 @@ let make = _children => {
                 ->ReasonReact.array}
              </Box>
            </Box>
-         | _ => "Unhandled question type"->str
+         | Select_many({q_id, q_display, q_content}) =>
+           <Box direction=`row_responsive gap=`xsmall margin=`medium>
+             {renderQuestionHeader(q_id, q_display)}
+           </Box>
+         /* TODO: Handle this case */
+         | Group({q_id, q_display, q_content}) =>
+           <Box direction=`column gap=`xsmall margin=`medium>
+             /* TODO: Handle this case */
+              {renderQuestionHeader(q_id, q_display)} </Box>
          }
        )}
     </Box>;

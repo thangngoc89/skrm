@@ -4,9 +4,9 @@ import GHeading from './GHeading';
 
 import * as React from 'react';
 
-const $$toJS681176817 = {"-634588120": "align_start", "218723151": "align_center", "-520296927": "align_end", "933804875": "align_stretch"};
+const $$toJS750567599 = {"-634105323": "start", "326386882": "center", "1053490894": "end", "-826986888": "stretch"};
 
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(a11yTitle, alignSelf, color, gridArea, size, textAlign, level, children) { return ReasonReact.wrapJsForReason(GHeading, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS681176817[alignSelf]), color: color, gridArea: gridArea, size: size, textAlign: textAlign, level: level}, children); };
+export const make = function _(a11yTitle, alignSelf, color, gridArea, size, textAlign, level, children) { return ReasonReact.wrapJsForReason(GHeading, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS750567599[alignSelf]), color: color, gridArea: gridArea, size: size, textAlign: textAlign, level: level}, children); };

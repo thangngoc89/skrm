@@ -1,14 +1,16 @@
+[@genType]
+type alignSelf = [
+  | [@genType.as "start"] `as_start
+  | [@genType.as "center"] `as_center
+  | [@genType.as "end"] `as_end
+  | [@genType.as "stretch"] `as_stretch
+];
+
 [@genType.import "./GHeading"] [@bs.module "./Grommet__Heading.gen"]
 external make:
   (
     ~a11yTitle: string=?,
-    ~alignSelf: [
-                  | [@gentype.as "start"] `align_start
-                  | [@gentype.as "center"] `align_center
-                  | [@gentype.as "end"] `align_end
-                  | [@gentype.as "stretch"] `align_stretch
-                ]
-                  =?,
+    ~alignSelf: alignSelf=?,
     ~color: string=?,
     ~gridArea: string=?,
     ~size: string=?,

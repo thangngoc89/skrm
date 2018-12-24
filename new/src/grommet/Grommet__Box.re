@@ -36,6 +36,9 @@ type elevation = [ | `none | `xsmall | `small | `medium | `large | `xlarge];
 [@genType]
 type gap = [ | `xsmall | `small | `medium | `large | `xlarge];
 
+[@genType]
+type margin = [ | `xsmall | `small | `medium | `large | `xlarge];
+
 [@genType.import "./GBox"] [@bs.module "./Grommet__Box.gen"]
 external make:
   (
@@ -55,7 +58,7 @@ external make:
     ~gridArea: string=?,
     ~height: string=?,
     ~justify: string=?,
-    ~margin: string=?,
+    ~margin: margin=?,
     ~overflow: string=?,
     ~pad: string=?,
     ~responsive: bool=?,

@@ -1,16 +1,23 @@
-[@genType.import "./GButton"]
-[@bs.module "./Grommet__Button.gen"]
+[@genType]
+type alignSelf = [
+  | [@genType.as "start"] `as_start
+  | [@genType.as "center"] `as_center
+  | [@genType.as "end"] `as_end
+  | [@genType.as "stretch"] `as_stretch
+];
+
+[@genType]
+type margin = [ | `xsmall | `small | `medium | `large | `xlarge];
+
+[@genType]
+type typ = [ | `button | `reset | `submit];
+
+[@genType.import "./GButton"] [@bs.module "./Grommet__Button.gen"]
 external make:
   (
     ~a11yTitle: string=?,
     ~active: bool=?,
-    ~alignSelf: [
-                  | [@gentype.as "start"] `align_start
-                  | [@gentype.as "center"] `align_center
-                  | [@gentype.as "end"] `align_end
-                  | [@gentype.as "stretch"] `align_stretch
-                ]
-                  =?,
+    ~alignSelf: alignSelf=?,
     ~color: string=?,
     ~disabled: bool=?,
     ~fill: bool=?,
@@ -19,14 +26,14 @@ external make:
     ~hoverIndicator: bool=?,
     ~href: string=?,
     ~label: string=?,
-    ~margin: [ | `xsmall | `small | `medium | `large | `xlarge]=?,
+    ~margin: margin=?,
     ~onClick: unit => unit=?,
     ~plain: bool=?,
     ~primary: bool=?,
     ~reverse: bool=?
   ) =>
   [@gentype.as "type"] (
-    (~typ: [ | `button | `reset | `submit]=?) =>
+    (~typ: typ=?) =>
     [@gentype.as "Icon"] (
       (~icon: ReasonReact.reactClass=?) =>
       [@gentype.as "as"] (

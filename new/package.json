@@ -6,6 +6,7 @@
     "antd": "^3.11.3",
     "grommet": "^2.2.1",
     "re-classnames": "^3.0.0",
+    "re-formality": "^1.1.1",
     "react": "^16.6.3",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.6.3",

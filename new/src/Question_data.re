@@ -8,8 +8,19 @@ type select_one = {
   content: array(value_content),
 };
 
+type select_many_or_custom = {
+  id: Id.t,
+  question: string,
+  content: array(value_content),
+  custom: value_content,
+};
+
+type select_many_or_custom_container =
+  | Predefined(string)
+  | Custom(string, string);
 type question_type =
-  | Select_one(select_one);
+  | Select_one(select_one)
+  | Select_many_or_custom(select_many_or_custom);
 
 let b2 = {
   id: Id.make("b2"),
@@ -61,11 +72,27 @@ let b6 = {
   |],
 };
 
+let b13 = {
+  id: Id.make("b13"),
+  question: {j|Cháu hãy ráng nhớ xem nha sĩ đã làm gì cho cháu trong lần khám đó? Nha sĩ/ Y sĩ đã làm...|j},
+  content: [|
+    ("1", {j|Trám răng|j}),
+    ("2", {j|Cạo vôi răng|j}),
+    ("3", {j|Nhổ răng|j}),
+    ("4", {j|Khám răng|j}),
+    ("5", {j|Chụp phim răng|j}),
+    ("6", {j|Lấy tủy răng|j}),
+    ("7", {j|HD VSRM|j}),
+  |],
+  custom: ("8", {j|Điều trị khác (ghi rõ)|j}),
+};
+
 let data = [|
   Select_one(b2),
   Select_one(b4),
   Select_one(b5),
   Select_one(b6),
+  Select_many_or_custom(b13),
 |];
 /* Select_one({
        q_id: Id.make("b7"),
@@ -150,20 +177,7 @@ let data = [|
          A_Predefined((9, {j|Không biết/ không nhớ|j})),
        |],
      }),
-     Select_many({
-       q_id: Id.make("b13"),
-       q_display: {j|Cháu hãy ráng nhớ xem nha sĩ đã làm gì cho cháu trong lần khám đó? Nha sĩ/ Y sĩ đã làm...|j},
-       q_content: [|
-         A_Predefined((1, {j|Trám răng|j})),
-         A_Predefined((2, {j|Cạo vôi răng|j})),
-         A_Predefined((3, {j|Nhổ răng|j})),
-         A_Predefined((4, {j|Khám răng|j})),
-         A_Predefined((5, {j|Chụp phim răng|j})),
-         A_Predefined((6, {j|Lấy tủy răng|j})),
-         A_Predefined((7, {j|HD VSRM|j})),
-         A_Custom((8, {j|Điều trị khác (ghi rõ)|j})),
-       |],
-     }),
+
      Select_one({
        q_id: Id.make("b14"),
        q_display: {j|Trong lần khám này, ai đã đi với cháu?|j},

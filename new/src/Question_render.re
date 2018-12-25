@@ -25,7 +25,7 @@ let render_question_header = (q_id, q_display) => {
   </Box>;
 };
 
-let make = _children => {
+let make = (~handleChange, ~getData, _children) => {
   ...component,
   render: _self => {
     <Box>
@@ -36,9 +36,10 @@ let make = _children => {
              {render_question_header(q_id, q_display)}
              <Box basis=`half gap=`small>
                {q_content
-                ->Belt.Array.map(
-                    fun
+                ->Belt.Array.map(a =>
+                    switch (a) {
                     | A_Predefined((value, label)) =>
+                      let value = value->string_of_int;
                       <RadioButton
                         key=label
                         label={
@@ -47,13 +48,29 @@ let make = _children => {
                             style={ReactDOMRe.Style.make(~flex="1", ())}>
                             label->str
                             dottedLine
-                            <Text> {value->string_of_int->str} </Text>
+                            <Text> value->str </Text>
                           </Box>
                         }
-                        checked=false
+                        onChange={event => {
+                          let value = event->ReactEvent.Form.target##value;
+                          handleChange(q_id, Types_questions.String(value));
+                        }}
+                        checked={
+                                  let data = getData(q_id);
+                                  switch (data) {
+                                  | None => false
+                                  | Some(data) =>
+                                    switch (data) {
+                                    | Types_questions.String(data) =>
+                                      data == value
+                                    | _ => false
+                                    }
+                                  };
+                                }
                         value
-                      />
-                    | _ => "Unhandled answer type"->str,
+                      />;
+                    | _ => "Unhandled answer type"->str
+                    }
                   )
                 ->ReasonReact.array}
              </Box>

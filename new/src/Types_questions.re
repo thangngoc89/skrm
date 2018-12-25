@@ -10,7 +10,19 @@ module Id: {
   let to_string = t => t;
 };
 
+module IdCmp =
+  Belt.Id.MakeComparable({
+    type t = Id.t;
+    let cmp = Pervasives.compare;
+  });
+
+type dataTyp =
+  | String(string)
+  | IntWithString(int, string)
+  | Array(array(int));
+
 type value_pair = (int, string);
+
 type answer =
   | A_Predefined(value_pair)
   | A_Custom(value_pair);

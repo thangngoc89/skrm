@@ -1,4 +1,6 @@
-[@genType.import "./GFormField"] [@bs.module "./Grommet__FormField.gen"]
+[@genType.import "grommet"]
+[@genType.as "FormField"]
+[@bs.module "./Grommet__FormField.gen"]
 external make:
   (
     ~error: ReasonReact.reactElement=?,

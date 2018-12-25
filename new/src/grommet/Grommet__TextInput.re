@@ -1,4 +1,6 @@
-[@genType.import "./GTextInput"] [@bs.module "./Grommet__TextInput.gen"]
+[@genType.import "grommet"]
+[@genType.as "TextInput"]
+[@bs.module "./Grommet__TextInput.gen"]
 external make:
   (
     ~dropAlign: Js.t('a)=?,

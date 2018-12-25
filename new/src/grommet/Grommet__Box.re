@@ -39,7 +39,9 @@ type gap = [ | `xsmall | `small | `medium | `large | `xlarge];
 [@genType]
 type margin = [ | `xsmall | `small | `medium | `large | `xlarge];
 
-[@genType.import "./GBox"] [@bs.module "./Grommet__Box.gen"]
+[@genType.import "grommet"]
+[@genType.as "Box"]
+[@bs.module "./Grommet__Box.gen"]
 external make:
   (
     ~a11yTitle: string=?,

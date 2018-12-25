@@ -51,7 +51,7 @@ let data = [|
     q_id: Id.make("b7"),
     q_display: {j|Có bao giờ cháu ngại cười vì mặc cảm răng của mình không đẹp không?|j},
     q_content: [|
-      A_Predefined((1, {j|Rất thường xuyền|j})),
+      A_Predefined((1, {j|Rất thường xuyên|j})),
       A_Predefined((2, {j|Thường xuyên|j})),
       A_Predefined((3, {j|Thỉnh thoảng|j})),
       A_Predefined((4, {j|Chưa bao giờ|j})),

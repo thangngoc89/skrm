@@ -1,4 +1,6 @@
-[@genType.import "./GRadioButton"] [@bs.module "./Grommet__RadioButton.gen"]
+[@genType.import "grommet"]
+[@genType.as "RadioButton"]
+[@bs.module "./Grommet__RadioButton.gen"]
 external make:
   (
     ~checked: bool=?,

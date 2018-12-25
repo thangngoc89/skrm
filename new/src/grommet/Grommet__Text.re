@@ -15,7 +15,10 @@ type textAlign = [
 
 [@genType]
 type weight = [ | `normal | `bold];
-[@genType.import "./GText"] [@bs.module "./Grommet__Text.gen"]
+
+[@genType.import "grommet"]
+[@genType.as "Text"]
+[@bs.module "./Grommet__Text.gen"]
 external make:
   (
     ~a11yTitle: string=?,

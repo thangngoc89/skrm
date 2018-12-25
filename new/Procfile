@@ -1,0 +1,2 @@
+cra: npm run start
+bsb: npm run bsb:watch

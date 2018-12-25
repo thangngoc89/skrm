@@ -2,75 +2,44 @@ open Types_questions;
 
 module Select_one = Question_fragment_render.Select_one;
 
-type data = {
-  b2: option(string),
-  b4: option(string),
-  b5: option(string),
-};
+type magicDataValue;
 
-type state = {data};
+type state = {data: Js.Dict.t(magicDataValue)};
 
 type action =
-  | UpdateB2(option(string))
-  | UpdateB4(option(string))
-  | UpdateB5(option(string));
+  | Handle_select_one(Id.t, option(string));
 
 let component = ReasonReact.reducerComponent("Question_handler");
 
 let make = _children => {
   ...component,
-  initialState: () => {
-    data: {
-      b2: None,
-      b4: None,
-      b5: None,
-    },
-  },
-  reducer: (action, state) => {
+  initialState: () => {data: Js.Dict.empty()},
+  reducer: (action, state) =>
     switch (action) {
-    | UpdateB2(b2) =>
-      ReasonReact.Update({
-        ...state,
-        data: {
-          ...state.data,
-          b2,
-        },
-      })
-    | UpdateB4(b4) =>
-      ReasonReact.Update({
-        ...state,
-        data: {
-          ...state.data,
-          b4,
-        },
-      })
-    | UpdateB5(b5) =>
-      ReasonReact.Update({
-        ...state,
-        data: {
-          ...state.data,
-          b5,
-        },
-      })
-    };
-  },
+    | Handle_select_one(id, value) =>
+      Obj.magic(state.data)->Js.Dict.set(id->Id.to_string, value);
+      ReasonReact.Update({data: state.data});
+    },
+
   render: ({state, send}) => {
     <>
-      <Select_one
-        renderInformation=Question_data.b2
-        data={state.data.b2}
-        handleChange={value => send(UpdateB2(value))}
-      />
-      <Select_one
-        renderInformation=Question_data.b4
-        data={state.data.b4}
-        handleChange={value => send(UpdateB4(value))}
-      />
-      <Select_one
-        renderInformation=Question_data.b5
-        data={state.data.b5}
-        handleChange={value => send(UpdateB5(value))}
-      />
+      {Question_data.data
+       ->Belt.Array.map(
+           fun
+           | Select_one(q) =>
+             <Select_one
+               renderInformation=q
+               data={
+                      let data = state.data->Js.Dict.get(q.id->Id.to_string);
+                      switch (data) {
+                      | None => None
+                      | Some(data) => Some(Obj.magic(data))
+                      };
+                    }
+               handleChange={value => send(Handle_select_one(q.id, value))}
+             />,
+         )
+       ->ReasonReact.array}
     </>;
   },
 };

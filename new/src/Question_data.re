@@ -8,6 +8,9 @@ type select_one = {
   content: array(value_content),
 };
 
+type question_type =
+  | Select_one(select_one);
+
 let b2 = {
   id: Id.make("b2"),
   question: {j|Nơi cư ngụ|j},
@@ -58,6 +61,12 @@ let b6 = {
   |],
 };
 
+let data = [|
+  Select_one(b2),
+  Select_one(b4),
+  Select_one(b5),
+  Select_one(b6),
+|];
 /* Select_one({
        q_id: Id.make("b7"),
        q_display: {j|Có bao giờ cháu ngại cười vì mặc cảm răng của mình không đẹp không?|j},

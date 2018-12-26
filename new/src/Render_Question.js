@@ -49,11 +49,9 @@ const RenderQuestionBody = ({ values, setFieldValue, questionBag }) => {
                         {value}
                       </Box>
                     }
-                    onChange={event =>
-                      event.target.checked
-                        ? setFieldValue(questionBag.id, value)
-                        : null
-                    }
+                    onChange={event => {
+                      setFieldValue(questionBag.id, event.target.value);
+                    }}
                   />
                 ))}
               </Box>
@@ -134,13 +132,11 @@ const RenderQuestionBody = ({ values, setFieldValue, questionBag }) => {
                     }
                   }}
                 />
-
                 <Field
                   name={`${questionBag.id}.customMessage`}
                   render={({ field }) => {
                     return (
                       <TextInput
-                        {...field}
                         disabled={
                           !(
                             values[questionBag.id].values.indexOf(
@@ -148,6 +144,8 @@ const RenderQuestionBody = ({ values, setFieldValue, questionBag }) => {
                             ) != -1
                           )
                         }
+                        placeholder="Ghi rõ câu trả lời"
+                        {...field}
                       />
                     );
                   }}

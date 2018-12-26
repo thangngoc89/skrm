@@ -71,7 +71,7 @@ const RenderQuestionBody = ({ values, setFieldValue, questionBag }) => {
                     key={label}
                     name={label}
                     value={value}
-                    checked={values[questionBag.id].values.indexOf(value) != -1}
+                    checked={values[questionBag.id].values.indexOf(value) !== -1}
                     label={
                       <Box direction="row" style={{ flex: 1 }}>
                         {label}
@@ -105,7 +105,7 @@ const RenderQuestionBody = ({ values, setFieldValue, questionBag }) => {
                   checked={
                     values[questionBag.id].values.indexOf(
                       questionBag.custom.value
-                    ) != -1
+                    ) !== -1
                   }
                   label={
                     <Box direction="row" style={{ flex: 1 }}>
@@ -132,24 +132,21 @@ const RenderQuestionBody = ({ values, setFieldValue, questionBag }) => {
                     }
                   }}
                 />
-                <Field
-                  name={`${questionBag.id}.customMessage`}
-                  render={({ field }) => {
-                    return (
-                      <TextInput
-                        disabled={
-                          !(
-                            values[questionBag.id].values.indexOf(
-                              questionBag.custom.value
-                            ) != -1
-                          )
-                        }
-                        placeholder="Ghi rõ câu trả lời"
-                        {...field}
-                      />
-                    );
-                  }}
-                />
+                {values[questionBag.id].values.indexOf(
+                  questionBag.custom.value
+                ) !== -1 && (
+                  <Field
+                    name={`${questionBag.id}.customMessage`}
+                    render={({ field }) => {
+                      return (
+                        <TextInput
+                          placeholder="Ghi rõ câu trả lời"
+                          {...field}
+                        />
+                      );
+                    }}
+                  />
+                )}
               </Box>
             );
           }}

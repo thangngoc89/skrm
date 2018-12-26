@@ -1,24 +1,22 @@
 import { Grommet, Box, FormField, TextInput } from "grommet";
 import React, { Component } from "react";
 import RRApp from "./RR_App.gen";
+import Render_Question from "./Render_Question";
+import { grommet } from "grommet/themes";
 
+const customTheme = {
+  button: {
+    extend: props => {
+      return `font-weight: bold`;
+    },
+  },
+};
 class App extends Component {
   render() {
     return (
-      <Grommet>
-        {/* <Box direction="row-responsive" gap="small">
-          <Box basis="2/3">
-            <FormField label="City">
-              <TextInput value="foo" />
-            </FormField>
-          </Box>
-          <Box basis="1/3">
-            <FormField label="State">
-              <TextInput value="bar" />
-            </FormField>
-          </Box>
-        </Box> */}
-        <RRApp />
+      <Grommet theme={customTheme}>
+        <Render_Question />
+        {/* <RRApp /> */}
       </Grommet>
     );
   }

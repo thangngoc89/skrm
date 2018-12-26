@@ -89,10 +89,9 @@ module Select_one = {
   };
 };
 
-module SS = Belt.Set.Int;
-
 module Select_many_or_custom = {
-  let component = ReasonReact.statelessComponent("Render_select_many_or_custom");
+  let component =
+    ReasonReact.statelessComponent("Render_select_many_or_custom");
 
   let make =
       (

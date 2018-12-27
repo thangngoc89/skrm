@@ -1,9 +1,9 @@
 import React from "react";
 import { StyledDottedLabel } from "./Render_question_styled";
-import { Box, Text, Markdown, RadioButton, CheckBox } from "grommet";
-import { Field, FastField, FieldArray } from "formik";
+import { Box, Text, Markdown, RadioButton, CheckBox, TextInput } from "grommet";
+import { Field, FieldArray } from "formik";
 
-const RenderQuestionHeader = React.memo(function({ id, question }) {
+const RenderQuestionHeader = function({ id, question }) {
   return (
     <span>
       <Text color="brand" weight="bold">
@@ -12,7 +12,7 @@ const RenderQuestionHeader = React.memo(function({ id, question }) {
       <Markdown>{question}</Markdown>
     </span>
   );
-});
+};
 
 const SelectOne = ({ setFieldValue, questionBag }) => {
   return (
@@ -23,9 +23,9 @@ const SelectOne = ({ setFieldValue, questionBag }) => {
           question={questionBag.question}
         />
       </Box>
-      <FastField
+      <Field
         name={questionBag.id}
-        render={({ field, form }) => {
+        render={({ field }) => {
           return (
             <Box direction="column" basis="1/2" gap="xsmall">
               {questionBag.content.map(({ value, label }) => (
@@ -83,7 +83,7 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
             <Box direction="column" basis="1/2" gap="xsmall">
               {questionBag.content.map(({ value, label }) => (
                 <ControlledCheckBox
-                  key={value}
+                  key={label}
                   label={label}
                   value={value}
                   arrayValue={questionValue.values}
@@ -116,7 +116,7 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
   );
 };
 
-export default function({ questionValue, setFieldValue, questionBag }) {
+function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
   switch (questionBag.type) {
     case "select_one":
       return (
@@ -138,3 +138,9 @@ export default function({ questionValue, setFieldValue, questionBag }) {
       return <Text color="status-critical">Unknown question type</Text>;
   }
 }
+
+// function areEqual(prevProps, nextProps) {
+//   prevProps.questionValue === nextProps.questionValue;
+// }
+// export default React.memo(RenderQuestion, areEqual);
+export default RenderQuestion;

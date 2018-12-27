@@ -134,13 +134,13 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
         id={questionBag.id}
         question={questionBag.question}
       />
-      <table width="100%">
+      <table className="w-full table-auto my-4">
         <thead>
-          <tr>
+          <tr className="h-12 border-b-2">
             <th size="large" />
             {questionBag.values.map(({ label, value }) => {
               return (
-                <th key={value} scope="col" align="center" size="small">
+                <th key={value} scope="col" className="font-bold center">
                   {label} ({value})
                 </th>
               );
@@ -151,27 +151,31 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
           {questionBag.subQuestions.map(
             ({ label: subLabel, value: subValue }) => {
               return (
-                <tr key={subValue}>
-                  <th scope="row" align="start" size="large">
-                    <span>
-                      <strong>{subValue}.</strong> {subLabel}
-                    </span>
-                  </th>
+                <tr
+                  key={subValue}
+                  className="h-10 border-b border-light-6 hover:bg-light-1"
+                >
+                  <td scope="row" className="text-left font-normal">
+                    <strong>{subValue}.</strong> {subLabel}
+                  </td>
                   <Field
                     name={`${questionBag.id}.${subValue}`}
                     render={({ field }) => {
                       return questionBag.values.map(({ label, value }) => {
                         return (
-                          <td key={value} align="center" size="small">
-                            <RadioButton
-                              key={label}
-                              name={label}
-                              value={value}
-                              checked={field.value === value}
-                              onChange={event => {
-                                setFieldValue(field.name, event.target.value);
-                              }}
-                            />
+                          <td key={value}>
+                            <div className="block w-6 h-6 m-auto">
+                              <RadioButton
+                                key={label}
+                                name={`${subValue}.${value}`}
+                                value={value}
+                                checked={field.value === value}
+                                onChange={event => {
+                                  setFieldValue(field.name, event.target.value);
+                                }}
+                                block={false}
+                              />
+                            </div>
                           </td>
                         );
                       });

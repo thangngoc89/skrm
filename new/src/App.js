@@ -12,11 +12,11 @@ const customTheme = {
 class App extends Component {
   render() {
     return (
-      <Grommet theme={customTheme}>
-        <div className="m-4">
-          <RenderQuestionForm />
-        </div>
-      </Grommet>
+      // <Grommet theme={customTheme}>
+      <div className="m-4 text-lg">
+        <RenderQuestionForm />
+      </div>
+      // </Grommet>
     );
   }
 }

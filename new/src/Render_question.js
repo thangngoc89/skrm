@@ -1,8 +1,19 @@
 import React from "react";
 import { StyledDottedLabel } from "./Render_question_styled";
-import { Box, Text, RadioButton, CheckBox, TextInput } from "grommet";
+import {
+  Box,
+  Text,
+  RadioButton,
+  CheckBox,
+  TextInput,
+  Table,
+  TableBody,
+  TableCell,
+  TableFooter,
+  TableHeader,
+  TableRow,
+} from "grommet";
 import { Field, FieldArray } from "formik";
-
 import styled from "styled-components";
 
 const QuestionId = styled.strong`
@@ -70,6 +81,7 @@ const ControlledCheckBox = ({ label, value, arrayValue, arrayHelpers }) => {
     />
   );
 };
+
 const SelectManyOrCustom = ({ questionValue, questionBag }) => {
   return (
     <Box direction="row-responsive" gap="xsmall">
@@ -119,6 +131,66 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
   );
 };
 
+const GroupSelectOne = ({ setFieldValue, questionBag }) => {
+  return (
+    <Box direction="column" gap="xsmall">
+      <RenderQuestionHeader
+        id={questionBag.id}
+        question={questionBag.question}
+      />
+      <Table width="100%">
+        <TableHeader>
+          <TableRow>
+            <TableCell size="large" />
+            {questionBag.values.map(({ label, value }) => {
+              return (
+                <TableCell key={value} scope="col" align="center" size="small">
+                  {label} ({value})
+                </TableCell>
+              );
+            })}
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {questionBag.subQuestions.map(
+            ({ label: subLabel, value: subValue }) => {
+              return (
+                <TableRow key={subValue}>
+                  <TableCell scope="row" align="left" size="large">
+                    <span>
+                      <strong>{subValue}.</strong> {subLabel}
+                    </span>
+                  </TableCell>
+                  <Field
+                    name={`${questionBag.id}.${subValue}`}
+                    render={({ field }) => {
+                      return questionBag.values.map(({ label, value }) => {
+                        return (
+                          <TableCell key={value} align="center" size="small">
+                            <RadioButton
+                              key={label}
+                              name={label}
+                              value={value}
+                              checked={field.value === value}
+                              onChange={event => {
+                                setFieldValue(field.name, event.target.value);
+                              }}
+                            />
+                          </TableCell>
+                        );
+                      });
+                    }}
+                  />
+                </TableRow>
+              );
+            }
+          )}
+        </TableBody>
+      </Table>
+    </Box>
+  );
+};
+
 function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
   switch (questionBag.type) {
     case "select_one":
@@ -132,6 +204,14 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
     case "select_many_or_custom":
       return (
         <SelectManyOrCustom
+          questionValue={questionValue}
+          setFieldValue={setFieldValue}
+          questionBag={questionBag}
+        />
+      );
+    case "group_select_one":
+      return (
+        <GroupSelectOne
           questionValue={questionValue}
           setFieldValue={setFieldValue}
           questionBag={questionBag}

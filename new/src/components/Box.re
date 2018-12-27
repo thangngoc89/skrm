@@ -17,7 +17,13 @@ type alignContent = [
 let component = ReasonReact.statelessComponent("Box");
 
 [@genType]
-let make = (~direction=`column, ~alignContent=`start, ~className=?, children) => {
+let make =
+    (
+      ~direction: direction=`column,
+      ~alignContent: alignContent=`start,
+      ~className=?,
+      children,
+    ) => {
   ...component,
   render: _self => {
     let className =

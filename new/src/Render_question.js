@@ -1,7 +1,14 @@
 import React from "react";
-import { StyledDottedLabel } from "./Render_question_styled";
-import { Field, FieldArray } from "formik";
+import { FastField, Field, FieldArray } from "formik";
 import { Box, TextInput, CheckBox, RadioButton } from "./components";
+
+const DottedLabel = ({ value, label }) => (
+  <Box direction="row" alignContent="end" className="w-full">
+    {label}
+    <span className="flex-1 border-b border-dotted border-dark-3 mx-2 mb-1" />
+    {value}
+  </Box>
+);
 
 const RenderQuestionHeader = function({ id, question }) {
   return (
@@ -14,7 +21,7 @@ const RenderQuestionHeader = function({ id, question }) {
 
 const SelectOne = ({ setFieldValue, questionBag }) => {
   return (
-    <Box direction="row_responsive" className="my-3">
+    <Box direction="row-responsive" className="my-3">
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
@@ -34,7 +41,7 @@ const SelectOne = ({ setFieldValue, questionBag }) => {
                   onChange={event => {
                     setFieldValue(field.name, event.target.value);
                   }}
-                  label={<StyledDottedLabel label={label} value={value} />}
+                  label={<DottedLabel label={label} value={value} />}
                 />
               ))}
             </div>
@@ -58,7 +65,7 @@ const ControlledCheckBox = ({
       name={name}
       value={value}
       checked={arrayValue.indexOf(value) !== -1}
-      label={<StyledDottedLabel value={value} label={label} />}
+      label={<DottedLabel value={value} label={label} />}
       onChange={event => {
         if (event.target.checked) {
           arrayHelpers.push(value);
@@ -73,7 +80,7 @@ const ControlledCheckBox = ({
 
 const SelectManyOrCustom = ({ questionValue, questionBag }) => {
   return (
-    <Box direction="row_responsive" className="my-3">
+    <Box direction="row-responsive" className="my-3">
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
@@ -103,7 +110,7 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
 
               {questionValue.values.indexOf(questionBag.custom.value) !==
                 -1 && (
-                <Field
+                <FastField
                   name={`${questionBag.id}.customMessage`}
                   render={({ field }) => {
                     return (

@@ -1,28 +1,12 @@
 import React from "react";
 import { StyledDottedLabel } from "./Render_question_styled";
-import {
-  Box,
-  Text,
-  RadioButton,
-  CheckBox,
-  TextInput,
-  Table,
-  TableBody,
-  TableCell,
-  TableFooter,
-  TableHeader,
-  TableRow,
-} from "grommet";
 import { Field, FieldArray } from "formik";
-import styled from "styled-components";
+import Box from "./Box";
 
-const QuestionId = styled.strong`
-  text-transform: uppercase;
-`;
 const RenderQuestionHeader = function({ id, question }) {
   return (
     <span>
-      <QuestionId>{id + ". "}</QuestionId>
+      <strong className="uppercase">{id + ". "}</strong>
       <span>{question}</span>
     </span>
   );
@@ -43,16 +27,18 @@ const SelectOne = ({ setFieldValue, questionBag }) => {
           return (
             <Box direction="column" basis="1/2" gap="xsmall">
               {questionBag.content.map(({ value, label }) => (
-                <RadioButton
-                  key={label}
-                  name={label}
-                  value={value}
-                  checked={field.value === value}
-                  label={<StyledDottedLabel label={label} value={value} />}
-                  onChange={event => {
-                    setFieldValue(questionBag.id, event.target.value);
-                  }}
-                />
+                <label key={label} className="flex items-center">
+                  <input
+                    type="radio"
+                    name={field.name}
+                    value={value}
+                    checked={field.value === value}
+                    onChange={event => {
+                      setFieldValue(field.name, event.target.value);
+                    }}
+                  />
+                  <StyledDottedLabel label={label} value={value} />
+                </label>
               ))}
             </Box>
           );
@@ -62,23 +48,31 @@ const SelectOne = ({ setFieldValue, questionBag }) => {
   );
 };
 
-const ControlledCheckBox = ({ label, value, arrayValue, arrayHelpers }) => {
+const ControlledCheckBox = ({
+  name,
+  label,
+  value,
+  arrayValue,
+  arrayHelpers,
+}) => {
   return (
-    <CheckBox
-      key={label}
-      name={label}
-      value={value}
-      checked={arrayValue.indexOf(value) !== -1}
-      label={<StyledDottedLabel value={value} label={label} />}
-      onChange={event => {
-        if (event.target.checked) {
-          arrayHelpers.push(value);
-        } else {
-          const idx = arrayValue.indexOf(value);
-          arrayHelpers.remove(idx);
-        }
-      }}
-    />
+    <label className="flex items-center">
+      <input
+        type="checkbox"
+        name={name}
+        value={value}
+        checked={arrayValue.indexOf(value) !== -1}
+        onChange={event => {
+          if (event.target.checked) {
+            arrayHelpers.push(value);
+          } else {
+            const idx = arrayValue.indexOf(value);
+            arrayHelpers.remove(idx);
+          }
+        }}
+      />
+      <StyledDottedLabel value={value} label={label} />
+    </label>
   );
 };
 
@@ -93,12 +87,13 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
       </Box>
       <FieldArray
         name={`${questionBag.id}.values`}
-        render={arrayHelpers => {
+        render={({ name, ...arrayHelpers }) => {
           return (
             <Box direction="column" basis="1/2" gap="xsmall">
               {questionBag.content.map(({ value, label }) => (
                 <ControlledCheckBox
                   key={label}
+                  name={name}
                   label={label}
                   value={value}
                   arrayValue={questionValue.values}
@@ -106,6 +101,7 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
                 />
               ))}
               <ControlledCheckBox
+                name={name}
                 label={questionBag.custom.label}
                 value={questionBag.custom.value}
                 arrayValue={questionValue.values}
@@ -118,7 +114,7 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
                   name={`${questionBag.id}.customMessage`}
                   render={({ field }) => {
                     return (
-                      <TextInput placeholder="Ghi rõ câu trả lời" {...field} />
+                      <input placeholder="Ghi rõ câu trả lời" {...field} />
                     );
                   }}
                 />
@@ -138,36 +134,37 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
         id={questionBag.id}
         question={questionBag.question}
       />
-      <Table width="100%">
-        <TableHeader>
-          <TableRow>
-            <TableCell size="large" />
+      <table width="100%">
+        <thead>
+          <tr>
+            <th size="large" />
             {questionBag.values.map(({ label, value }) => {
               return (
-                <TableCell key={value} scope="col" align="center" size="small">
+                <th key={value} scope="col" align="center" size="small">
                   {label} ({value})
-                </TableCell>
+                </th>
               );
             })}
-          </TableRow>
-        </TableHeader>
-        <TableBody>
+          </tr>
+        </thead>
+        <tbody>
           {questionBag.subQuestions.map(
             ({ label: subLabel, value: subValue }) => {
               return (
-                <TableRow key={subValue}>
-                  <TableCell scope="row" align="left" size="large">
+                <tr key={subValue}>
+                  <th scope="row" align="start" size="large">
                     <span>
                       <strong>{subValue}.</strong> {subLabel}
                     </span>
-                  </TableCell>
+                  </th>
                   <Field
                     name={`${questionBag.id}.${subValue}`}
                     render={({ field }) => {
                       return questionBag.values.map(({ label, value }) => {
                         return (
-                          <TableCell key={value} align="center" size="small">
-                            <RadioButton
+                          <td key={value} align="center" size="small">
+                            <input
+                              type="radio"
                               key={label}
                               name={label}
                               value={value}
@@ -176,17 +173,17 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
                                 setFieldValue(field.name, event.target.value);
                               }}
                             />
-                          </TableCell>
+                          </td>
                         );
                       });
                     }}
                   />
-                </TableRow>
+                </tr>
               );
             }
           )}
-        </TableBody>
-      </Table>
+        </tbody>
+      </table>
     </Box>
   );
 };
@@ -218,7 +215,7 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
         />
       );
     default:
-      return <Text color="status-critical">Unknown question type</Text>;
+      return <span color="status-critical">Unknown question type</span>;
   }
 }
 

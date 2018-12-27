@@ -3,7 +3,9 @@ import { Formik, Form } from "formik";
 import schema from "./data/Question_schema";
 import RenderQuestion from "./Render_question";
 
-import { Box, Button } from "grommet";
+// import { Box, Button } from "grommet";
+
+import Box from "./Box";
 
 const MyForm = () => (
   <Formik
@@ -42,8 +44,10 @@ const MyForm = () => (
             );
           })}
         </Box>
-        <Box align="center" pad="large">
-          <Button label="Submit" type="submit" primary hoverIndicator />
+        <Box direction="column" align="center" pad="large">
+          <button label="Submit" type="submit">
+            Submit
+          </button>
         </Box>
       </Form>
     )}

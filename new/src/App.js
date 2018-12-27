@@ -16,7 +16,6 @@ class App extends Component {
     return (
       <Grommet theme={customTheme}>
         <RenderQuestionForm />
-        {/* <RRApp /> */}
       </Grommet>
     );
   }

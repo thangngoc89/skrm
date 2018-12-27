@@ -229,7 +229,7 @@ export default [
         label: "Nước chanh, nước ngọt có gas (Coca)",
       },
       { value: "4", label: "Mứt, mật ong" },
-      { value: "5", label: "kẹo cao su có đường" },
+      { value: "5", label: "Kẹo cao su có đường" },
       { value: "6", label: "Kẹo/mè xửng" },
       { value: "7", label: "Sữa có đường" },
       { value: "8", label: "Trà có đường" },

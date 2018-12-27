@@ -10,7 +10,7 @@ import Box from "./components/Box.gen";
 export const StyledDottedLabel = ({ value, label }) => (
   <Box direction="row" alignContent="end_" className="w-full">
     {label}
-    <span className="flex-1 border-b border-dotted border-dark-5 mx-1 mb-1" />
+    <span className="flex-1 border-b border-dotted border-dark-3 mx-2 mb-1" />
     {value}
   </Box>
 );

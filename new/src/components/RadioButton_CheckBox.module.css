@@ -2,10 +2,9 @@
 .container {
   display: block;
   position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
   cursor: pointer;
   user-select: none;
+  @apply .pl-8;
 }
 
 /* Hide the browser's default radio button */
@@ -22,16 +21,37 @@
   position: absolute;
   top: 0;
   left: 0;
-  border-radius: 50%;
   @apply .border-2 .border-solid .border-light-4;
   @apply .h-6 .w-6;
 }
 
-/* Hide the dot inside checkmark */
 .checkmark > svg {
-  content: "";
-  position: absolute;
   display: none;
+  @apply .text-brand;
+}
+
+/*
+ * RadioButton 
+ * - Rounded 50%
+ * - Fill svg
+ */
+.radio {
+  border-radius: 50%;
+}
+.radio > svg {
+  @apply .fill-current;
+}
+
+/*
+ * CheckBox 
+ * - Rounded 4px
+ * - Stroke svg
+ */
+.checkbox {
+  @apply .rounded;
+}
+.checkbox {
+  @apply .stroke-current;
 }
 
 /* When checked display it */

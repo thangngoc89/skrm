@@ -26,6 +26,7 @@ const SelectOne = ({ setFieldValue, questionBag }) => {
             <div className="flex-1">
               {questionBag.content.map(({ value, label }) => (
                 <RadioButton
+                  className="mb-2"
                   key={label}
                   name={field.name}
                   value={value}
@@ -53,6 +54,7 @@ const ControlledCheckBox = ({
 }) => {
   return (
     <CheckBox
+      className="mb-2"
       name={name}
       value={value}
       checked={arrayValue.indexOf(value) !== -1}

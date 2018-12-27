@@ -1,15 +1,18 @@
 import React from "react";
 import { StyledDottedLabel } from "./Render_question_styled";
-import { Box, Text, Markdown, RadioButton, CheckBox, TextInput } from "grommet";
+import { Box, Text, RadioButton, CheckBox, TextInput } from "grommet";
 import { Field, FieldArray } from "formik";
 
+import styled from "styled-components";
+
+const QuestionId = styled.strong`
+  text-transform: uppercase;
+`;
 const RenderQuestionHeader = function({ id, question }) {
   return (
     <span>
-      <Text color="brand" weight="bold">
-        {id.toLocaleUpperCase() + ". "}
-      </Text>
-      <Markdown>{question}</Markdown>
+      <QuestionId>{id + ". "}</QuestionId>
+      <span>{question}</span>
     </span>
   );
 };
@@ -139,8 +142,8 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
   }
 }
 
-// function areEqual(prevProps, nextProps) {
-//   prevProps.questionValue === nextProps.questionValue;
-// }
-// export default React.memo(RenderQuestion, areEqual);
-export default RenderQuestion;
+function areEqual(prevProps, nextProps) {
+  return prevProps.questionValue === nextProps.questionValue;
+}
+
+export default React.memo(RenderQuestion, areEqual);

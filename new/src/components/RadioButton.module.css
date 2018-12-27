@@ -22,40 +22,33 @@
   position: absolute;
   top: 0;
   left: 0;
-  height: 25px;
-  width: 25px;
-  background-color: #eee;
   border-radius: 50%;
+  @apply .border-2 .border-solid .border-light-4;
+  @apply .h-6 .w-6;
 }
 
-/* On mouse-over, add a grey background color */
-.container:hover input ~ .checkmark {
-  background-color: #ccc;
-}
-
-/* When the radio button is checked, add a blue background */
-.container input:checked ~ .checkmark {
-  @apply .bg-brand;
-}
-
-/* Create the indicator (the dot/circle - hidden when not checked) */
-.checkmark:after {
+/* Hide the dot inside checkmark */
+.checkmark > svg {
   content: "";
   position: absolute;
   display: none;
 }
 
-/* Show the indicator (dot/circle) when checked */
-.container input:checked ~ .checkmark:after {
+/* When checked display it */
+.container input:checked ~ .checkmark {
+  @apply .border-brand .shadow-none;
+}
+
+.container input:checked ~ .checkmark > svg {
   display: block;
 }
 
-/* Style the indicator (dot/circle) */
-.container .checkmark:after {
-  top: 9px;
-  left: 9px;
-  width: 8px;
-  height: 8px;
-  border-radius: 50%;
-  background: white;
+/* Focus effects */
+.container input:focus ~ .checkmark {
+  @apply .border-accent-1 .shadow-input;
+}
+
+/* Hover effects */
+.container:hover input ~ .checkmark {
+  @apply .border-dark-1 .shadow-none;
 }

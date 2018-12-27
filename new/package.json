@@ -23,7 +23,8 @@
     "eject": "react-scripts eject",
     "bsb": "export BS_CMT_POST_PROCESS_CMD=\"gentype\" && bsb -make-world",
     "bsb:watch": "export BS_CMT_POST_PROCESS_CMD=\"gentype\" && bsb -make-world -w",
-    "bsb:clean": "bsb -clean-world"
+    "bsb:clean": "bsb -clean-world",
+    "build:tailwind": "tailwind build src/styles/tailwind.css -c tailwind.js -o src/tailwind.css"
   },
   "eslintConfig": {},
   "browserslist": [

@@ -6,7 +6,7 @@ import Box from "./Box";
 const RenderQuestionHeader = function({ id, question }) {
   return (
     <span>
-      <strong className="uppercase">{id + ". "}</strong>
+      <strong className="uppercase text-brand">{id + ". "}</strong>
       <span>{question}</span>
     </span>
   );

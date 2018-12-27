@@ -46,6 +46,7 @@ let colors = {
   transparent: "transparent",
 
   brand: "#7D4CDB",
+
   "accent-1": "#6FFFB0",
   "accent-2": "#FD6FFF",
   "accent-3": "#81FCED",
@@ -696,6 +697,7 @@ module.exports = {
     inner: "inset 0 2px 4px 0 rgba(0,0,0,0.06)",
     outline: "0 0 0 3px rgba(52,144,220,0.5)",
     none: "none",
+    input: "0 0 2px 2px " + colors["accent-1"],
   },
 
   /*

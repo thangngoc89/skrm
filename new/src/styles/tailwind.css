@@ -1,3 +1,12 @@
 @tailwind preflight;
 @tailwind components;
 @tailwind utilities;
+
+.input {
+  @apply .border .border-solid .border-dark-6 .rounded .w-full .font-bold;
+  @apply .p-3;
+}
+
+.input:focus {
+  @apply .shadow-input .border-accent-1;
+}

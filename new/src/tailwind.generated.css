@@ -3699,6 +3699,10 @@ table {
   box-shadow: none;
 }
 
+.shadow-input {
+  box-shadow: 0 0 2px 2px #6fffb0;
+}
+
 .hover\:shadow:hover {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
@@ -3723,6 +3727,10 @@ table {
   box-shadow: none;
 }
 
+.hover\:shadow-input:hover {
+  box-shadow: 0 0 2px 2px #6fffb0;
+}
+
 .focus\:shadow:focus {
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
 }
@@ -3745,6 +3753,10 @@ table {
 
 .focus\:shadow-none:focus {
   box-shadow: none;
+}
+
+.focus\:shadow-input:focus {
+  box-shadow: 0 0 2px 2px #6fffb0;
 }
 
 .fill-current {
@@ -4523,6 +4535,21 @@ table {
 
 .z-auto {
   z-index: auto;
+}
+
+.input {
+  border-width: 1px;
+  border-style: solid;
+  border-color: #999;
+  border-radius: .25rem;
+  width: 100%;
+  font-weight: 700;
+  padding: .75rem;
+}
+
+.input:focus {
+  box-shadow: 0 0 2px 2px #6fffb0;
+  border-color: #6fffb0;
 }
 
 @media (min-width: 576px) {
@@ -7685,6 +7712,10 @@ table {
     box-shadow: none;
   }
 
+  .sm\:shadow-input {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .sm\:hover\:shadow:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -7709,6 +7740,10 @@ table {
     box-shadow: none;
   }
 
+  .sm\:hover\:shadow-input:hover {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .sm\:focus\:shadow:focus {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -7731,6 +7766,10 @@ table {
 
   .sm\:focus\:shadow-none:focus {
     box-shadow: none;
+  }
+
+  .sm\:focus\:shadow-input:focus {
+    box-shadow: 0 0 2px 2px #6fffb0;
   }
 
   .sm\:table-auto {
@@ -11664,6 +11703,10 @@ table {
     box-shadow: none;
   }
 
+  .md\:shadow-input {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .md\:hover\:shadow:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -11688,6 +11731,10 @@ table {
     box-shadow: none;
   }
 
+  .md\:hover\:shadow-input:hover {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .md\:focus\:shadow:focus {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -11710,6 +11757,10 @@ table {
 
   .md\:focus\:shadow-none:focus {
     box-shadow: none;
+  }
+
+  .md\:focus\:shadow-input:focus {
+    box-shadow: 0 0 2px 2px #6fffb0;
   }
 
   .md\:table-auto {
@@ -15643,6 +15694,10 @@ table {
     box-shadow: none;
   }
 
+  .lg\:shadow-input {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .lg\:hover\:shadow:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -15667,6 +15722,10 @@ table {
     box-shadow: none;
   }
 
+  .lg\:hover\:shadow-input:hover {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .lg\:focus\:shadow:focus {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -15689,6 +15748,10 @@ table {
 
   .lg\:focus\:shadow-none:focus {
     box-shadow: none;
+  }
+
+  .lg\:focus\:shadow-input:focus {
+    box-shadow: 0 0 2px 2px #6fffb0;
   }
 
   .lg\:table-auto {
@@ -19622,6 +19685,10 @@ table {
     box-shadow: none;
   }
 
+  .xl\:shadow-input {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .xl\:hover\:shadow:hover {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -19646,6 +19713,10 @@ table {
     box-shadow: none;
   }
 
+  .xl\:hover\:shadow-input:hover {
+    box-shadow: 0 0 2px 2px #6fffb0;
+  }
+
   .xl\:focus\:shadow:focus {
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
   }
@@ -19668,6 +19739,10 @@ table {
 
   .xl\:focus\:shadow-none:focus {
     box-shadow: none;
+  }
+
+  .xl\:focus\:shadow-input:focus {
+    box-shadow: 0 0 2px 2px #6fffb0;
   }
 
   .xl\:table-auto {

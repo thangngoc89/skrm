@@ -20,10 +20,9 @@ let component = ReasonReact.statelessComponent("Box");
 let make = (~direction=`column, ~alignContent=`start, ~className=?, children) => {
   ...component,
   render: _self => {
-    Js.log(direction);
     let className =
       Cn.make([
-        "flex flex-1",
+        "flex",
         switch (direction) {
         | `row => "flex-row"
         | `column => "flex-col"

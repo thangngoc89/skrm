@@ -1,46 +1,42 @@
 import React from "react";
 import { StyledDottedLabel } from "./Render_question_styled";
 import { Field, FieldArray } from "formik";
-import Box from "./Box";
+import { Box, TextInput, CheckBox, RadioButton } from "./components";
 
 const RenderQuestionHeader = function({ id, question }) {
   return (
-    <span>
+    <div className="flex-1">
       <strong className="uppercase text-brand">{id + ". "}</strong>
       <span>{question}</span>
-    </span>
+    </div>
   );
 };
 
 const SelectOne = ({ setFieldValue, questionBag }) => {
   return (
-    <Box direction="row-responsive" gap="xsmall">
-      <Box basis="1/2">
-        <RenderQuestionHeader
-          id={questionBag.id}
-          question={questionBag.question}
-        />
-      </Box>
+    <Box direction="row_responsive" className="my-3">
+      <RenderQuestionHeader
+        id={questionBag.id}
+        question={questionBag.question}
+      />
       <Field
         name={questionBag.id}
         render={({ field }) => {
           return (
-            <Box direction="column" basis="1/2" gap="xsmall">
+            <div className="flex-1">
               {questionBag.content.map(({ value, label }) => (
-                <label key={label} className="flex items-center">
-                  <input
-                    type="radio"
-                    name={field.name}
-                    value={value}
-                    checked={field.value === value}
-                    onChange={event => {
-                      setFieldValue(field.name, event.target.value);
-                    }}
-                  />
-                  <StyledDottedLabel label={label} value={value} />
-                </label>
+                <RadioButton
+                  key={label}
+                  name={field.name}
+                  value={value}
+                  checked={field.value === value}
+                  onChange={event => {
+                    setFieldValue(field.name, event.target.value);
+                  }}
+                  label={<StyledDottedLabel label={label} value={value} />}
+                />
               ))}
-            </Box>
+            </div>
           );
         }}
       />
@@ -56,40 +52,35 @@ const ControlledCheckBox = ({
   arrayHelpers,
 }) => {
   return (
-    <label className="flex items-center">
-      <input
-        type="checkbox"
-        name={name}
-        value={value}
-        checked={arrayValue.indexOf(value) !== -1}
-        onChange={event => {
-          if (event.target.checked) {
-            arrayHelpers.push(value);
-          } else {
-            const idx = arrayValue.indexOf(value);
-            arrayHelpers.remove(idx);
-          }
-        }}
-      />
-      <StyledDottedLabel value={value} label={label} />
-    </label>
+    <CheckBox
+      name={name}
+      value={value}
+      checked={arrayValue.indexOf(value) !== -1}
+      label={<StyledDottedLabel value={value} label={label} />}
+      onChange={event => {
+        if (event.target.checked) {
+          arrayHelpers.push(value);
+        } else {
+          const idx = arrayValue.indexOf(value);
+          arrayHelpers.remove(idx);
+        }
+      }}
+    />
   );
 };
 
 const SelectManyOrCustom = ({ questionValue, questionBag }) => {
   return (
-    <Box direction="row-responsive" gap="xsmall">
-      <Box basis="1/2">
-        <RenderQuestionHeader
-          id={questionBag.id}
-          question={questionBag.question}
-        />
-      </Box>
+    <Box direction="row_responsive" className="my-3">
+      <RenderQuestionHeader
+        id={questionBag.id}
+        question={questionBag.question}
+      />
       <FieldArray
         name={`${questionBag.id}.values`}
         render={({ name, ...arrayHelpers }) => {
           return (
-            <Box direction="column" basis="1/2" gap="xsmall">
+            <div className="flex-1">
               {questionBag.content.map(({ value, label }) => (
                 <ControlledCheckBox
                   key={label}
@@ -114,12 +105,12 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
                   name={`${questionBag.id}.customMessage`}
                   render={({ field }) => {
                     return (
-                      <input placeholder="Ghi rõ câu trả lời" {...field} />
+                      <TextInput placeholder="Ghi rõ câu trả lời" {...field} />
                     );
                   }}
                 />
               )}
-            </Box>
+            </div>
           );
         }}
       />
@@ -129,7 +120,7 @@ const SelectManyOrCustom = ({ questionValue, questionBag }) => {
 
 const GroupSelectOne = ({ setFieldValue, questionBag }) => {
   return (
-    <Box direction="column" gap="xsmall">
+    <Box direction="column" className="my-3">
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
@@ -163,8 +154,7 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
                       return questionBag.values.map(({ label, value }) => {
                         return (
                           <td key={value} align="center" size="small">
-                            <input
-                              type="radio"
+                            <RadioButton
                               key={label}
                               name={label}
                               value={value}

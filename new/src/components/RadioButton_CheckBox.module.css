@@ -1,0 +1,74 @@
+/* Customize the label (the container) */
+.container {
+  display: block;
+  position: relative;
+  cursor: pointer;
+  user-select: none;
+  @apply .pl-8;
+}
+
+/* Hide the browser's default radio button */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom radio button */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  @apply .border-2 .border-solid .border-light-4;
+  @apply .h-6 .w-6;
+}
+
+.checkmark > svg {
+  display: none;
+  @apply .text-brand;
+}
+
+/*
+ * RadioButton 
+ * - Rounded 50%
+ * - Fill svg
+ */
+.radio {
+  border-radius: 50%;
+}
+.radio > svg {
+  @apply .fill-current;
+}
+
+/*
+ * CheckBox 
+ * - Rounded 4px
+ * - Stroke svg
+ */
+.checkbox {
+  @apply .rounded;
+}
+.checkbox {
+  @apply .stroke-current;
+}
+
+/* When checked display it */
+.container input:checked ~ .checkmark {
+  @apply .border-brand .shadow-none;
+}
+
+.container input:checked ~ .checkmark > svg {
+  display: block;
+}
+
+/* Focus effects */
+.container input:focus ~ .checkmark {
+  @apply .border-accent-1 .shadow-input;
+}
+
+/* Hover effects */
+.container:hover input ~ .checkmark {
+  @apply .border-dark-1 .shadow-none;
+}

@@ -7,7 +7,7 @@ external make:
     ~disabled: bool=?,
     ~id: string=?,
     ~label: ReasonReact.reactElement=?,
-    ~name: string=?,
+    ~name: string,
     ~value: 'value,
     ~onChange: ReactEvent.Form.t => unit=?,
     ~style: ReactDOMRe.Style.t=?,

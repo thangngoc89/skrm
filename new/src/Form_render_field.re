@@ -54,7 +54,12 @@ let make = (~itemId, _children) => {
             <Box pad="none" gap=`medium direction=`row_responsive>
               {choices
                ->Belt.List.map(value =>
-                   <RadioButton key=value label={value->str} value />
+                   <RadioButton
+                     key=value
+                     label={value->str}
+                     value
+                     name=value
+                   />
                  )
                ->reactList}
             </Box>

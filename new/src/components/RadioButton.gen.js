@@ -9,7 +9,7 @@ import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 export const RadioButton = ReasonReact.wrapReasonForJs(
   RadioButtonBS.component,
   (function _(jsProps) {
-     return Curry._8(RadioButtonBS.make, jsProps.label, jsProps.name, jsProps.value, jsProps.checked, jsProps.onChange, jsProps.className, jsProps.block, jsProps.children);
+     return Curry._7(RadioButtonBS.make, jsProps.label, jsProps.name, jsProps.value, jsProps.checked, jsProps.onChange, jsProps.className, jsProps.children);
   }));
 
 export default RadioButton;

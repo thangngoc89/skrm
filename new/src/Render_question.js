@@ -10,9 +10,9 @@ const DottedLabel = ({ value, label }) => (
   </Box>
 );
 
-const RenderQuestionHeader = function({ id, question }) {
+const RenderQuestionHeader = function({ id, question}) {
   return (
-    <div className="flex-1">
+    <div className="flex-1 mb-3 lg:mb-0">
       <strong className="uppercase text-brand">{id + ". "}</strong>
       <span>{question}</span>
     </div>
@@ -164,7 +164,7 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
                       return questionBag.values.map(({ label, value }) => {
                         return (
                           <td key={value}>
-                            <div className="block w-6 h-6 m-auto">
+                            <div className="w-6 h-6 m-auto">
                               <RadioButton
                                 key={label}
                                 name={`${subValue}.${value}`}
@@ -173,7 +173,6 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
                                 onChange={event => {
                                   setFieldValue(field.name, event.target.value);
                                 }}
-                                block={false}
                               />
                             </div>
                           </td>

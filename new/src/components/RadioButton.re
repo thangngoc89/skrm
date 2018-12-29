@@ -4,29 +4,10 @@ let component = ReasonReact.statelessComponent("RadioButton");
 
 [@genType]
 let make =
-    (
-      ~label,
-      ~name,
-      ~value,
-      ~checked,
-      ~onChange,
-      ~className=?,
-      /*
-       * Block is useful if you want to put the button
-       * inside another `display: block` container 
-       * Ex: Make a div inside table-cell
-       */
-      ~block=true,
-      _children,
-    ) => {
+    (~label, ~name, ~value, ~checked, ~onChange, ~className=?, _children) => {
   ...component,
   render: _self => {
-    <label
-      className={Cn.make([
-        s##container,
-        Cn.ifTrue("block", block),
-        Cn.unpack(className),
-      ])}>
+    <label className={Cn.make([s##container, Cn.unpack(className)])}>
       label
       <input type_="radio" name value checked onChange />
       <span className={Cn.make([s##checkmark, s##radio])}>

@@ -6,7 +6,7 @@ type direction = [
 ];
 
 [@genType]
-type alignContent = [
+type align = [
   | `start
   | [@genType.as "end"] `end_
   | `center
@@ -20,7 +20,8 @@ let component = ReasonReact.statelessComponent("Box");
 let make =
     (
       ~direction: direction=`column,
-      ~alignContent: alignContent=`start,
+      ~alignContent: align=`start,
+      ~justifyContent: align=`start,
       ~className=?,
       children,
     ) => {
@@ -40,6 +41,13 @@ let make =
         | `center => "content-center"
         | `between => "content-between"
         | `around => "content-around"
+        },
+        switch (justifyContent) {
+        | `start => "justify-start"
+        | `end_ => "justify-end"
+        | `center => "justify-center"
+        | `between => "justify-between"
+        | `around => "justify-around"
         },
         Cn.unpack(className),
       ]);

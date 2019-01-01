@@ -3,9 +3,7 @@ import { Formik, Form } from "formik";
 import schema from "./data/Question_schema";
 import RenderQuestion from "./Render_question";
 
-// import { Box, Button } from "grommet";
-
-import Box from "./Box";
+import { Box, Heading, Button } from "./components";
 
 const MyForm = () => (
   <Formik
@@ -31,7 +29,18 @@ const MyForm = () => (
       setFieldValue,
     }) => (
       <Form>
-        <Box gap="medium">
+        <Box
+          direction="row"
+          alignContent="center"
+          justifyContent="center"
+          className="mb-6 lg:mb-12"
+        >
+          <Heading level={2} textAlign="center">
+            Bảng câu hỏi <br />
+            Phỏng vấn kiến thức và thói quen chăm sóc sức khỏe răng miệng
+          </Heading>
+        </Box>
+        <Box>
           {schema.map(questionBag => {
             return (
               <RenderQuestion
@@ -44,11 +53,7 @@ const MyForm = () => (
             );
           })}
         </Box>
-        <Box direction="column" align="center" pad="large">
-          <button label="Submit" type="submit">
-            Submit
-          </button>
-        </Box>
+        <Button primary label="Submit" type="submit" />
       </Form>
     )}
   </Formik>

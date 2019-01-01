@@ -221,7 +221,11 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
         />
       );
     default:
-      return <span color="status-critical">Unknown question type</span>;
+      return (
+        <span color="status-critical">
+          Unknown question type {questionBag.type}
+        </span>
+      );
   }
 }
 

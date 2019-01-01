@@ -9,4 +9,4 @@ const $$toJS750567599 = {"-634105323": "start", "326386882": "center", "10534908
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(a11yTitle, alignSelf, color, gridArea, size, textAlign, level, children) { return ReasonReact.wrapJsForReason(Heading, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS750567599[alignSelf]), color: color, gridArea: gridArea, size: size, textAlign: textAlign, level: level}, children); };
+export const make = function _(a11yTitle, alignSelf, color, gridArea, size, textAlign, level, className, children) { return ReasonReact.wrapJsForReason(Heading, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS750567599[alignSelf]), color: color, gridArea: gridArea, size: size, textAlign: textAlign, level: level, className: className}, children); };

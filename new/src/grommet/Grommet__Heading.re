@@ -7,7 +7,8 @@ type alignSelf = [
 ];
 
 [@genType.import "grommet"]
-[@genType.as "Heading"] [@bs.module "./Grommet__Heading.gen"]
+[@genType.as "Heading"]
+[@bs.module "./Grommet__Heading.gen"]
 external make:
   (
     ~a11yTitle: string=?,
@@ -17,6 +18,7 @@ external make:
     ~size: string=?,
     ~textAlign: string=?,
     ~level: int=?,
+    ~className: string=?,
     'a
   ) =>
   ReasonReact.component(

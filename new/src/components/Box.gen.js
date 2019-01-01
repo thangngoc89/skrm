@@ -13,7 +13,7 @@ import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 export const Box = ReasonReact.wrapReasonForJs(
   BoxBS.component,
   (function _(jsProps) {
-     return Curry._4(BoxBS.make, $$toRE316431264[jsProps.direction], $$toRE222145588[jsProps.alignContent], jsProps.className, jsProps.children);
+     return Curry._5(BoxBS.make, $$toRE316431264[jsProps.direction], $$toRE222145588[jsProps.alignContent], $$toRE222145588[jsProps.justifyContent], jsProps.className, jsProps.children);
   }));
 
 export default Box;

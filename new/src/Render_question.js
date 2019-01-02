@@ -174,7 +174,7 @@ const GroupSelectOne = ({ setFieldValue, questionBag, questionValue }) => {
       <table className="w-full table-auto my-4">
         <thead>
           <tr className="h-12 border-b-2">
-            <th size="large" />
+            <th />
             {questionBag.values.map(({ label, value }) => {
               return (
                 <th key={value} scope="col" className="font-bold center">

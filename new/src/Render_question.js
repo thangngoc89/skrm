@@ -1,5 +1,5 @@
 import React from "react";
-import { FastField, Field, FieldArray } from "formik";
+import { FastField } from "formik";
 import { Box, TextInput, CheckBox, RadioButton } from "./components";
 
 const DottedLabel = ({ value, label }) => (
@@ -19,35 +19,67 @@ const RenderQuestionHeader = function({ id, question }) {
   );
 };
 
-const SelectOne = ({ setFieldValue, questionBag }) => {
+const SelectOne = ({ setFieldValue, questionBag, questionValue }) => {
+  const hasCustom = questionBag.hasOwnProperty("custom");
+  const fieldName = questionBag.id;
+  const fieldValue = questionValue;
+
   return (
     <Box direction="row-responsive" className="my-3">
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
       />
-      <Field
-        name={questionBag.id}
-        render={({ field }) => {
-          return (
-            <div className="flex-1">
-              {questionBag.content.map(({ value, label }) => (
-                <RadioButton
-                  className="mb-2"
-                  key={label}
-                  name={field.name}
-                  value={value}
-                  checked={field.value === value}
-                  onChange={event => {
-                    setFieldValue(field.name, event.target.value);
-                  }}
-                  label={<DottedLabel label={label} value={value} />}
+
+      <Box className="flex-1">
+        {questionBag.content.map(({ value, label }) => (
+          <RadioButton
+            className="mb-2"
+            key={label}
+            name={fieldName}
+            value={value}
+            checked={fieldValue === value}
+            onChange={event => {
+              setFieldValue(fieldName, event.target.value);
+            }}
+            label={<DottedLabel label={label} value={value} />}
+          />
+        ))}
+        <Box direction="column">
+          {hasCustom && (
+            <RadioButton
+              className="mb-2"
+              key={questionBag.custom.label}
+              name={fieldName}
+              value={questionBag.custom.value}
+              checked={fieldValue === questionBag.custom.value}
+              onChange={event => {
+                setFieldValue(fieldName, event.target.value);
+              }}
+              label={
+                <DottedLabel
+                  label={questionBag.custom.label}
+                  value={questionBag.custom.value}
                 />
-              ))}
-            </div>
-          );
-        }}
-      />
+              }
+            />
+          )}
+          {hasCustom && questionValue === questionBag.custom.value && (
+            <FastField
+              name={`${questionBag.id}_customMessage`}
+              render={({ field }) => {
+                return (
+                  <TextInput
+                    className="mt-2"
+                    placeholder="Ghi rõ câu trả lời"
+                    {...field}
+                  />
+                );
+              }}
+            />
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 };
@@ -57,7 +89,7 @@ const ControlledCheckBox = ({
   label,
   value,
   arrayValue,
-  arrayHelpers,
+  setFieldValue,
 }) => {
   return (
     <CheckBox
@@ -68,70 +100,71 @@ const ControlledCheckBox = ({
       label={<DottedLabel value={value} label={label} />}
       onChange={event => {
         if (event.target.checked) {
-          arrayHelpers.push(value);
+          setFieldValue(name, [...arrayValue, value]);
         } else {
           const idx = arrayValue.indexOf(value);
-          arrayHelpers.remove(idx);
+          setFieldValue(name, [
+            ...arrayValue.slice(0, idx - 1),
+            ...arrayValue.slice(idx + 1),
+          ]);
         }
       }}
     />
   );
 };
 
-const SelectManyOrCustom = ({ questionValue, questionBag }) => {
+const SelectManyOrCustom = ({ questionValue, questionBag, setFieldValue }) => {
+  const hasCustom = questionBag.hasOwnProperty("custom");
+  const fieldName = questionBag.id;
+
   return (
     <Box direction="row-responsive" className="my-3">
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
       />
-      <FieldArray
-        name={`${questionBag.id}.values`}
-        render={({ name, ...arrayHelpers }) => {
-          return (
-            <div className="flex-1">
-              {questionBag.content.map(({ value, label }) => (
-                <ControlledCheckBox
-                  key={label}
-                  name={name}
-                  label={label}
-                  value={value}
-                  arrayValue={questionValue.values}
-                  arrayHelpers={arrayHelpers}
-                />
-              ))}
-              <ControlledCheckBox
-                name={name}
-                label={questionBag.custom.label}
-                value={questionBag.custom.value}
-                arrayValue={questionValue.values}
-                arrayHelpers={arrayHelpers}
-              />
-
-              {questionValue.values.indexOf(questionBag.custom.value) !==
-                -1 && (
-                <FastField
-                  name={`${questionBag.id}.customMessage`}
-                  render={({ field }) => {
-                    return (
-                      <TextInput
-                        className="mt-2"
-                        placeholder="Ghi rõ câu trả lời"
-                        {...field}
-                      />
-                    );
-                  }}
-                />
-              )}
-            </div>
-          );
-        }}
-      />
+      <Box className="flex-1">
+        {questionBag.content.map(({ value, label }) => (
+          <ControlledCheckBox
+            key={label}
+            name={fieldName}
+            label={label}
+            value={value}
+            arrayValue={questionValue}
+            setFieldValue={setFieldValue}
+          />
+        ))}
+        <Box direction="column">
+          {hasCustom && (
+            <ControlledCheckBox
+              name={fieldName}
+              label={questionBag.custom.label}
+              value={questionBag.custom.value}
+              arrayValue={questionValue}
+              setFieldValue={setFieldValue}
+            />
+          )}
+          {hasCustom && questionValue.indexOf(questionBag.custom.value) !== -1 && (
+            <FastField
+              name={`${questionBag.id}_customMessage`}
+              render={({ field }) => {
+                return (
+                  <TextInput
+                    className="mt-2"
+                    placeholder="Ghi rõ câu trả lời"
+                    {...field}
+                  />
+                );
+              }}
+            />
+          )}
+        </Box>
+      </Box>
     </Box>
   );
 };
 
-const GroupSelectOne = ({ setFieldValue, questionBag }) => {
+const GroupSelectOne = ({ setFieldValue, questionBag, questionValue }) => {
   return (
     <Box direction="column" className="my-3">
       <RenderQuestionHeader
@@ -154,6 +187,9 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
         <tbody>
           {questionBag.subQuestions.map(
             ({ label: subLabel, value: subValue }) => {
+              const fieldName = `${questionBag.id}.${subValue}`;
+              const fieldValue = questionValue[subValue];
+
               return (
                 <tr
                   key={subValue}
@@ -162,28 +198,23 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
                   <td scope="row" className="text-left font-normal">
                     <strong>{subValue}.</strong> {subLabel}
                   </td>
-                  <Field
-                    name={`${questionBag.id}.${subValue}`}
-                    render={({ field }) => {
-                      return questionBag.values.map(({ label, value }) => {
-                        return (
-                          <td key={value}>
-                            <div className="w-6 h-6 m-auto">
-                              <RadioButton
-                                key={label}
-                                name={`${questionBag.id}.${subValue}`}
-                                value={value}
-                                checked={field.value === value}
-                                onChange={event => {
-                                  setFieldValue(field.name, event.target.value);
-                                }}
-                              />
-                            </div>
-                          </td>
-                        );
-                      });
-                    }}
-                  />
+                  {questionBag.values.map(({ label, value }) => {
+                    return (
+                      <td key={value}>
+                        <div className="w-6 h-6 m-auto">
+                          <RadioButton
+                            key={label}
+                            name={fieldName}
+                            value={value}
+                            checked={fieldValue === value}
+                            onChange={event => {
+                              setFieldValue(fieldName, event.target.value);
+                            }}
+                          />
+                        </div>
+                      </td>
+                    );
+                  })}
                 </tr>
               );
             }
@@ -197,6 +228,7 @@ const GroupSelectOne = ({ setFieldValue, questionBag }) => {
 function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
   switch (questionBag.type) {
     case "select_one":
+    case "select_one_or_custom":
       return (
         <SelectOne
           questionValue={questionValue}
@@ -205,6 +237,7 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
         />
       );
     case "select_many_or_custom":
+    case "select_many":
       return (
         <SelectManyOrCustom
           questionValue={questionValue}
@@ -221,7 +254,11 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
         />
       );
     default:
-      return <span color="status-critical">Unknown question type</span>;
+      return (
+        <span color="status-critical">
+          Unknown question type {questionBag.type}
+        </span>
+      );
   }
 }
 

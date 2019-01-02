@@ -1,6 +1,26 @@
 open React;
 open Exam_TableSchema;
 
+let options = [
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+];
+
+let options = options->Belt.List.map(o => {Select.label: o, value: o});
+
 let component = ReasonReact.statelessComponent("Exam_TableRender");
 
 let make = (~table, _children) => {
@@ -11,7 +31,7 @@ let make = (~table, _children) => {
     | Belt.Result.Ok(table) =>
       let {heading, rows} = table;
 
-      <Table className="border-2" layout=`fixed>
+      <Table className="border-2 text-dark-1" layout=`fixed>
         <Table.Head>
           {Table.Head.(
              <Row>
@@ -34,19 +54,22 @@ let make = (~table, _children) => {
              rows
              ->Belt.List.mapWithIndex((rowIndex, row) =>
                  <Row key={rowIndex->string_of_int}>
-                   {let colClassName = "text-center"
-                    row
+                   {row
                     ->Belt.List.mapWithIndex((colIndex, row) => {
                         let key = colIndex->string_of_int;
                         switch (row) {
-                        | Disabled => <Col key className="bg-light-6" />
-                        | Empty => <Col />
+                        | Disabled => <Col key className="bg-dark-1 border" />
+                        | Empty => <Col className="border" />
                         | Static(label) =>
-                          <Col key className="text-center font-bold">
+                          <Col
+                            key
+                            className="text-center font-bold border border-dark-1">
                             label->str
                           </Col>
                         | Data(label) =>
-                          <Col key className=colClassName> label->str </Col>
+                          <Col key className="text-center border p-0 m-0">
+                            <Select options name=label />
+                          </Col>
                         };
                       })
                     ->reactList}

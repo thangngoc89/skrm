@@ -2,6 +2,7 @@ open React;
 open Exam_TableSchema;
 
 let options = [
+  "0",
   "1",
   "2",
   "3",

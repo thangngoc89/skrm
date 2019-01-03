@@ -3,15 +3,37 @@ type cellLabel = string;
 
 type cell =
   | Static(string)
-  | Data(cellLabel)
+  | Data(cellLabel, options)
   | Empty
   | Disabled;
 
 type row = list(cell);
+
 type table = {
   heading: row,
   rows: list(row),
 };
+
+let optionsTinhTrang = [
+  "0",
+  "1",
+  "2",
+  "3",
+  "4",
+  "5",
+  "6",
+  "7",
+  "8",
+  "9",
+  "A",
+  "B",
+  "C",
+  "D",
+  "E",
+  "F",
+];
+
+let optionsNhuCau = ["0", "1", "2", "3", "4", "5", "6", "F", "P"];
 
 let makeLabel = (~heading, ~left) => {
   {j|$(heading)_$(left)|j};
@@ -39,7 +61,8 @@ let makeTable =
               heading->Belt.List.map(h => {
                 let label = makeLabel(~heading=h, ~left=currentLeft);
                 switch (Belt.List.getBy(disabledList, l => l == label)) {
-                | None => Data(label)
+                | None =>
+                  Data(label, h == "NC" ? optionsNhuCau : optionsTinhTrang)
                 | Some(_) => Disabled
                 };
               }),
@@ -105,5 +128,12 @@ module Tinh_trang_ham_tren: TableRender = {
     makeLabel(~heading="Nhai", ~left="22"),
     makeLabel(~heading="Nhai", ~left="23"),
   ];
+  
   let table = makeTable(~colsMain, ~colsSub, ~heading, ~disabledList, ());
+
+  module MS = Belt.Map.String;
+
+  let validate = map => {
+    for 
+  };
 };

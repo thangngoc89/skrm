@@ -1,34 +1,16 @@
 open React;
 open Exam_TableSchema;
 
-let options = [
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-];
-
-let options = options->Belt.List.map(o => {Select.label: o, value: o});
-
 let component = ReasonReact.statelessComponent("Exam_TableRender");
 
 let make = (~table, _children) => {
   ...component,
   render: _self => {
     switch (table) {
-    | Belt.Result.Error(_) => "Error while generating table schema"->str
+    | Belt.Result.Error(_) =>
+      <span className="text-status-danger">
+        "Error while generating table schema"->str
+      </span>
     | Belt.Result.Ok(table) =>
       let {heading, rows} = table;
 
@@ -43,7 +25,7 @@ let make = (~table, _children) => {
                     | Disabled => <Col key />
                     | Empty => <Col key />
                     | Static(label) => <Col key> label->str </Col>
-                    | Data(label) => <Col key> label->str </Col>
+                    | Data(label, _) => <Col key> label->str </Col>
                     };
                   })
                 ->reactList}
@@ -67,9 +49,12 @@ let make = (~table, _children) => {
                             className="text-center font-bold border border-dark-1">
                             label->str
                           </Col>
-                        | Data(label) =>
+                        | Data(label, options) =>
                           <Col key className="text-center border p-0 m-0">
-                            <Select options name=label />
+                            <Select
+                              options={options->Select.listToPair}
+                              name=label
+                            />
                           </Col>
                         };
                       })

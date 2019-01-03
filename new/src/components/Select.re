@@ -11,8 +11,8 @@ let component = ReasonReact.statelessComponent("Select");
 let make = (~options: list(pair), ~name, _children) => {
   ...component,
   render: _self => {
-    <div className=s##select>
-      <select name>
+    <div className=s##container>
+      <select name className=s##select>
         <option> "--"->str </option>
         {options
          ->Belt.List.mapWithIndex((index, {value, label}) =>

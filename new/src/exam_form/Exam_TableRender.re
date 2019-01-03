@@ -40,7 +40,7 @@ let make = (~table, _children) => {
                     let key = colIndex->string_of_int;
                     switch (row) {
                     | Disabled => <Col key />
-                    | Empty => <Col />
+                    | Empty => <Col key />
                     | Static(label) => <Col key> label->str </Col>
                     | Data(label) => <Col key> label->str </Col>
                     };
@@ -59,7 +59,7 @@ let make = (~table, _children) => {
                         let key = colIndex->string_of_int;
                         switch (row) {
                         | Disabled => <Col key className="bg-dark-1 border" />
-                        | Empty => <Col className="border" />
+                        | Empty => <Col key className="border" />
                         | Static(label) =>
                           <Col
                             key

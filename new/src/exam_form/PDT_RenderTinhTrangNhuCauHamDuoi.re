@@ -5,8 +5,8 @@ let component =
 let make = (~value, ~onChange, _children) => {
   ...component,
   render: _self => {
-    <Exam_TableRender
-      table=Exam_TableSchema.Tinh_trang_ham_tren.table
+    <PDT_TableRender
+      table=PDT_TableSchema.Tinh_trang_ham_duoi.table
       tableValue=value
       handleCellChange=onChange
     />;

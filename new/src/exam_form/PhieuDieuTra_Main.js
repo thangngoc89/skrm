@@ -3,8 +3,8 @@ import { Formik, Form, FastField } from "formik";
 import { Box, Heading, Button, Select } from "../components";
 import { TextInput, FormField } from "grommet";
 import { format } from "date-fns";
-import RenderTinhTrangNhuCauHamTren from "./PhieuDieuTra_RenderTinhTrangNhuCau.gen";
-import RenderTinhTrangNhuCauHamDuoi from "./PhieuDieuTra_RenderTinhTrangNhuCauHamDuoi.gen";
+import RenderTinhTrangNhuCauHamTren from "./PDT_RenderTinhTrangNhuCauHamTren.gen";
+import RenderTinhTrangNhuCauHamDuoi from "./PDT_RenderTinhTrangNhuCauHamDuoi.gen";
 
 const selectOneBinaryValue = [
   { label: "Có", value: "1" },

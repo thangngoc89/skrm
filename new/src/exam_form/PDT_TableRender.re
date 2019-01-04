@@ -1,5 +1,5 @@
 open React;
-open Exam_TableSchema;
+open PDT_Types.Table;
 
 let component = ReasonReact.statelessComponent("Exam_TableRender");
 

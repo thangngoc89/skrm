@@ -1,6 +1,6 @@
 import React from "react";
 import { Formik, Form, FastField } from "formik";
-import { Box, Heading, Button } from "../components";
+import { Box, Heading, Button, Select } from "../components";
 import { TextInput, FormField } from "grommet";
 import { format } from "date-fns";
 import RenderTinhTrangNhuCau from "./PhieuDieuTra_RenderTinhTrangNhuCau.gen";
@@ -12,7 +12,11 @@ const schema = {
   hoVaTen: { label: "Họ và tên", type: "string" },
   tuoi: { label: "Tuổi", type: "number" },
   danToc: { label: "Dân tộc", type: "string" },
-  gioiTinh: { label: "Giới tính", type: "string" },
+  gioiTinh: {
+    label: "Giới tính",
+    type: "select_one",
+    typeData: ["Nam", "Nữ"],
+  },
   lop: { label: "Lớp", type: "string" },
   truong: { label: "Trường", type: "string" },
   diaChi: { label: "Địa chỉ", type: "string" },
@@ -53,7 +57,8 @@ const RenderRow = ({ row, setFieldValue }) => {
             </span>
           );
         } else {
-          const { label, type } = schemaOfField;
+          const { label, type, ...schemaMetadata } = schemaOfField;
+
           return (
             <Box key={id} className={`flex-${size} mx-2`}>
               <FastField
@@ -75,17 +80,34 @@ const RenderRow = ({ row, setFieldValue }) => {
                           />
                         </FormField>
                       );
+                    case "select_one":
+                      return (
+                        <FormField label={label} htmlFor={field.name}>
+                          <Select
+                            options={schemaMetadata.typeData.map(o => ({
+                              label: o,
+                              value: o,
+                            }))}
+                            name={field.name}
+                            value={field.value}
+                            onChange={value => setFieldValue(field.name, value)}
+                            className="ml-1 lg:ml-2"
+                          />
+                        </FormField>
+                      );
                     case "tinhTrangNhuCau":
                       return (
-                        <RenderTinhTrangNhuCau
-                          value={field.value}
-                          onChange={(cellLabel, value) => {
-                            setFieldValue(field.name, {
-                              ...field.value,
-                              [cellLabel]: value,
-                            });
-                          }}
-                        />
+                        <Box className="my-2 lg:my-0">
+                          <RenderTinhTrangNhuCau
+                            value={field.value}
+                            onChange={(cellLabel, value) => {
+                              setFieldValue(field.name, {
+                                ...field.value,
+                                [cellLabel]: value,
+                              });
+                            }}
+                          />
+                        </Box>
                       );
                     default:
                       return "Unknown type " + type;

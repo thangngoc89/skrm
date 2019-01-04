@@ -63,6 +63,7 @@ let make =
                           <Col key className="text-center border p-0 m-0">
                             <Select
                               options={options->Select.listToPair}
+                              className="text-centerI"
                               name=label
                               value=currentValue
                               onChange={value =>

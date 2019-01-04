@@ -6,6 +6,16 @@ import { format } from "date-fns";
 import RenderTinhTrangNhuCauHamTren from "./PhieuDieuTra_RenderTinhTrangNhuCau.gen";
 import RenderTinhTrangNhuCauHamDuoi from "./PhieuDieuTra_RenderTinhTrangNhuCauHamDuoi.gen";
 
+const selectOneBinaryValue = [
+  { label: "Có", value: "1" },
+  { label: "Không", value: "0" },
+];
+const selectOneAngle = [
+  { label: "1", value: "1" },
+  { label: "2", value: "2" },
+  { label: "3", value: "3" },
+  { label: "9", value: "9" },
+];
 const schema = {
   ngayKham: { label: "Ngày khám", type: "date" },
   soHoSo: { label: "Số hồ sơ", type: "string" },
@@ -28,18 +38,22 @@ const schema = {
   canNguocRangTruoc: {
     label: "Cắn ngược răng trước",
     type: "select_one",
-    typeData: [{ label: "Có", value: "1" }, { label: "Không", value: "0" }],
+    typeData: selectOneBinaryValue,
   },
   canNguocRangSau: {
     label: "Cắn ngược răng sau",
     type: "select_one",
-    typeData: [{ label: "Có", value: "1" }, { label: "Không", value: "0" }],
+    typeData: selectOneBinaryValue,
   },
   canHo: {
     label: "Cắn hở",
     type: "select_one",
-    typeData: [{ label: "Có", value: "1" }, { label: "Không", value: "0" }],
+    typeData: selectOneBinaryValue,
   },
+  angleR3P: { label: "R3P", type: "select_one", typeData: selectOneAngle },
+  angleR3T: { label: "R3T", type: "select_one", typeData: selectOneAngle },
+  angleR6P: { label: "R6P", type: "select_one", typeData: selectOneAngle },
+  angleR6T: { label: "R6T", type: "select_one", typeData: selectOneAngle },
 };
 
 const layout = [
@@ -61,13 +75,36 @@ const layout = [
     items: [[{ id: "ttncHamTren" }, { id: "ttncHamDuoi" }]],
   },
   {
+    title: "Chỉ số CPI - Chỉ số chảu máu nướu",
+    items: [[{ id: "chiSoCPI" }]],
+  },
+  {
     title: "Tình trạng khớp cắn",
     items: [
       [{ id: "canPhu" }, { id: "canChia" }],
       [{ id: "canNguocRangTruoc" }, { id: "canNguocRangSau" }, { id: "canHo" }],
-      [{ id: "angle" }],
+
       [{ id: "mocChenChuc" }],
     ],
+  },
+  {
+    title: "Phân loại Angle",
+    items: [
+      [
+        { id: "angleR3P" },
+        { id: "angleR3T" },
+        { id: "angleR6P" },
+        { id: "angleR6T" },
+      ],
+    ],
+  },
+  {
+    title: "Tình trạng mảng bám răng",
+    items: [[{ id: "mangBamTruocChaiRang" }], [{ id: "mangBamSauChaiRang" }]],
+  },
+  {
+    title: "MIH",
+    items: [[{ id: "mih" }]],
   },
 ];
 

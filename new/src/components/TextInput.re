@@ -11,6 +11,7 @@ let make =
       ~name=?,
       ~id=?,
       ~className=?,
+      ~type_=?,
       _children,
     ) => {
   ...component,
@@ -23,6 +24,7 @@ let make =
       ?placeholder
       ?name
       ?id
+      ?type_
       className={Cn.make(["input", Cn.unpack(className)])}
     />;
   },

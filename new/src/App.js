@@ -1,6 +1,7 @@
 import { Grommet, Box, FormField, TextInput } from "grommet";
 import React, { Component } from "react";
 import RenderQuestionForm from "./Render_question_form";
+import PhieuDieuTra from "./exam_form/PhieuDieuTra_Main";
 import RRApp from "./RRApp.gen";
 
 const customTheme = {
@@ -16,7 +17,8 @@ class App extends Component {
       <Grommet theme={customTheme}>
         <div className="m-4 text-lg">
           {/* <RenderQuestionForm /> */}
-          <RRApp />
+          {/* <RRApp /> */}
+          <PhieuDieuTra />
         </div>
       </Grommet>
     );

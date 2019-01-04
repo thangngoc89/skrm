@@ -1,5 +1,6 @@
 module Box = Grommet__Box;
 module Heading = Grommet__Heading;
+
 let component = ReasonReact.statelessComponent("Form");
 
 open React;

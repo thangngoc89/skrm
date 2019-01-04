@@ -128,12 +128,8 @@ module Tinh_trang_ham_tren: TableRender = {
     makeLabel(~heading="Nhai", ~left="22"),
     makeLabel(~heading="Nhai", ~left="23"),
   ];
-  
+
   let table = makeTable(~colsMain, ~colsSub, ~heading, ~disabledList, ());
 
   module MS = Belt.Map.String;
-
-  let validate = map => {
-    for 
-  };
 };

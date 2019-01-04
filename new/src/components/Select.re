@@ -29,16 +29,12 @@ let make =
       <select
         name
         className={Cn.make([s##select, Cn.unpack(className)])}
-        onChange={event => event->ReactEvent.Form.target##value->onChange}>
+        onChange={event => event->ReactEvent.Form.target##value->onChange}
+        value>
         <option> "--"->str </option>
         {options
          ->Belt.Array.map(({value: optionValue, label}) =>
-             <option
-               key=optionValue
-               value=optionValue
-               selected={value == optionValue}>
-               label->str
-             </option>
+             <option key=optionValue value=optionValue> label->str </option>
            )
          ->ReasonReact.array}
       </select>

@@ -3,7 +3,8 @@ import { Formik, Form, FastField } from "formik";
 import { Box, Heading, Button, Select } from "../components";
 import { TextInput, FormField } from "grommet";
 import { format } from "date-fns";
-import RenderTinhTrangNhuCau from "./PhieuDieuTra_RenderTinhTrangNhuCau.gen";
+import RenderTinhTrangNhuCauHamTren from "./PhieuDieuTra_RenderTinhTrangNhuCau.gen";
+import RenderTinhTrangNhuCauHamDuoi from "./PhieuDieuTra_RenderTinhTrangNhuCauHamDuoi.gen";
 
 const schema = {
   ngayKham: { label: "Ngày khám", type: "date" },
@@ -15,13 +16,30 @@ const schema = {
   gioiTinh: {
     label: "Giới tính",
     type: "select_one",
-    typeData: ["Nam", "Nữ"],
+    typeData: [{ label: "Nam", value: "1" }, { label: "Nữ", value: "2" }],
   },
   lop: { label: "Lớp", type: "string" },
   truong: { label: "Trường", type: "string" },
   diaChi: { label: "Địa chỉ", type: "string" },
-  ttncHamTren: { label: "Hàm trên", type: "tinhTrangNhuCau" },
-  ttncHamDuoi: { label: "Hàm dưới", type: "tinhTrangNhuCau" },
+  ttncHamTren: { label: "Hàm trên", type: "tinhTrangNhuCauHamTren" },
+  ttncHamDuoi: { label: "Hàm dưới", type: "tinhTrangNhuCauHamDuoi" },
+  canPhu: { label: "Độ cắn phủ", type: "number" },
+  canChia: { label: "Độ cắn chìa", type: "number" },
+  canNguocRangTruoc: {
+    label: "Cắn ngược răng trước",
+    type: "select_one",
+    typeData: [{ label: "Có", value: "1" }, { label: "Không", value: "0" }],
+  },
+  canNguocRangSau: {
+    label: "Cắn ngược răng sau",
+    type: "select_one",
+    typeData: [{ label: "Có", value: "1" }, { label: "Không", value: "0" }],
+  },
+  canHo: {
+    label: "Cắn hở",
+    type: "select_one",
+    typeData: [{ label: "Có", value: "1" }, { label: "Không", value: "0" }],
+  },
 };
 
 const layout = [
@@ -41,6 +59,15 @@ const layout = [
   {
     title: "Tình trạng và nhu cầu",
     items: [[{ id: "ttncHamTren" }, { id: "ttncHamDuoi" }]],
+  },
+  {
+    title: "Tình trạng khớp cắn",
+    items: [
+      [{ id: "canPhu" }, { id: "canChia" }],
+      [{ id: "canNguocRangTruoc" }, { id: "canNguocRangSau" }, { id: "canHo" }],
+      [{ id: "angle" }],
+      [{ id: "mocChenChuc" }],
+    ],
   },
 ];
 
@@ -84,10 +111,7 @@ const RenderRow = ({ row, setFieldValue }) => {
                       return (
                         <FormField label={label} htmlFor={field.name}>
                           <Select
-                            options={schemaMetadata.typeData.map(o => ({
-                              label: o,
-                              value: o,
-                            }))}
+                            options={schemaMetadata.typeData}
                             name={field.name}
                             value={field.value}
                             onChange={value => setFieldValue(field.name, value)}
@@ -95,10 +119,24 @@ const RenderRow = ({ row, setFieldValue }) => {
                           />
                         </FormField>
                       );
-                    case "tinhTrangNhuCau":
+                    case "tinhTrangNhuCauHamTren":
                       return (
                         <Box className="my-2 lg:my-0">
-                          <RenderTinhTrangNhuCau
+                          <RenderTinhTrangNhuCauHamTren
+                            value={field.value}
+                            onChange={(cellLabel, value) => {
+                              setFieldValue(field.name, {
+                                ...field.value,
+                                [cellLabel]: value,
+                              });
+                            }}
+                          />
+                        </Box>
+                      );
+                    case "tinhTrangNhuCauHamDuoi":
+                      return (
+                        <Box className="my-2 lg:my-0">
+                          <RenderTinhTrangNhuCauHamDuoi
                             value={field.value}
                             onChange={(cellLabel, value) => {
                               setFieldValue(field.name, {

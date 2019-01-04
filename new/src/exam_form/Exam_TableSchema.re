@@ -52,12 +52,17 @@ let makeTable =
       |]);
 
     let rows =
-      colsMain->Belt.List.reduceWithIndex(
-        [],
-        (acc, currentLeft, index) => {
-          let newRow =
-            Belt.List.concatMany([|
-              [Static(currentLeft)],
+      colsMain
+      ->Belt.List.reduceWithIndex(
+          [],
+          (acc, currentLeft, index) => {
+            let main = [Static(currentLeft)];
+            let sub = [
+              colsSub
+              ->Belt.List.get(index)
+              ->Belt.Option.getWithDefault(Empty),
+            ];
+            let data =
               heading->Belt.List.map(h => {
                 let label = makeLabel(~heading=h, ~left=currentLeft);
                 switch (Belt.List.getBy(disabledList, l => l == label)) {
@@ -65,16 +70,14 @@ let makeTable =
                   Data(label, h == "NC" ? optionsNhuCau : optionsTinhTrang)
                 | Some(_) => Disabled
                 };
-              }),
-              [
-                colsSub
-                ->Belt.List.get(index)
-                ->Belt.Option.getWithDefault(Empty),
-              ],
-            |]);
-          [newRow, ...acc];
-        },
-      );
+              });
+            let toConcat =
+              !reverse ? [|main, data, sub|] : [|sub, data, main|];
+            let newRow = Belt.List.concatMany(toConcat);
+            [newRow, ...acc];
+          },
+        )
+      ->Belt.List.reverse;
     let table = {heading: tableHeading, rows};
     Belt.Result.Ok(table);
   };
@@ -130,6 +133,61 @@ module Tinh_trang_ham_tren: TableRender = {
   ];
 
   let table = makeTable(~colsMain, ~colsSub, ~heading, ~disabledList, ());
+};
 
-  module MS = Belt.Map.String;
+module Tinh_trang_ham_duoi: TableRender = {
+  let heading = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+
+  let colsMain = [
+    "37",
+    "36",
+    "35",
+    "34",
+    "33",
+    "32",
+    "31",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
+    "47",
+  ];
+
+  let colsSub = [
+    Empty,
+    Empty,
+    Static("75"),
+    Static("74"),
+    Static("73"),
+    Static("72"),
+    Static("71"),
+    Static("81"),
+    Static("82"),
+    Static("83"),
+    Static("84"),
+    Static("85"),
+    Empty,
+    Empty,
+  ];
+
+  let disabledList = [
+    makeLabel(~heading="Nhai", ~left="33"),
+    makeLabel(~heading="Nhai", ~left="32"),
+    makeLabel(~heading="Nhai", ~left="31"),
+    makeLabel(~heading="Nhai", ~left="41"),
+    makeLabel(~heading="Nhai", ~left="42"),
+    makeLabel(~heading="Nhai", ~left="43"),
+  ];
+
+  let table =
+    makeTable(
+      ~colsMain,
+      ~colsSub,
+      ~heading,
+      ~reverse=true,
+      ~disabledList,
+      (),
+    );
 };

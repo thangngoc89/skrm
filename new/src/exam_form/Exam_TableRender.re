@@ -3,7 +3,13 @@ open Exam_TableSchema;
 
 let component = ReasonReact.statelessComponent("Exam_TableRender");
 
-let make = (~table, _children) => {
+let make =
+    (
+      ~table,
+      ~tableValue,
+      ~handleCellChange: (. string, string) => unit,
+      _children,
+    ) => {
   ...component,
   render: _self => {
     switch (table) {
@@ -50,12 +56,20 @@ let make = (~table, _children) => {
                             label->str
                           </Col>
                         | Data(label, options) =>
+                          let currentValue =
+                            tableValue
+                            ->Js.Dict.get(label)
+                            ->Belt.Option.getWithDefault("");
                           <Col key className="text-center border p-0 m-0">
                             <Select
                               options={options->Select.listToPair}
                               name=label
+                              value=currentValue
+                              onChange={value =>
+                                handleCellChange(. label, value)
+                              }
                             />
-                          </Col>
+                          </Col>;
                         };
                       })
                     ->reactList}

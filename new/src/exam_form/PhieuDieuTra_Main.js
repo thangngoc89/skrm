@@ -3,6 +3,7 @@ import { Formik, Form, FastField } from "formik";
 import { Box, Heading, Button } from "../components";
 import { TextInput, FormField } from "grommet";
 import { format } from "date-fns";
+import RenderTinhTrangNhuCau from "./PhieuDieuTra_RenderTinhTrangNhuCau.gen";
 
 const schema = {
   ngayKham: { label: "Ngày khám", type: "date" },
@@ -15,9 +16,10 @@ const schema = {
   lop: { label: "Lớp", type: "string" },
   truong: { label: "Trường", type: "string" },
   diaChi: { label: "Địa chỉ", type: "string" },
-  ttncHamTren: { label: "Hàm trên", type: "custom" },
-  ttncHamDuoi: { label: "Hàm dưới", type: "custom" },
+  ttncHamTren: { label: "Hàm trên", type: "tinhTrangNhuCau" },
+  ttncHamDuoi: { label: "Hàm dưới", type: "tinhTrangNhuCau" },
 };
+
 const layout = [
   {
     title: "Hành chính",
@@ -38,7 +40,7 @@ const layout = [
   },
 ];
 
-const RenderRow = ({ row }) => {
+const RenderRow = ({ row, setFieldValue }) => {
   return (
     <Box direction="row-responsive">
       {row.map(({ id, size = "1" }) => {
@@ -73,8 +75,18 @@ const RenderRow = ({ row }) => {
                           />
                         </FormField>
                       );
-                    case "custom":
-                      return "Custom type";
+                    case "tinhTrangNhuCau":
+                      return (
+                        <RenderTinhTrangNhuCau
+                          value={field.value}
+                          onChange={(cellLabel, value) => {
+                            setFieldValue(field.name, {
+                              ...field.value,
+                              [cellLabel]: value,
+                            });
+                          }}
+                        />
+                      );
                     default:
                       return "Unknown type " + type;
                   }
@@ -133,7 +145,7 @@ const PhieuDieuTraForm = ({ initialValues = currentInitialValues }) => (
         <Box direction="column">
           {layout.map((group, gI) => {
             return (
-              <Box key={gI}>
+              <Box key={gI} className="my-4">
                 <Heading level={3}> {group.title} </Heading>
                 {group.items.map((row, i) => {
                   return (

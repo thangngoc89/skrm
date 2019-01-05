@@ -1,10 +1,11 @@
 import React from "react";
-import { Formik, Form, FastField } from "formik";
+import { Formik, Form, FastField, yupToFormErrors } from "formik";
 import { Box, Heading, Button, Select } from "../components";
 import { TextInput, FormField } from "grommet";
 import { format } from "date-fns";
 import RenderTinhTrangNhuCauHamTren from "./PDT_RenderTinhTrangNhuCauHamTren.gen";
 import RenderTinhTrangNhuCauHamDuoi from "./PDT_RenderTinhTrangNhuCauHamDuoi.gen";
+import * as yup from "yup";
 
 const selectOneBinaryValue = [
   { label: "Có", value: "1" },
@@ -17,23 +18,64 @@ const selectOneAngle = [
   { label: "9", value: "9" },
 ];
 const schema = {
-  ngayKham: { label: "Ngày khám", type: "date" },
-  soHoSo: { label: "Số hồ sơ", type: "string" },
-  nguoiKham: { label: "Người khám", type: "string" },
-  hoVaTen: { label: "Họ và tên", type: "string" },
-  tuoi: { label: "Tuổi", type: "number" },
-  danToc: { label: "Dân tộc", type: "string" },
+  ngayKham: {
+    label: "Ngày khám",
+    type: "date",
+    default: format(new Date(), "YYYY-MM-DD"),
+  },
+  soHoSo: {
+    label: "Số hồ sơ",
+    type: "string",
+  },
+  nguoiKham: {
+    label: "Người khám",
+    type: "string",
+  },
+  hoVaTen: {
+    label: "Họ và tên",
+    type: "string",
+  },
+  tuoi: {
+    label: "Tuổi",
+    type: "number",
+    default: 1,
+    validate: yup
+      .number()
+      .integer()
+      .min(1)
+      .required(),
+  },
+  danToc: {
+    label: "Dân tộc",
+    type: "string",
+  },
   gioiTinh: {
     label: "Giới tính",
     type: "select_one",
     typeData: [{ label: "Nam", value: "1" }, { label: "Nữ", value: "2" }],
+    default: "",
   },
   lop: { label: "Lớp", type: "string" },
   truong: { label: "Trường", type: "string" },
   diaChi: { label: "Địa chỉ", type: "string" },
-  ttncHamTren: { label: "Hàm trên", type: "tinhTrangNhuCauHamTren" },
-  ttncHamDuoi: { label: "Hàm dưới", type: "tinhTrangNhuCauHamDuoi" },
-  canPhu: { label: "Độ cắn phủ", type: "number" },
+  ttncHamTren: {
+    label: "Hàm trên",
+    type: "tinhTrangNhuCauHamTren",
+    default: {},
+  },
+  ttncHamDuoi: {
+    label: "Hàm dưới",
+    type: "tinhTrangNhuCauHamDuoi",
+    default: {},
+  },
+  canPhu: {
+    label: "Độ cắn phủ",
+    type: "number",
+    validate: yup
+      .number()
+      .integer()
+      .required(),
+  },
   canChia: { label: "Độ cắn chìa", type: "number" },
   canNguocRangTruoc: {
     label: "Cắn ngược răng trước",
@@ -197,28 +239,74 @@ const RenderRow = ({ row, setFieldValue }) => {
   );
 };
 
-const currentInitialValues = {
-  ngayKham: format(new Date(), "YYYY-MM-DD"),
-  soHoSo: "",
-  nguoiKham: "",
-  hoVaTen: "",
-  tuoi: 0,
-  gioiTinh: "Nam",
-  danToc: "",
-  lop: "",
-  truong: "",
-  diaChi: "",
-  ttncHamTren: {},
-  ttncHamDuoi: {},
+const getInitialValues = schema => {
+  return Object.keys(schema).reduce((acc, field) => {
+    const fieldSchema = schema[field];
+    if (typeof fieldSchema.default !== "undefined") {
+      acc[field] = fieldSchema.default;
+    } else {
+      switch (fieldSchema.type) {
+        case "string":
+          acc[field] = "";
+          break;
+        default:
+          console.warn("Unhandled initial value for field: " + field);
+          break;
+      }
+    }
+
+    return acc;
+  }, {});
 };
 
-const PhieuDieuTraForm = ({ initialValues = currentInitialValues }) => (
+const getValidationSchema = schema => {
+  const objectShape = Object.keys(schema).reduce((acc, field) => {
+    const fieldSchema = schema[field];
+    if (typeof fieldSchema.validate !== "undefined") {
+      acc[field] = fieldSchema.validate.label(fieldSchema.label);
+    } else {
+      switch (fieldSchema.type) {
+        case "string":
+          acc[field] = yup
+            .string()
+            .required()
+            .label(fieldSchema.label);
+          break;
+        case "select_one":
+          acc[field] = yup
+            .array()
+            .oneOf(fieldSchema.typeData.map(({ value }) => value))
+            .required(`${fieldSchema.label} chưa điền`);
+          break;
+        case "number":
+          acc[field] = yup
+            .number()
+            .required()
+            .label(fieldSchema.label);
+          break;
+        default:
+          acc[field] = yup
+            .mixed()
+            .required()
+            .label(fieldSchema.label);
+          break;
+      }
+    }
+    return acc;
+  }, {});
+  const yupSchema = yup.object().shape(objectShape);
+  console.log(yupSchema.describe());
+  return yupSchema;
+};
+
+const PhieuDieuTraForm = () => (
   <Formik
-    initialValues={initialValues}
+    initialValues={getInitialValues(schema)}
     onSubmit={(values, { setSubmitting }) => {
       console.log(values);
       setSubmitting(false);
     }}
+    validationSchema={getValidationSchema(schema)}
   >
     {({
       values,
@@ -229,37 +317,39 @@ const PhieuDieuTraForm = ({ initialValues = currentInitialValues }) => (
       handleSubmit,
       isSubmitting,
       setFieldValue,
-    }) => (
-      <Form>
-        <Box direction="row" alignContent="center" justifyContent="center">
-          <Heading level={2} textAlign="center">
-            Phiếu điều tra sức khỏe răng miệng <br />
-            <span className="text-lg lg:text-2xl">
-              (dành cho trẻ dưới 15 tuổi)
-            </span>
-          </Heading>
-        </Box>
-        <Box direction="column">
-          {layout.map((group, gI) => {
-            return (
-              <Box key={gI} className="my-4">
-                <Heading level={3}> {group.title} </Heading>
-                {group.items.map((row, i) => {
-                  return (
-                    <RenderRow
-                      key={i}
-                      row={row}
-                      setFieldValue={setFieldValue}
-                    />
-                  );
-                })}
-              </Box>
-            );
-          })}
-        </Box>
-        <Button primary label="Submit" type="submit" />
-      </Form>
-    )}
+    }) => {
+      return (
+        <Form>
+          <Box direction="row" alignContent="center" justifyContent="center">
+            <Heading level={2} textAlign="center">
+              Phiếu điều tra sức khỏe răng miệng <br />
+              <span className="text-lg lg:text-2xl">
+                (dành cho trẻ dưới 15 tuổi)
+              </span>
+            </Heading>
+          </Box>
+          <Box direction="column">
+            {layout.map((group, gI) => {
+              return (
+                <Box key={gI} className="my-4">
+                  <Heading level={3}> {group.title} </Heading>
+                  {group.items.map((row, i) => {
+                    return (
+                      <RenderRow
+                        key={i}
+                        row={row}
+                        setFieldValue={setFieldValue}
+                      />
+                    );
+                  })}
+                </Box>
+              );
+            })}
+          </Box>
+          <Button primary label="Submit" type="submit" />
+        </Form>
+      );
+    }}
   </Formik>
 );
 

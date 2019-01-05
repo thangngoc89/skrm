@@ -247,6 +247,8 @@ const getInitialValues = schema => {
     } else {
       switch (fieldSchema.type) {
         case "string":
+        case "select_one":
+        case "number":
           acc[field] = "";
           break;
         default:
@@ -295,7 +297,6 @@ const getValidationSchema = schema => {
     return acc;
   }, {});
   const yupSchema = yup.object().shape(objectShape);
-  console.log(yupSchema.describe());
   return yupSchema;
 };
 

@@ -20,6 +20,7 @@ let make =
       ~name,
       ~value,
       ~onChange,
+      ~onBlur=?,
       ~className=?,
       _children,
     ) => {
@@ -30,6 +31,7 @@ let make =
         name
         className={Cn.make([s##select, Cn.unpack(className)])}
         onChange={event => event->ReactEvent.Form.target##value->onChange}
+        ?onBlur
         value>
         <option> "--"->str </option>
         {options

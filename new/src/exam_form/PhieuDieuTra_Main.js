@@ -7,6 +7,16 @@ import RenderTinhTrangNhuCauHamTren from "./PDT_RenderTinhTrangNhuCauHamTren.gen
 import RenderTinhTrangNhuCauHamDuoi from "./PDT_RenderTinhTrangNhuCauHamDuoi.gen";
 import * as yup from "yup";
 
+yup.setLocale({
+  mixed: {
+    required: "${path} chưa được điền",
+  },
+  number: {
+    min: "${path} phải có giá trị tối thiểu là ${min}",
+    max: "${path} phải có giá trị tối thiểu là ${max}",
+  },
+});
+
 const selectOneBinaryValue = [
   { label: "Có", value: "1" },
   { label: "Không", value: "0" },
@@ -169,13 +179,20 @@ const RenderRow = ({ row, setFieldValue }) => {
             <Box key={id} className={`flex-${size} mx-2`}>
               <FastField
                 name={id}
-                render={({ field }) => {
+                render={({ field, form }) => {
+                  const error = form.errors[field.name];
+                  const isFieldTouched = form.touched[field.name];
+
                   switch (type) {
                     case "string":
                     case "date":
                     case "number":
                       return (
-                        <FormField label={label} htmlFor={field.name}>
+                        <FormField
+                          label={label}
+                          htmlFor={field.name}
+                          error={isFieldTouched ? error : ""}
+                        >
                           <TextInput
                             name={field.name}
                             id={field.name}
@@ -188,12 +205,17 @@ const RenderRow = ({ row, setFieldValue }) => {
                       );
                     case "select_one":
                       return (
-                        <FormField label={label} htmlFor={field.name}>
+                        <FormField
+                          label={label}
+                          htmlFor={field.name}
+                          error={isFieldTouched ? error : ""}
+                        >
                           <Select
                             options={schemaMetadata.typeData}
                             name={field.name}
                             value={field.value}
                             onChange={value => setFieldValue(field.name, value)}
+                            onBlur={field.onBlur}
                             className="ml-1 lg:ml-2"
                           />
                         </FormField>
@@ -276,9 +298,14 @@ const getValidationSchema = schema => {
           break;
         case "select_one":
           acc[field] = yup
-            .array()
-            .oneOf(fieldSchema.typeData.map(({ value }) => value))
-            .required(`${fieldSchema.label} chưa điền`);
+            .string()
+            .oneOf(
+              fieldSchema.typeData.map(({ value }) => value),
+              "${path} chỉ chấp nhận các giá trị: " +
+                fieldSchema.typeData.map(({ label }) => label).join(", ")
+            )
+            .required()
+            .label(fieldSchema.label);
           break;
         case "number":
           acc[field] = yup

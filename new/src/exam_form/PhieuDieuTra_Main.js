@@ -224,7 +224,6 @@ function RenderRow({ row, setFieldValue }) {
                             value={field.value}
                             onChange={value => setFieldValue(field.name, value)}
                             onBlur={field.onBlur}
-                            className="ml-1 lg:ml-2"
                           />
                         </FormField>
                       );

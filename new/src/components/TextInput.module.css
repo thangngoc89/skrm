@@ -1,0 +1,22 @@
+.input {
+  @apply .border .border-solid .border-dark-6 .rounded;
+  @apply .w-full .font-bold .appearance-none .outline-none;
+  @apply .px-3;
+}
+
+.input:focus {
+  @apply .shadow-input .border-accent-1;
+}
+
+:global(.formfield) .input {
+  @apply .border-0 .border-b .rounded-none;
+  @apply .h-10;
+} 
+:global(.formfieldError) .input {
+  @apply .border-status-error;
+}
+
+:global(.formfield) .input:focus,
+:global(.formfieldError) .input:focus {
+  @apply .shadow-none .border-accent-1;
+}

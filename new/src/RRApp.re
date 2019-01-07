@@ -4,6 +4,8 @@ let component = ReasonReact.statelessComponent("RRApp");
 let make = _children => {
   ...component,
   render: _self => {
-    ReasonReact.null;
+    <FormField htmlFor="foo" label="Label" help="Help" error="Error">
+      <TextInput value="foo" onChange={_ => ()} />
+    </FormField>;
   },
 };

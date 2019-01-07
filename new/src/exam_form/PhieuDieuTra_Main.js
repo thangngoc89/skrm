@@ -1,10 +1,18 @@
 import React from "react";
-import { Formik, Form, FastField, yupToFormErrors } from "formik";
-import { Box, Heading, Button, Select } from "../components";
-import { TextInput, FormField } from "grommet";
+import { Formik, Form, FastField } from "formik";
+import {
+  Box,
+  Heading,
+  Button,
+  Select,
+  FormField,
+  TextInput,
+} from "../components";
 import { format } from "date-fns";
-import RenderTinhTrangNhuCauHamTren from "./PDT_RenderTinhTrangNhuCauHamTren.gen";
-import RenderTinhTrangNhuCauHamDuoi from "./PDT_RenderTinhTrangNhuCauHamDuoi.gen";
+import {
+  HamTren as TTNCHamTren,
+  HamDuoi as TTNCHamDuoi,
+} from "./PDT_RenderTinhTrangNhuCau.gen";
 import * as yup from "yup";
 
 yup.setLocale({
@@ -191,7 +199,7 @@ function RenderRow({ row, setFieldValue }) {
                         <FormField
                           label={label}
                           htmlFor={field.name}
-                          error={isFieldTouched ? error : ""}
+                          error={isFieldTouched ? error : undefined}
                         >
                           <TextInput
                             name={field.name}
@@ -208,7 +216,7 @@ function RenderRow({ row, setFieldValue }) {
                         <FormField
                           label={label}
                           htmlFor={field.name}
-                          error={isFieldTouched ? error : ""}
+                          error={isFieldTouched ? error : undefined}
                         >
                           <Select
                             options={schemaMetadata.typeData}
@@ -223,7 +231,7 @@ function RenderRow({ row, setFieldValue }) {
                     case "tinhTrangNhuCauHamTren":
                       return (
                         <Box className="my-2 lg:my-0">
-                          <RenderTinhTrangNhuCauHamTren
+                          <TTNCHamTren
                             value={field.value}
                             onChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
@@ -237,7 +245,7 @@ function RenderRow({ row, setFieldValue }) {
                     case "tinhTrangNhuCauHamDuoi":
                       return (
                         <Box className="my-2 lg:my-0">
-                          <RenderTinhTrangNhuCauHamDuoi
+                          <TTNCHamDuoi
                             value={field.value}
                             onChange={(cellLabel, value) => {
                               setFieldValue(field.name, {

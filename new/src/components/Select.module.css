@@ -7,9 +7,7 @@
 }
 
 .select {
-  @apply .w-full .h-10 .appearance-none .pr-4;
-  border: none;
-  border-radius: 0;
+  @apply .w-full .h-10 .appearance-none .pr-4 .border-0;
   box-shadow: none;
   background: transparent;
   background-image: none;
@@ -21,6 +19,18 @@
 }
 
 .select:focus {
-  @apply .border-accent-1 .shadow-input .appearance-none;
-  border-radius: 0;
+  @apply .border-accent-1 .shadow-input .appearance-none .rounded-none;
+}
+
+:global(.formfield) .select {
+  @apply .border-b .border-solid .border-dark-6 .rounded-none .font-bold;
+  @apply .h-10 .px-3;
+}
+
+:global(.formfieldError) .select {
+  @apply .border-status-error;
+}
+
+:global(.formfield) .select:focus {
+  @apply .shadow-none .border-accent-1;
 }

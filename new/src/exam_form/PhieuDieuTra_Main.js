@@ -344,7 +344,7 @@ const PhieuDieuTraForm = () => (
       setSubmitting(false);
     }}
     validationSchema={getValidationSchema(schema)}
-    validateOnBlur={false}
+    validateOnBlur={true}
     validateOnChange={false}
   >
     {({

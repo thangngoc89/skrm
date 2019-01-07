@@ -1,7 +1,7 @@
 open React;
 open PDT_Types.Table;
 
-let component = ReasonReact.statelessComponent("Exam_TableRender");
+let component = ReasonReact.statelessComponent(__MODULE__);
 
 let make =
     (

@@ -2,14 +2,15 @@ let s: Js.t('a) = [%raw {|require("./App_New.module.css")|}];
 open React;
 
 module Pill = {
-  type status = [ | `success | `active | `inactive | `error];
+  type status = [ | `success | `warning | `active | `error | `inactive];
 
   let statusToColor =
     fun
-    | `success => "brand"
+    | `success => "status-ok"
+    | `warning => "status-warning"
     | `active => "brand"
-    | `inactive => "dark-4"
-    | `error => "status-error";
+    | `error => "status-error"
+    | `inactive => "dark-4";
   let component = ReasonReact.statelessComponent("Pill");
 
   let make = (~label, ~status=`inactive, ~onClick, _children) => {
@@ -28,146 +29,108 @@ module Pill = {
   };
 };
 
-type tab =
+type tabName =
   | PhieuDieuTra
   | BangCauHoi
   | ChildOIDP;
 
-type validationState = [ | `success | `inactive | `error];
-
-type tabValidationState = {
-  pdt: validationState,
-  bch: validationState,
-  oidp: validationState,
-};
-
-type data =
+type tabData =
   | NotSaved
   | Draft(Js.Json.t)
   | Saved(Js.Json.t);
 
-type tabData = {
-  pdt: data,
-  bch: data,
-  oidp: data,
+type tab = {
+  label: string,
+  name: tabName,
+  data: tabData,
 };
-
 type state = {
-  tab,
-  tabValidationState,
-  tabData,
+  activeTab: tabName,
+  tabs: list(tab),
 };
 
 type action =
-  | ChangeTab(tab)
-  | OnSave(tab, Js.Json.t)
-  | OnSaveDraft(tab, Js.Json.t);
+  | ChangeTab(tabName)
+  | OnSave(tabName, Js.Json.t)
+  | OnSaveDraft(tabName, Js.Json.t);
 
 let component = ReasonReact.reducerComponent("App_New");
 
 let make = _children => {
   ...component,
   initialState: () => {
-    tab: PhieuDieuTra,
-    tabValidationState: {
-      pdt: `inactive,
-      bch: `inactive,
-      oidp: `inactive,
-    },
-    tabData: {
-      pdt: NotSaved,
-      bch: NotSaved,
-      oidp: NotSaved,
-    },
+    activeTab: PhieuDieuTra,
+    tabs: [
+      {name: PhieuDieuTra, label: {j|Phiếu điều tra|j}, data: NotSaved},
+    ],
   },
   reducer: (action, state) => {
     switch (action) {
-    | ChangeTab(tab) => ReasonReact.Update({...state, tab})
-    | OnSave(tab, data) =>
-      Js.log(data);
-      let newTabData =
-        switch (tab) {
-        | PhieuDieuTra => {...state.tabData, pdt: Saved(data)}
-        | BangCauHoi => {...state.tabData, bch: Saved(data)}
-        | ChildOIDP => {...state.tabData, oidp: Saved(data)}
-        };
-      ReasonReact.Update({...state, tabData: newTabData});
-    | OnSaveDraft(tab, data) =>
-      Js.log2("draft", data);
-      let newTabData =
-        switch (tab) {
-        | PhieuDieuTra => {...state.tabData, pdt: Draft(data)}
-        | BangCauHoi => {...state.tabData, bch: Draft(data)}
-        | ChildOIDP => {...state.tabData, oidp: Draft(data)}
-        };
-      ReasonReact.Update({...state, tabData: newTabData});
+    | ChangeTab(activeTab) => ReasonReact.Update({...state, activeTab})
+    | OnSave(tabName, data) =>
+      ReasonReact.Update({
+        ...state,
+        tabs:
+          state.tabs
+          ->Belt.List.map(tab =>
+              tab.name == tabName ? {...tab, data: Saved(data)} : tab
+            ),
+      })
+    | OnSaveDraft(tabName, data) =>
+      ReasonReact.Update({
+        ...state,
+        tabs:
+          state.tabs
+          ->Belt.List.map(tab =>
+              tab.name == tabName ? {...tab, data: Draft(data)} : tab
+            ),
+      })
     };
   },
   render: ({state, send}) => {
     <div className="mb-12">
-      {let onSave = data => send(OnSave(state.tab, data))
-       let onSaveDraft = data => send(OnSaveDraft(state.tab, data))
-       switch (state.tab) {
-       | PhieuDieuTra =>
-         <PDT_Main
-           initialValue={PDT_Main.emptyInitialValues()}
-           onSave
-           onSaveDraft
-         />
-       | BangCauHoi => <Q_Main onSave onSaveDraft />
-       | ChildOIDP => "Unhandled"->str
-       }}
-      <footer
-        className={Cn.make([
-          s##footer,
-          "flex align-center bg-light-1 p-3 border-t border-dark-4",
-        ])}>
-        <Pill
-          onClick={_ => send(ChangeTab(PhieuDieuTra))}
-          status={
-            switch (state.tab) {
-            | PhieuDieuTra => `active
-            | _ =>
-              switch (state.tabValidationState.pdt) {
-              | `inactive => `inactive
-              | `success => `success
-              | `error => `error
-              }
-            }
-          }
-          label={j|Phiếu điều tra|j}
-        />
-        <Pill
-          onClick={_ => send(ChangeTab(BangCauHoi))}
-          status={
-            switch (state.tab) {
-            | BangCauHoi => `active
-            | _ =>
-              switch (state.tabValidationState.pdt) {
-              | `inactive => `inactive
-              | `success => `success
-              | `error => `error
-              }
-            }
-          }
-          label={j|Bảng câu hỏi|j}
-        />
-        <Pill
-          onClick={_ => send(ChangeTab(ChildOIDP))}
-          status={
-            switch (state.tab) {
-            | ChildOIDP => `active
-            | _ =>
-              switch (state.tabValidationState.pdt) {
-              | `inactive => `inactive
-              | `success => `success
-              | `error => `error
-              }
-            }
-          }
-          label={j|Child-OIDP|j}
-        />
-      </footer>
-    </div>;
+      /*
+         @todo: refactoring this
+         This is kindof clever code to save a few LOCs
+       */
+
+        {let onSave = data => send(OnSave(state.activeTab, data))
+         let onSaveDraft = data => send(OnSaveDraft(state.activeTab, data))
+         switch (state.activeTab) {
+         | PhieuDieuTra =>
+           <PDT_Main
+             initialValue={PDT_Main.emptyInitialValues()}
+             onSave
+             onSaveDraft
+           />
+         | BangCauHoi => <Q_Main onSave onSaveDraft />
+         | ChildOIDP => "Unhandled"->str
+         }}
+        <footer
+          className={Cn.make([
+            s##footer,
+            "flex align-center bg-light-1 p-3 border-t border-dark-4",
+          ])}>
+          {state.tabs
+           ->Belt.List.map(tab =>
+               <Pill
+                 onClick={_ => send(ChangeTab(PhieuDieuTra))}
+                 status={
+                          if (state.activeTab == tab.name) {
+                            `active;
+                          } else {
+                            switch (tab.data) {
+                            | NotSaved => `inactive
+                            | Draft(_) => `warning
+                            | Saved(_) => `success
+                            };
+                          }
+                        }
+                 label={tab.label}
+               />
+             )
+           ->reactList}
+        </footer>
+      </div>;
   },
 };

@@ -67,7 +67,7 @@ let make = _children => {
     };
   },
   render: ({state, send}) => {
-    <div>
+    <div className="mb-12">
       {switch (state.tab) {
        | PhieuDieuTra =>
          <PDT_Main initialValue={PDT_Main.emptyInitialValues()} />

@@ -1,5 +1,4 @@
 .footer {
   @apply .fixed .pin-b .pin-r;
   left: 12rem;
-  @apply .bg-light-1 .p-3 .border-t .border-dark-5;
 }

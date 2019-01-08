@@ -49,7 +49,6 @@ let colors = {
 
   "accent-1": "#6FFFB0",
   "accent-2": "#FD6FFF",
-  "accent-3": "#81FCED",
   "accent-4": "#FFCA58",
   "neutral-1": "#00873D",
   "neutral-2": "#3D138D",

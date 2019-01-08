@@ -7,4 +7,4 @@ import * as React from 'react';
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(children) { return ReasonReact.wrapJsForReason(Render_question_form, {}, children); };
+export const make = function _(onSave, onSaveDraft, children) { return ReasonReact.wrapJsForReason(Render_question_form, {onSave: onSave, onSaveDraft: onSaveDraft}, children); };

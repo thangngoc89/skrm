@@ -6,7 +6,12 @@ let emptyInitialValues = emptyInitialValues;
 
 [@genType.import "./PhieuDieuTra_Main"] [@bs.module "./PDT_Main.gen"]
 external make:
-  (~initialValue: initialValue, 'a) =>
+  (
+    ~initialValue: initialValue,
+    ~onSave: Js.Json.t => unit,
+    ~onSaveDraft: Js.Json.t => unit,
+    'a
+  ) =>
   ReasonReact.component(
     ReasonReact.stateless,
     ReasonReact.noRetainedProps,

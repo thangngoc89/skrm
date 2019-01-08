@@ -41,13 +41,27 @@ type tabValidationState = {
   oidp: validationState,
 };
 
+type data =
+  | NotSaved
+  | Draft(Js.Json.t)
+  | Saved(Js.Json.t);
+
+type tabData = {
+  pdt: data,
+  bch: data,
+  oidp: data,
+};
+
 type state = {
   tab,
   tabValidationState,
+  tabData,
 };
 
 type action =
-  | ChangeTab(tab);
+  | ChangeTab(tab)
+  | OnSave(tab, Js.Json.t)
+  | OnSaveDraft(tab, Js.Json.t);
 
 let component = ReasonReact.reducerComponent("App_New");
 
@@ -60,18 +74,47 @@ let make = _children => {
       bch: `inactive,
       oidp: `inactive,
     },
+    tabData: {
+      pdt: NotSaved,
+      bch: NotSaved,
+      oidp: NotSaved,
+    },
   },
   reducer: (action, state) => {
     switch (action) {
     | ChangeTab(tab) => ReasonReact.Update({...state, tab})
+    | OnSave(tab, data) =>
+      Js.log(data);
+      let newTabData =
+        switch (tab) {
+        | PhieuDieuTra => {...state.tabData, pdt: Saved(data)}
+        | BangCauHoi => {...state.tabData, bch: Saved(data)}
+        | ChildOIDP => {...state.tabData, oidp: Saved(data)}
+        };
+      ReasonReact.Update({...state, tabData: newTabData});
+    | OnSaveDraft(tab, data) =>
+      Js.log2("draft", data);
+      let newTabData =
+        switch (tab) {
+        | PhieuDieuTra => {...state.tabData, pdt: Draft(data)}
+        | BangCauHoi => {...state.tabData, bch: Draft(data)}
+        | ChildOIDP => {...state.tabData, oidp: Draft(data)}
+        };
+      ReasonReact.Update({...state, tabData: newTabData});
     };
   },
   render: ({state, send}) => {
     <div className="mb-12">
-      {switch (state.tab) {
+      {let onSave = data => send(OnSave(state.tab, data))
+       let onSaveDraft = data => send(OnSaveDraft(state.tab, data))
+       switch (state.tab) {
        | PhieuDieuTra =>
-         <PDT_Main initialValue={PDT_Main.emptyInitialValues()} />
-       | BangCauHoi => <Q_Main />
+         <PDT_Main
+           initialValue={PDT_Main.emptyInitialValues()}
+           onSave
+           onSaveDraft
+         />
+       | BangCauHoi => <Q_Main onSave onSaveDraft />
        | ChildOIDP => "Unhandled"->str
        }}
       <footer

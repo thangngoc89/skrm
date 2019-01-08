@@ -338,11 +338,15 @@ const getValidationSchema = schema => {
 
 export const emptyInitialValues = () => getInitialValues(schema);
 
-const PhieuDieuTraForm = ({ initialValues = emptyInitialValues() }) => (
+const PhieuDieuTraForm = ({
+  initialValues = emptyInitialValues(),
+  onSave,
+  onSaveDraft,
+}) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      console.log(values);
+      onSave(values);
       setSubmitting(false);
     }}
     validationSchema={getValidationSchema(schema)}
@@ -379,14 +383,23 @@ const PhieuDieuTraForm = ({ initialValues = emptyInitialValues() }) => (
               );
             })}
           </Box>
-          <Button primary label="Submit" type="submit" />
+          <Box justifyContent="end" direction="row" className="-mx-2">
+            <Button
+              color="dark-3"
+              label="Lưu nháp"
+              type="submit"
+              className="mx-2"
+              onClick={() => onSaveDraft(values)}
+            />
+            <Button primary label="Lưu" type="submit" className="mx-2" />
+          </Box>
         </Form>
       );
     }}
   </Formik>
 );
 
-const PhieuDieuTra = ({ initialValues }) => {
+const PhieuDieuTra = ({ initialValues, onSave, onSaveDraft }) => {
   return (
     <div>
       <Box direction="row" alignContent="center" justifyContent="center">
@@ -397,7 +410,11 @@ const PhieuDieuTra = ({ initialValues }) => {
           </span>
         </Heading>
       </Box>
-      <PhieuDieuTraForm initialValues={initialValues} />
+      <PhieuDieuTraForm
+        initialValues={initialValues}
+        onSave={onSave}
+        onSaveDraft={onSaveDraft}
+      />
     </div>
   );
 };

@@ -336,9 +336,11 @@ const getValidationSchema = schema => {
   return yupSchema;
 };
 
-const PhieuDieuTraForm = () => (
+export const emptyInitialValues = () => getInitialValues(schema);
+
+const PhieuDieuTraForm = ({ initialValues = emptyInitialValues() }) => (
   <Formik
-    initialValues={getInitialValues(schema)}
+    initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
       console.log(values);
       setSubmitting(false);
@@ -384,7 +386,7 @@ const PhieuDieuTraForm = () => (
   </Formik>
 );
 
-const PhieuDieuTra = () => {
+const PhieuDieuTra = ({ initialValues }) => {
   return (
     <div>
       <Box direction="row" alignContent="center" justifyContent="center">
@@ -395,7 +397,7 @@ const PhieuDieuTra = () => {
           </span>
         </Heading>
       </Box>
-      <PhieuDieuTraForm />
+      <PhieuDieuTraForm initialValues={initialValues} />
     </div>
   );
 };

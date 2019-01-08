@@ -1,6 +1,7 @@
 module Route = {
   type t =
     | Home
+    | New
     | Input
     | NotFound;
 
@@ -8,6 +9,7 @@ module Route = {
     fun
     | Home => ""
     | Input => "/input"
+    | New => "/new"
     | NotFound => raise(Invalid_argument("Calling NotFound route"));
 
   let urlToRoute: ReasonReact.Router.url => t =
@@ -15,6 +17,7 @@ module Route = {
       switch (url.path) {
       | [] => Home
       | ["input"] => Input
+      | ["new"] => New
       | _ => NotFound
       };
     };

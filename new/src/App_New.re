@@ -23,7 +23,7 @@ module Pill = {
         className={Cn.make(["flex flex-col mr-2 lg:mr-4 text-xs", textColor])}
         onClick>
         <div className="mb-1"> label->str </div>
-        <div className={Cn.make(["h-1 rounded", bgColor])} />
+        <div className={Cn.make(["w-full h-1 rounded", bgColor])} />
       </button>;
     },
   };
@@ -62,6 +62,8 @@ let make = _children => {
     activeTab: PhieuDieuTra,
     tabs: [
       {name: PhieuDieuTra, label: {j|Phiếu điều tra|j}, data: NotSaved},
+      {name: BangCauHoi, label: {j|Bảng câu hỏi|j}, data: NotSaved},
+      {name: ChildOIDP, label: {j|Child-OIDP|j}, data: NotSaved},
     ],
   },
   reducer: (action, state) => {
@@ -114,7 +116,8 @@ let make = _children => {
           {state.tabs
            ->Belt.List.map(tab =>
                <Pill
-                 onClick={_ => send(ChangeTab(PhieuDieuTra))}
+                 key={tab.label}
+                 onClick={_ => send(ChangeTab(tab.name))}
                  status={
                           if (state.activeTab == tab.name) {
                             `active;

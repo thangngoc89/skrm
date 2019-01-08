@@ -3,9 +3,9 @@ import { Formik, Form } from "formik";
 import schema from "./data/Question_schema";
 import initialValues from "./data/Question_schema_initialValues";
 import RenderQuestion from "./Render_question";
-import { Box, Heading, Button } from "./components";
+import { Box, Heading, Button } from "../components";
 
-const MyForm = () => (
+const RenderQuestionForm = () => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
@@ -54,4 +54,4 @@ const MyForm = () => (
   </Formik>
 );
 
-export default MyForm;
+export default RenderQuestionForm;

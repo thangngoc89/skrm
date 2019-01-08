@@ -2,21 +2,17 @@ let s: Js.t('a) = [%raw {|require("./App_New.module.css")|}];
 open React;
 
 module Pill = {
-  type status =
-    | Success
-    | Active
-    | Inactive
-    | Error;
+  type status = [ | `success | `active | `inactive | `error];
 
   let statusToColor =
     fun
-    | Success => "status-ok"
-    | Active => "brand"
-    | Inactive => "dark-4"
-    | Error => "status-error";
+    | `success => "brand"
+    | `active => "brand"
+    | `inactive => "dark-4"
+    | `error => "status-error";
   let component = ReasonReact.statelessComponent("Pill");
 
-  let make = (~label, ~status=Inactive, ~onClick, _children) => {
+  let make = (~label, ~status=`inactive, ~onClick, _children) => {
     ...component,
     render: _self => {
       let color = statusToColor(status);
@@ -37,15 +33,17 @@ type tab =
   | BangCauHoi
   | ChildOIDP;
 
-type tabStatus = {
-  pdt: Pill.status,
-  bch: Pill.status,
-  oidp: Pill.status,
+type validationState = [ | `success | `inactive | `error];
+
+type tabValidationState = {
+  pdt: validationState,
+  bch: validationState,
+  oidp: validationState,
 };
 
 type state = {
   tab,
-  tabStatus,
+  tabValidationState,
 };
 
 type action =
@@ -57,10 +55,10 @@ let make = _children => {
   ...component,
   initialState: () => {
     tab: PhieuDieuTra,
-    tabStatus: {
-      pdt: Active,
-      bch: Inactive,
-      oidp: Inactive,
+    tabValidationState: {
+      pdt: `inactive,
+      bch: `inactive,
+      oidp: `inactive,
     },
   },
   reducer: (action, state) => {
@@ -73,7 +71,7 @@ let make = _children => {
       {switch (state.tab) {
        | PhieuDieuTra =>
          <PDT_Main initialValue={PDT_Main.emptyInitialValues()} />
-       | BangCauHoi
+       | BangCauHoi => <Q_Main />
        | ChildOIDP => "Unhandled"->str
        }}
       <footer
@@ -83,17 +81,47 @@ let make = _children => {
         ])}>
         <Pill
           onClick={_ => send(ChangeTab(PhieuDieuTra))}
-          status={state.tabStatus.pdt}
+          status={
+            switch (state.tab) {
+            | PhieuDieuTra => `active
+            | _ =>
+              switch (state.tabValidationState.pdt) {
+              | `inactive => `inactive
+              | `success => `success
+              | `error => `error
+              }
+            }
+          }
           label={j|Phiếu điều tra|j}
         />
         <Pill
           onClick={_ => send(ChangeTab(BangCauHoi))}
-          status={state.tabStatus.bch}
+          status={
+            switch (state.tab) {
+            | BangCauHoi => `active
+            | _ =>
+              switch (state.tabValidationState.pdt) {
+              | `inactive => `inactive
+              | `success => `success
+              | `error => `error
+              }
+            }
+          }
           label={j|Bảng câu hỏi|j}
         />
         <Pill
           onClick={_ => send(ChangeTab(ChildOIDP))}
-          status={state.tabStatus.oidp}
+          status={
+            switch (state.tab) {
+            | ChildOIDP => `active
+            | _ =>
+              switch (state.tabValidationState.pdt) {
+              | `inactive => `inactive
+              | `success => `success
+              | `error => `error
+              }
+            }
+          }
           label={j|Child-OIDP|j}
         />
       </footer>

@@ -1,6 +1,6 @@
 import React from "react";
 import { FastField } from "formik";
-import { Box, TextInput, CheckBox, RadioButton } from "./components";
+import { Box, TextInput, CheckBox, RadioButton } from "../components";
 
 const DottedLabel = ({ value, label }) => (
   <Box direction="row" alignContent="end" className="w-full">

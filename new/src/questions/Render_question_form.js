@@ -4,12 +4,14 @@ import schema from "./data/Question_schema";
 import initialValues from "./data/Question_schema_initialValues";
 import RenderQuestion from "./Render_question";
 import { Box, Heading, Button } from "../components";
+import PhieuDieuTra from "../exam_form/PhieuDieuTra_Main";
+import MountPortal from "../MountPortal";
 
-const RenderQuestionForm = () => (
+const RenderQuestionForm = ({ onSaveDraft, onSave }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      console.log(values);
+      onSave(values);
       setSubmitting(false);
     }}
   >
@@ -48,7 +50,25 @@ const RenderQuestionForm = () => (
             );
           })}
         </Box>
-        <Button primary label="Submit" type="submit" />
+        <MountPortal id="footerAction">
+          <Box justifyContent="end" direction="row" className="-mx-2">
+            <Button
+              plain
+              color="dark-3"
+              label="Lưu nháp"
+              type="submit"
+              className="mx-2"
+              onClick={_ => onSaveDraft(values)}
+            />
+            <Button
+              primary
+              label="Lưu"
+              type="submit"
+              className="mx-2"
+              size="small"
+            />
+          </Box>
+        </MountPortal>
       </Form>
     )}
   </Formik>

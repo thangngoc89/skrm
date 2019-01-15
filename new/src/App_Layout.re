@@ -9,9 +9,9 @@ let make = children => {
         "Header"->str
       </header>
       <main className="flex flex-row flex-1">
-        <aside className="w-48 bg-light-1 p-3 border-r border-dark-4">
+        /* <aside className="w-48 bg-light-1 p-3 border-r border-dark-4">
           "Sidebar"->str
-        </aside>
+        </aside> */
         <article className="flex-1 p-3"> ...children </article>
       </main>
     </div>;

@@ -1,4 +1,4 @@
 .footer {
   @apply .fixed .pin-b .pin-r;
-  left: 12rem;
+  left: 0;
 }

@@ -111,28 +111,31 @@ let make = _children => {
         <footer
           className={Cn.make([
             s##footer,
-            "flex align-center bg-light-1 p-3 border-t border-dark-4",
+            "flex items-center justify-between bg-light-1 px-3 py-2 border-t border-dark-4",
           ])}>
-          {state.tabs
-           ->Belt.List.map(tab =>
-               <Pill
-                 key={tab.label}
-                 onClick={_ => send(ChangeTab(tab.name))}
-                 status={
-                          if (state.activeTab == tab.name) {
-                            `active;
-                          } else {
-                            switch (tab.data) {
-                            | NotSaved => `inactive
-                            | Draft(_) => `warning
-                            | Saved(_) => `success
-                            };
+          <nav className="flex">
+            {state.tabs
+             ->Belt.List.map(tab =>
+                 <Pill
+                   key={tab.label}
+                   onClick={_ => send(ChangeTab(tab.name))}
+                   status={
+                            if (state.activeTab == tab.name) {
+                              `active;
+                            } else {
+                              switch (tab.data) {
+                              | NotSaved => `inactive
+                              | Draft(_) => `warning
+                              | Saved(_) => `success
+                              };
+                            }
                           }
-                        }
-                 label={tab.label}
-               />
-             )
-           ->reactList}
+                   label={tab.label}
+                 />
+               )
+             ->reactList}
+          </nav>
+          <main id="footerAction" />
         </footer>
       </div>;
   },

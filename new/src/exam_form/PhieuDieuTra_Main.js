@@ -1,4 +1,5 @@
 import React from "react";
+
 import { Formik, Form, FastField } from "formik";
 import {
   Box,
@@ -14,6 +15,7 @@ import {
   HamDuoi as TTNCHamDuoi,
 } from "./PDT_RenderTinhTrangNhuCau.gen";
 import * as yup from "yup";
+import MountPortal from "../MountPortal";
 
 yup.setLocale({
   mixed: {
@@ -383,16 +385,25 @@ const PhieuDieuTraForm = ({
               );
             })}
           </Box>
-          <Box justifyContent="end" direction="row" className="-mx-2">
-            <Button
-              color="dark-3"
-              label="Lưu nháp"
-              type="submit"
-              className="mx-2"
-              onClick={() => onSaveDraft(values)}
-            />
-            <Button primary label="Lưu" type="submit" className="mx-2" />
-          </Box>
+          <MountPortal id="footerAction">
+            <Box justifyContent="end" direction="row" className="-mx-2">
+              <Button
+                plain
+                color="dark-3"
+                label="Lưu nháp"
+                type="submit"
+                className="mx-2"
+                onClick={_ => onSaveDraft(values)}
+              />
+              <Button
+                primary
+                label="Lưu"
+                type="submit"
+                className="mx-2"
+                size="small"
+              />
+            </Box>
+          </MountPortal>
         </Form>
       );
     }}

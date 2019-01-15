@@ -72,8 +72,8 @@ let make = (~db, _children) => {
     switch (action) {
     | ChangeTab(activeTab) => ReasonReact.Update({...state, activeTab})
     | OnSave(tabName, data) =>
-      let tx = db->Idb.Transaction.make(Config.appName, `readwrite);
-      tx->Idb.Transaction.objectStore("record")->Idb.ObjStore.put(id, data);
+      let tx = db->Idb.Transaction.make("record", `readwrite);
+      tx->Idb.Transaction.objectStore("record")->Idb.ObjStore.put(data, id);
 
       ReasonReact.Update({
         ...state,
@@ -84,8 +84,14 @@ let make = (~db, _children) => {
             ),
       });
     | OnSaveDraft(tabName, data) =>
-      let tx = db->Idb.Transaction.make(Config.appName, `readwrite);
-      tx->Idb.Transaction.objectStore("record")->Idb.ObjStore.put(id, data);
+      let tx = db->Idb.Transaction.make("record", `readwrite);
+      tx->Idb.Transaction.objectStore("record")->Idb.ObjStore.put(data, id);
+      open Js.Promise;
+
+      tx->Idb.Transaction.completeGet
+      |> then_(() => Js.log("done")->resolve)
+      |> catch(err => Js.log(err)->resolve)
+      |> ignore;
 
       ReasonReact.Update({
         ...state,
@@ -98,7 +104,6 @@ let make = (~db, _children) => {
     };
   },
   render: ({state, send}) => {
-    Js.log(db);
     <div className="mb-12">
       {let onSave = data => send(OnSave(state.activeTab, data))
        let onSaveDraft = data => send(OnSaveDraft(state.activeTab, data))

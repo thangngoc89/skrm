@@ -401,6 +401,7 @@ const PhieuDieuTraForm = ({
                 type="submit"
                 className="mx-2"
                 size="small"
+                onClick={handleSubmit}
               />
             </Box>
           </MountPortal>

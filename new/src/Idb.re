@@ -1,18 +1,30 @@
+module ObjStore = {
+  type t;
+  [@bs.send] external put: (t, 'a, string) => unit = "put";
+};
+
+module UpgradeDb = {
+  [@bs.deriving abstract]
+  type t = {
+    oldVersion: int,
+    createObjectStore: string => ObjStore.t,
+  };
+};
+
 module Db = {
   type t;
+  type cb = UpgradeDb.t => unit;
+
   [@bs.module "idb"]
-  external openDb: (string, int) => Js.Promise.t(t) = "openDb";
+  external openDb: (string, int, cb) => Js.Promise.t(t) = "openDb";
   [@bs.module "idb"]
   external deleteDb: string => Js.Promise.t(unit) = "deleteDb";
 };
 
-module ObjStore = {
-  type t;
-  [@bs.send] external put: (t, string, 'a) => unit = "put";
-};
-
 module Transaction = {
-  type t;
+  [@bs.deriving abstract]
+  type t = {complete: Js.Promise.t(unit)};
+
   [@bs.deriving jsConverter]
   type transaction = [ | `readwrite | `readwriteflush | `complete];
 
@@ -22,5 +34,4 @@ module Transaction = {
     make(db, objStoreName, transTyp->transactionToJs);
 
   [@bs.send] external objectStore: (t, string) => ObjStore.t = "objectStore";
-  [@bs.send] external complete: t => Js.Promise.t(unit) = "complete";
 };

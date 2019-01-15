@@ -5,7 +5,7 @@ type action =
 
 let component = ReasonReact.reducerComponent("WithDatabase");
 
-let make = (~name, ~version=1, children) => {
+let make = (~name, ~version=1, ~upgradeDb, children) => {
   ...component,
   initialState: () => {db: None},
   reducer: (action, _state) => {
@@ -15,7 +15,22 @@ let make = (~name, ~version=1, children) => {
   },
   didMount: ({send}) => {
     Js.Promise.(
-      Idb.Db.openDb(name, version)
+      Idb.Db.openDb(
+        name,
+        version,
+        [%bs.raw
+          {|
+      upgradeDB => {
+  console.log(upgradeDB.oldVersion);
+  switch (upgradeDB.oldVersion) {
+    case 0:
+      upgradeDB.createObjectStore('record');
+
+  }
+}
+      |}
+        ],
+      )
       |> then_(db => send(SetDb(db)) |> resolve)
       |> catch(err => Js.log(err) |> resolve)
     )

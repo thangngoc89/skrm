@@ -54,9 +54,11 @@ type action =
   | OnSave(tabName, Js.Json.t)
   | OnSaveDraft(tabName, Js.Json.t);
 
+let id = "random_id_generator";
+
 let component = ReasonReact.reducerComponent("App_New");
 
-let make = _children => {
+let make = (~db, _children) => {
   ...component,
   initialState: () => {
     activeTab: PhieuDieuTra,
@@ -70,6 +72,9 @@ let make = _children => {
     switch (action) {
     | ChangeTab(activeTab) => ReasonReact.Update({...state, activeTab})
     | OnSave(tabName, data) =>
+      let tx = db->Idb.Transaction.make(Config.appName, `readwrite);
+      tx->Idb.Transaction.objectStore("record")->Idb.ObjStore.put(id, data);
+
       ReasonReact.Update({
         ...state,
         tabs:
@@ -77,8 +82,11 @@ let make = _children => {
           ->Belt.List.map(tab =>
               tab.name == tabName ? {...tab, data: Saved(data)} : tab
             ),
-      })
+      });
     | OnSaveDraft(tabName, data) =>
+      let tx = db->Idb.Transaction.make(Config.appName, `readwrite);
+      tx->Idb.Transaction.objectStore("record")->Idb.ObjStore.put(id, data);
+
       ReasonReact.Update({
         ...state,
         tabs:
@@ -86,57 +94,53 @@ let make = _children => {
           ->Belt.List.map(tab =>
               tab.name == tabName ? {...tab, data: Draft(data)} : tab
             ),
-      })
+      });
     };
   },
   render: ({state, send}) => {
+    Js.log(db);
     <div className="mb-12">
-      /*
-         @todo: refactoring this
-         This is kindof clever code to save a few LOCs
-       */
-
-        {let onSave = data => send(OnSave(state.activeTab, data))
-         let onSaveDraft = data => send(OnSaveDraft(state.activeTab, data))
-         switch (state.activeTab) {
-         | PhieuDieuTra =>
-           <PDT_Main
-             initialValue={PDT_Main.emptyInitialValues()}
-             onSave
-             onSaveDraft
-           />
-         | BangCauHoi => <Q_Main onSave onSaveDraft />
-         | ChildOIDP => "Unhandled"->str
-         }}
-        <footer
-          className={Cn.make([
-            s##footer,
-            "flex items-center justify-between bg-light-1 px-3 py-2 border-t border-dark-4",
-          ])}>
-          <nav className="flex">
-            {state.tabs
-             ->Belt.List.map(tab =>
-                 <Pill
-                   key={tab.label}
-                   onClick={_ => send(ChangeTab(tab.name))}
-                   status={
-                            if (state.activeTab == tab.name) {
-                              `active;
-                            } else {
-                              switch (tab.data) {
-                              | NotSaved => `inactive
-                              | Draft(_) => `warning
-                              | Saved(_) => `success
-                              };
-                            }
+      {let onSave = data => send(OnSave(state.activeTab, data))
+       let onSaveDraft = data => send(OnSaveDraft(state.activeTab, data))
+       switch (state.activeTab) {
+       | PhieuDieuTra =>
+         <PDT_Main
+           initialValue={PDT_Main.emptyInitialValues()}
+           onSave
+           onSaveDraft
+         />
+       | BangCauHoi => <Q_Main onSave onSaveDraft />
+       | ChildOIDP => "Unhandled"->str
+       }}
+      <footer
+        className={Cn.make([
+          s##footer,
+          "flex items-center justify-between bg-light-1 px-3 py-2 border-t border-dark-4",
+        ])}>
+        <nav className="flex">
+          {state.tabs
+           ->Belt.List.map(tab =>
+               <Pill
+                 key={tab.label}
+                 onClick={_ => send(ChangeTab(tab.name))}
+                 status={
+                          if (state.activeTab == tab.name) {
+                            `active;
+                          } else {
+                            switch (tab.data) {
+                            | NotSaved => `inactive
+                            | Draft(_) => `warning
+                            | Saved(_) => `success
+                            };
                           }
-                   label={tab.label}
-                 />
-               )
-             ->reactList}
-          </nav>
-          <main id="footerAction" />
-        </footer>
-      </div>;
+                        }
+                 label={tab.label}
+               />
+             )
+           ->reactList}
+        </nav>
+        <main id="footerAction" />
+      </footer>
+    </div>;
   },
 };

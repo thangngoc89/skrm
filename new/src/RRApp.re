@@ -27,7 +27,7 @@ let make = _children => {
       {switch (state.route) {
        | Home => "Homepage"->str
        | Input => "Input"->str
-       | New => <App_New />
+       | New => <App_New_WithDatabase />
        | NotFound => "NotFound"->str
        }}
     </App_Layout>;

@@ -8,7 +8,6 @@ export default class MountPortal extends React.Component {
     };
   }
   componentDidMount() {
-    console.log(document.getElementById(this.props.id));
     this.setState({
       mounted: true,
     });

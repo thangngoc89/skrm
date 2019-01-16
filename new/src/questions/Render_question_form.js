@@ -3,16 +3,14 @@ import { Formik, Form } from "formik";
 import schema from "./data/Question_schema";
 import initialValues from "./data/Question_schema_initialValues";
 import RenderQuestion from "./Render_question";
-import { Box, Heading, Button } from "../components";
-import PhieuDieuTra from "../exam_form/PhieuDieuTra_Main";
+import { Box, Heading, Button, CheckBox } from "../components";
 import MountPortal from "../MountPortal";
 
-const RenderQuestionForm = ({ onSaveDraft, onSave }) => (
+const RenderQuestionForm = ({ onSave }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      onSave(values);
-      setSubmitting(false);
+      onSave(values, values.draft).then(() => setSubmitting(false));
     }}
   >
     {({
@@ -50,15 +48,15 @@ const RenderQuestionForm = ({ onSaveDraft, onSave }) => (
             );
           })}
         </Box>
+        <div style={{ height: "64px" }} />
         <MountPortal id="footerAction">
-          <Box justifyContent="end" direction="row" className="-mx-2">
-            <Button
-              plain
-              color="dark-3"
-              label="Lưu nháp"
-              type="submit"
-              className="mx-2"
-              onClick={_ => onSaveDraft(values)}
+          <Box justifyContent="end" direction="row" alignItems="center">
+            <CheckBox
+              value="draft"
+              label={"Lưu nháp"}
+              checked={values.draft}
+              onChange={e => setFieldValue("draft", e.target.checked)}
+              inverse={true}
             />
             <Button
               primary
@@ -66,6 +64,9 @@ const RenderQuestionForm = ({ onSaveDraft, onSave }) => (
               type="submit"
               className="mx-2"
               size="small"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+              color="white"
             />
           </Box>
         </MountPortal>

@@ -17,6 +17,7 @@ import {
 } from "./PDT_RenderTinhTrangNhuCau.gen";
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
+import { CheckBox as GCheckBox } from "grommet";
 
 yup.setLocale({
   mixed: {
@@ -187,7 +188,7 @@ function RenderRow({ row, setFieldValue }) {
           const { label, type, ...schemaMetadata } = schemaOfField;
 
           return (
-            <Box key={id} className={`flex-${size} mx-2`}>
+            <Box key={id} className={`flex-${size} lg:mx-2`}>
               <FastField
                 name={id}
                 render={({ field, form }) => {
@@ -357,7 +358,7 @@ const PhieuDieuTraForm = ({ initialValues = emptyInitialValues(), onSave }) => (
         return {};
       } else {
         return validationSchema
-          .cast(values, { abortEarly: false })
+          .validate(values, { abortEarly: false })
           .catch(error => {
             let messages = error.inner.reduce((acc, innerBag) => {
               return {
@@ -403,28 +404,27 @@ const PhieuDieuTraForm = ({ initialValues = emptyInitialValues(), onSave }) => (
             })}
           </Box>
 
-          <Box
-            justifyContent="end"
-            direction="row"
-            alignItems="center"
-            className="fixed pin-r pin-b w-full py-2 bg-light-1 border-t"
-          >
-            <CheckBox
-              value="draft"
-              label={"Lưu nháp"}
-              checked={values.draft}
-              onChange={e => setFieldValue("draft", e.target.checked)}
-            />
-            <Button
-              primary
-              label="Lưu"
-              type="submit"
-              className="mx-2"
-              size="small"
-              onClick={handleSubmit}
-              disabled={isSubmitting}
-            />
-          </Box>
+          <MountPortal id="footerAction">
+            <Box justifyContent="end" direction="row" alignItems="center">
+              <CheckBox
+                value="draft"
+                label={"Lưu nháp"}
+                checked={values.draft}
+                onChange={e => setFieldValue("draft", e.target.checked)}
+                inverse={true}
+              />
+              <Button
+                primary
+                label="Lưu"
+                type="submit"
+                className="mx-2"
+                size="small"
+                onClick={handleSubmit}
+                disabled={isSubmitting}
+                color="white"
+              />
+            </Box>
+          </MountPortal>
         </Form>
       );
     }}
@@ -434,7 +434,6 @@ const PhieuDieuTraForm = ({ initialValues = emptyInitialValues(), onSave }) => (
 const PhieuDieuTra = ({ initialValues, onSave }) => {
   return (
     <div>
-      
       <Box direction="row" alignContent="center" justifyContent="center">
         <Heading level={2} textAlign="center">
           Phiếu điều tra sức khỏe răng miệng <br />
@@ -444,6 +443,7 @@ const PhieuDieuTra = ({ initialValues, onSave }) => {
         </Heading>
       </Box>
       <PhieuDieuTraForm initialValues={initialValues} onSave={onSave} />
+      <div style={{ height: "64px" }} />
     </div>
   );
 };

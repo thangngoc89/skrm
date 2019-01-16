@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import ulid from "./ulid";
 import PhieuDieuTra from "./exam_form/PhieuDieuTra_Main";
+import BangCauHoi from "./questions/Render_question_form";
 import db from "./db";
 import { Box } from "grommet";
 
@@ -10,6 +11,34 @@ const stateComplete = "COMPLETE";
 const tabPhieuDieuTra = "phieuDieuTra";
 const tabBangCauHoi = "bangCauHoi";
 const tabChildOIDP = "childOIDP";
+
+const statusToColor = status => {
+  switch (status) {
+    case "success":
+      return "status-ok";
+    case "warning":
+      return "status-warning";
+    case "active":
+      return "brand";
+    case "error":
+      return "status-error";
+    case "inactive":
+      return "dark-4";
+    default:
+      return "";
+  }
+};
+const Pill = ({ label, status }) => {
+  let color = statusToColor(status);
+  let textColor = "text-" + color;
+  let bgColor = "bg-" + color;
+  return (
+    <button className={"flex flex-col mr-2 lg:mr-4 text-xs " + textColor}>
+      <div className="mb-1"> {label} </div>
+      <div className={"w-full h-1 rounded " + bgColor} />
+    </button>
+  );
+};
 
 const tabToName = tab => {
   switch (tab) {
@@ -50,8 +79,6 @@ class RecordNew extends Component {
     return (value, draft = false) => {
       let tabName = tabToName(tab);
 
-      console.log(db);
-
       return db
         .get(this.state.recordId)
         .catch(err => {
@@ -70,6 +97,9 @@ class RecordNew extends Component {
           };
           return db.put(doc);
         })
+        .then(() => {
+          this.nextTab();
+        })
         .catch(err => console.log(err));
     };
   };
@@ -77,9 +107,23 @@ class RecordNew extends Component {
   render() {
     const { currentTab } = this.state;
     return (
-      <Box fill>
-        {currentTab === 0 && <PhieuDieuTra onSave={this.handleSave(0)} />}
-      </Box>
+      <>
+        <Box style={{ WebkitOverflowScrolling: "touch" }} pad="medium">
+          {currentTab === 0 && <PhieuDieuTra onSave={this.handleSave(0)} />}
+          {currentTab === 1 && <BangCauHoi onSave={this.handleSave(0)} />}
+          {currentTab === 2 && "unimplemented"}
+        </Box>
+        <Box
+          className="fixed pin-b pin-r pin-l z-20"
+          background="brand"
+          justify="end"
+          direction="row"
+          align="center"
+          pad="xxsmall"
+        >
+          <div id="footerAction" />
+        </Box>
+      </>
     );
   }
 }

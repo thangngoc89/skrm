@@ -1,7 +1,8 @@
-import { Grommet, Box, ResponsiveContext } from "grommet";
+import { Box, Grommet, Button, Text, ResponsiveContext } from "grommet";
 import React, { useState } from "react";
 import RecordNew from "./RecordNew";
 import Sidebar from "./Sidebar";
+import { AppHeader } from "./AppHeader";
 
 const items = [
   {
@@ -24,24 +25,19 @@ const items = [
 ];
 
 const App = () => {
-  const [showSidebar, setShowSidebar] = useState(false);
-  const handleToggleSidebar = () => setShowSidebar(!showSidebar);
-
   return (
     <Grommet full>
       <ResponsiveContext.Consumer>
         {size => {
           return (
-            <Box fill>
+            <Box fill direction="column" flex>
+              <AppHeader appName="Quản lí dữ liệu SKRM" />
               <Box direction="row" flex>
-                {size !== "small" && (
-                  <Sidebar items={items} onChange={handleToggleSidebar} />
-                )}
-                {size === "small" && showSidebar && (
-                  <Sidebar items={items} onChange={handleToggleSidebar} />
-                )}
-
-                <Box flex>
+                <Box
+                  flex
+                  overflow="auto"
+                  style={{ WebkitOverflowScrolling: "touch" }}
+                >
                   <RecordNew />
                 </Box>
               </Box>

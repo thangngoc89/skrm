@@ -3,10 +3,24 @@ let s: Js.t('a) = [%raw {|require("./RadioButton_CheckBox.module.css")|}];
 let component = ReasonReact.statelessComponent("Checkbox");
 
 [@genType]
-let make = (~label, ~name, ~value, ~onChange, ~className=?, _children) => {
+let make =
+    (
+      ~label,
+      ~name,
+      ~value,
+      ~onChange,
+      ~inverse=false,
+      ~className=?,
+      _children,
+    ) => {
   ...component,
   render: _self => {
-    <label className={Cn.make([s##container, Cn.unpack(className)])}>
+    <label
+      className={Cn.make([
+        s##container,
+        Cn.ifTrue(s##inverse, inverse),
+        Cn.unpack(className),
+      ])}>
       label
       <input type_="checkbox" name value onChange />
       <span className={Cn.make([s##checkmark, s##checkbox])}>

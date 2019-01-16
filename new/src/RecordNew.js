@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import ulid from "./ulid";
 import PhieuDieuTra from "./exam_form/PhieuDieuTra_Main";
 import db from "./db";
-import { Layer } from "grommet";
+import { Box } from "grommet";
 
 const stateDraft = "DRAFT";
 const stateComplete = "COMPLETE";
@@ -77,7 +77,9 @@ class RecordNew extends Component {
   render() {
     const { currentTab } = this.state;
     return (
-      <>{currentTab === 0 && <PhieuDieuTra onSave={this.handleSave(0)} />}</>
+      <Box fill>
+        {currentTab === 0 && <PhieuDieuTra onSave={this.handleSave(0)} />}
+      </Box>
     );
   }
 }

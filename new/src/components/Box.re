@@ -16,12 +16,21 @@ type align = [
 
 let component = ReasonReact.statelessComponent("Box");
 
+let alignToString =
+  fun
+  | `start => "start"
+  | `end_ => "end"
+  | `center => "center"
+  | `between => "between"
+  | `around => "around";
+
 [@genType]
 let make =
     (
       ~direction: direction=`column,
-      ~alignContent: align=`start,
-      ~justifyContent: align=`start,
+      ~alignContent: option(align)=?,
+      ~justifyContent: option(align)=?,
+      ~alignItems: option(align)=?,
       ~className=?,
       children,
     ) => {
@@ -35,20 +44,15 @@ let make =
         | `column => "flex-col"
         | `row_responsive => "flex-col lg:flex-row"
         },
-        switch (alignContent) {
-        | `start => "content-start"
-        | `end_ => "content-end"
-        | `center => "content-center"
-        | `between => "content-between"
-        | `around => "content-around"
-        },
-        switch (justifyContent) {
-        | `start => "justify-start"
-        | `end_ => "justify-end"
-        | `center => "justify-center"
-        | `between => "justify-between"
-        | `around => "justify-around"
-        },
+        alignContent
+        ->Belt.Option.map(align => "content-" ++ alignToString(align))
+        ->Cn.unpack,
+        justifyContent
+        ->Belt.Option.map(align => "justify-" ++ alignToString(align))
+        ->Cn.unpack,
+        alignItems
+        ->Belt.Option.map(align => "items-" ++ alignToString(align))
+        ->Cn.unpack,
         Cn.unpack(className),
       ]);
     <div className> children </div>;

@@ -8,6 +8,7 @@ import {
   Select,
   FormField,
   TextInput,
+  CheckBox,
 } from "../components";
 import { format } from "date-fns";
 import {
@@ -338,20 +339,36 @@ const getValidationSchema = schema => {
   return yupSchema;
 };
 
-export const emptyInitialValues = () => getInitialValues(schema);
+export const emptyInitialValues = () => ({
+  ...getInitialValues(schema),
+  draft: false,
+});
 
-const PhieuDieuTraForm = ({
-  initialValues = emptyInitialValues(),
-  onSave,
-  onSaveDraft,
-}) => (
+const validationSchema = getValidationSchema(schema);
+
+const PhieuDieuTraForm = ({ initialValues = emptyInitialValues(), onSave }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      onSave(values);
-      setSubmitting(false);
+      onSave(values, values.draft).then(() => setSubmitting(false));
     }}
-    validationSchema={getValidationSchema(schema)}
+    validate={values => {
+      if (Boolean(values.draft)) {
+        return {};
+      } else {
+        return validationSchema
+          .cast(values, { abortEarly: false })
+          .catch(error => {
+            let messages = error.inner.reduce((acc, innerBag) => {
+              return {
+                ...acc,
+                [innerBag.path]: innerBag.message,
+              };
+            }, {});
+            throw messages;
+          });
+      }
+    }}
     validateOnBlur={true}
     validateOnChange={false}
   >
@@ -385,35 +402,39 @@ const PhieuDieuTraForm = ({
               );
             })}
           </Box>
-          <MountPortal id="footerAction">
-            <Box justifyContent="end" direction="row" className="-mx-2">
-              <Button
-                plain
-                color="dark-3"
-                label="Lưu nháp"
-                type="submit"
-                className="mx-2"
-                onClick={_ => onSaveDraft(values)}
-              />
-              <Button
-                primary
-                label="Lưu"
-                type="submit"
-                className="mx-2"
-                size="small"
-                onClick={handleSubmit}
-              />
-            </Box>
-          </MountPortal>
+
+          <Box
+            justifyContent="end"
+            direction="row"
+            alignItems="center"
+            className="fixed pin-r pin-b w-full py-2 bg-light-1 border-t"
+          >
+            <CheckBox
+              value="draft"
+              label={"Lưu nháp"}
+              checked={values.draft}
+              onChange={e => setFieldValue("draft", e.target.checked)}
+            />
+            <Button
+              primary
+              label="Lưu"
+              type="submit"
+              className="mx-2"
+              size="small"
+              onClick={handleSubmit}
+              disabled={isSubmitting}
+            />
+          </Box>
         </Form>
       );
     }}
   </Formik>
 );
 
-const PhieuDieuTra = ({ initialValues, onSave, onSaveDraft }) => {
+const PhieuDieuTra = ({ initialValues, onSave }) => {
   return (
     <div>
+      
       <Box direction="row" alignContent="center" justifyContent="center">
         <Heading level={2} textAlign="center">
           Phiếu điều tra sức khỏe răng miệng <br />
@@ -422,11 +443,7 @@ const PhieuDieuTra = ({ initialValues, onSave, onSaveDraft }) => {
           </span>
         </Heading>
       </Box>
-      <PhieuDieuTraForm
-        initialValues={initialValues}
-        onSave={onSave}
-        onSaveDraft={onSaveDraft}
-      />
+      <PhieuDieuTraForm initialValues={initialValues} onSave={onSave} />
     </div>
   );
 };

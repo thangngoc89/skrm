@@ -10,6 +10,7 @@
     "formik": "^1.4.1",
     "grommet": "^2.2.1",
     "idb": "^3.0.2",
+    "pouchdb": "^7.0.0",
     "re-classnames": "^3.0.0",
     "re-formality": "^1.1.1",
     "react": "^16.6.3",
@@ -18,6 +19,7 @@
     "react-scripts": "2.1.1",
     "reason-react": "https://github.com/reasonml/reason-react",
     "styled-components": "^4.1.3",
+    "ulid": "^2.3.0",
     "yup": "^0.26.6"
   },
   "scripts": {

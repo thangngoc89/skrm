@@ -1,10 +1,10 @@
 import { Grommet } from "grommet";
 import React from "react";
-import RRApp from "./RRApp.gen";
+import RecordNew from "./RecordNew";
 
 const App = () => (
   <Grommet>
-    <RRApp />
+    <RecordNew />
   </Grommet>
 );
 

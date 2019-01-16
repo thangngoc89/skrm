@@ -15,22 +15,7 @@ let make = (~name, ~version=1, ~upgradeDb, children) => {
   },
   didMount: ({send}) => {
     Js.Promise.(
-      Idb.Db.openDb(
-        name,
-        version,
-        [%bs.raw
-          {|
-      upgradeDB => {
-  console.log(upgradeDB.oldVersion);
-  switch (upgradeDB.oldVersion) {
-    case 0:
-      upgradeDB.createObjectStore('record');
-
-  }
-}
-      |}
-        ],
-      )
+      Idb.Db.openDb(name, version, upgradeDb)
       |> then_(db => send(SetDb(db)) |> resolve)
       |> catch(err => Js.log(err) |> resolve)
     )

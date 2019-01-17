@@ -3,7 +3,7 @@ import React from "react";
 import { Anchor, Box, Menu, ResponsiveContext, Text } from "grommet";
 import { navigate } from "@reach/router";
 
-export const AppHeader = ({ appName, appIcon, userSession, open }) => (
+export const AppHeader = ({ appName }) => (
   <Box
     flex={false}
     as="header"

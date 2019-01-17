@@ -1,7 +1,7 @@
 import { Box, Grommet, Button, Text, ResponsiveContext } from "grommet";
 import React, { useState } from "react";
 import RecordNew from "./RecordNew";
-import Sidebar from "./Sidebar";
+import RecordList from "./RecordList";
 import { AppHeader } from "./AppHeader";
 
 const items = [
@@ -35,7 +35,8 @@ const App = () => {
             overflow="auto"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
-            <RecordNew />
+            {/* <RecordNew />  */}
+            <RecordList />
           </Box>
         </Box>
       </Box>

@@ -4,13 +4,13 @@ import {Text as Text} from 'grommet';
 
 import * as React from 'react';
 
-const $$toJS206624078 = {"745566416": "start", "903023015": "center", "-94607159": "end"};
+const $$toJS943451479 = {"812216871": "normal", "-1055161979": "bold"};
 
-const $$toJS642172917 = {"812216871": "normal", "-1055161979": "bold"};
+const $$toJS41896662 = {"745566416": "start", "903023015": "center", "-94607159": "end"};
 
-const $$toJS750567599 = {"-634105323": "start", "326386882": "center", "1053490894": "end", "-826986888": "stretch"};
+const $$toJS806027553 = {"-634105323": "start", "326386882": "center", "1053490894": "end", "-826986888": "stretch"};
 
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(a11yTitle, alignSelf, color, gridArea, margin, size, textAlign, truncate, weight, level, as, children) { return ReasonReact.wrapJsForReason(Text, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS750567599[alignSelf]), color: color, gridArea: gridArea, margin: margin, size: size, textAlign: (textAlign == null ? textAlign : $$toJS206624078[textAlign]), truncate: truncate, weight: (weight == null ? weight : $$toJS642172917[weight]), level: level, as: as}, children); };
+export const make = function _(a11yTitle, alignSelf, color, gridArea, margin, size, textAlign, truncate, weight, level, as, children) { return ReasonReact.wrapJsForReason(Text, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS806027553[alignSelf]), color: color, gridArea: gridArea, margin: margin, size: size, textAlign: (textAlign == null ? textAlign : $$toJS41896662[textAlign]), truncate: truncate, weight: (weight == null ? weight : $$toJS943451479[weight]), level: level, as: as}, children); };

@@ -74,6 +74,7 @@ class RecordInput extends Component {
           {currentTab === 0 && <PhieuDieuTra onSave={this.handleSave(0)} />}
           {currentTab === 1 && <BangCauHoi onSave={this.handleSave(1)} />}
           {currentTab === 2 && "unimplemented"}
+          {currentTab === 3 && "Kiểm tra thông tin"}
         </Box>
         <Box
           className="fixed pin-b pin-r pin-l z-20"

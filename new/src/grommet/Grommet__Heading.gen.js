@@ -4,9 +4,9 @@ import {Heading as Heading} from 'grommet';
 
 import * as React from 'react';
 
-const $$toJS750567599 = {"-634105323": "start", "326386882": "center", "1053490894": "end", "-826986888": "stretch"};
+const $$toJS806027553 = {"-634105323": "start", "326386882": "center", "1053490894": "end", "-826986888": "stretch"};
 
 import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = function _(a11yTitle, alignSelf, color, gridArea, size, textAlign, level, className, children) { return ReasonReact.wrapJsForReason(Heading, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS750567599[alignSelf]), color: color, gridArea: gridArea, size: size, textAlign: textAlign, level: level, className: className}, children); };
+export const make = function _(a11yTitle, alignSelf, color, gridArea, size, textAlign, level, className, children) { return ReasonReact.wrapJsForReason(Heading, {a11yTitle: a11yTitle, alignSelf: (alignSelf == null ? alignSelf : $$toJS806027553[alignSelf]), color: color, gridArea: gridArea, size: size, textAlign: textAlign, level: level, className: className}, children); };

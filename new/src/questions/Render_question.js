@@ -95,7 +95,6 @@ const ControlledCheckBox = ({
     <CheckBox
       className="mb-2"
       name={name}
-      value={value}
       checked={arrayValue.indexOf(value) !== -1}
       label={<DottedLabel value={value} label={label} />}
       onChange={event => {

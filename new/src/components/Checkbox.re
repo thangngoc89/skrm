@@ -7,7 +7,7 @@ let make =
     (
       ~label,
       ~name,
-      ~value,
+      ~checked,
       ~onChange,
       ~inverse=false,
       ~className=?,
@@ -22,7 +22,7 @@ let make =
         Cn.unpack(className),
       ])}>
       label
-      <input type_="checkbox" name value onChange />
+      <input type_="checkbox" name onChange checked />
       <span className={Cn.make([s##checkmark, s##checkbox])}>
         <svg
           viewBox="0 0 24 24"

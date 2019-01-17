@@ -18,6 +18,7 @@
     "react": "^16.8.0-alpha.1",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.8.0-alpha.1",
+    "react-pouchdb": "^1.0.0-alpha.1",
     "react-scripts": "2.1.1",
     "reason-react": "git+https://github.com/reasonml/reason-react.git",
     "styled-components": "^4.1.3",

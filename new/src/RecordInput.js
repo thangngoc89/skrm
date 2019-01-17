@@ -34,8 +34,6 @@ class RecordInput extends Component {
     const currentTab = this.state.currentTab;
     if (currentTab < 2) {
       this.setState({ currentTab: currentTab + 1 });
-    } else {
-      this.handleSubmit();
     }
   };
 
@@ -67,12 +65,22 @@ class RecordInput extends Component {
   };
 
   render() {
-    const { currentTab } = this.state;
+    const { currentTab, recordValue } = this.state;
     return (
       <>
         <Box style={{ WebkitOverflowScrolling: "touch" }} pad="medium">
-          {currentTab === 0 && <PhieuDieuTra onSave={this.handleSave(0)} />}
-          {currentTab === 1 && <BangCauHoi onSave={this.handleSave(1)} />}
+          {currentTab === 0 && (
+            <PhieuDieuTra
+              initialValues={recordValue.phieuDieuTra}
+              onSave={this.handleSave(0)}
+            />
+          )}
+          {currentTab === 1 && (
+            <BangCauHoi
+              initialValues={recordValue.bangCauHoi}
+              onSave={this.handleSave(1)}
+            />
+          )}
           {currentTab === 2 && "unimplemented"}
           {currentTab === 3 && "Kiểm tra thông tin"}
         </Box>
@@ -102,46 +110,4 @@ class RecordInput extends Component {
   }
 }
 
-class RecordInputContainer extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      recordState: props.new
-        ? { type: "LOADED", value: { _id: props.id } }
-        : { type: "INITIAL" },
-    };
-  }
-
-  componentDidMount() {
-    if (!this.props.new) {
-      const recordId = this.props.id;
-      this.setState({ recordState: { type: "LOADING" } }, () => {
-        db.get(recordId)
-          .catch(err => {
-            if (err.name === "not_found") {
-              return {
-                _id: recordId,
-              };
-            } else {
-              throw err;
-            }
-          })
-          .then(doc =>
-            this.setState({ recordState: { type: "LOADED", value: doc } })
-          )
-          .catch(err => console.error(err));
-      });
-    }
-  }
-
-  render() {
-    switch (this.state.recordState.type) {
-      case "INITIAL":
-      case "LOADING":
-        return "Loading...";
-      case "LOADED":
-        return <RecordInput value={this.state.recordState.value} />;
-    }
-  }
-}
-export default RecordInputContainer;
+export default RecordInput;

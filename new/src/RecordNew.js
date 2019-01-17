@@ -4,7 +4,14 @@ import ulid from "./ulid";
 
 const RecordNew = () => {
   const id = ulid();
-  return <RecordInput id={id} key={id} new />;
+  return (
+    <RecordInput
+      key={id}
+      value={{
+        _id: id,
+      }}
+    />
+  );
 };
 
 export default RecordNew;

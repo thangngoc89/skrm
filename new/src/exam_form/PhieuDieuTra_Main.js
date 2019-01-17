@@ -340,14 +340,14 @@ const getValidationSchema = schema => {
   return yupSchema;
 };
 
-export const emptyInitialValues = () => ({
+export const blankInitialValues = () => ({
   ...getInitialValues(schema),
   draft: false,
 });
 
 const validationSchema = getValidationSchema(schema);
 
-const PhieuDieuTraForm = ({ initialValues = emptyInitialValues(), onSave }) => (
+const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
@@ -407,7 +407,6 @@ const PhieuDieuTraForm = ({ initialValues = emptyInitialValues(), onSave }) => (
           <MountPortal id="footerAction">
             <Box justifyContent="end" direction="row" alignItems="center">
               <CheckBox
-                value="draft"
                 label={"Lưu nháp"}
                 checked={values.draft}
                 onChange={e => setFieldValue("draft", e.target.checked)}

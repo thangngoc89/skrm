@@ -1,9 +1,12 @@
-import { Box, Grommet, Button, Text, ResponsiveContext } from "grommet";
-import React, { useState } from "react";
-import RecordNew from "./RecordNew";
-import RecordList from "./RecordManage";
+import { Router } from "@reach/router";
+import { Box, Grommet } from "grommet";
+import React, { Suspense } from "react";
+import { PouchDB } from "react-pouchdb";
 import { AppHeader } from "./AppHeader";
-import { Router, Link } from "@reach/router";
+import RecordList from "./RecordManage";
+import RecordNew from "./RecordNew";
+import RecordEdit from "./RecordEdit";
+import Spinner from "./Spinner";
 
 const items = [
   {
@@ -29,24 +32,29 @@ const Homepage = () => <div>Homepage</div>;
 
 const App = () => {
   return (
-    <Grommet full>
-      <Box fill direction="column" flex>
-        <AppHeader appName="Quản lí dữ liệu SKRM" />
-        <Box direction="row" flex>
-          <Box
-            flex
-            overflow="auto"
-            style={{ WebkitOverflowScrolling: "touch" }}
-          >
-            <Router>
-              <Homepage path="/" />
-              <RecordNew path="/new" />
-              <RecordList path="/manage" />
-            </Router>
+    <PouchDB name="hmong">
+      <Grommet full>
+        <Box fill direction="column" flex>
+          <AppHeader appName="Quản lí dữ liệu SKRM" />
+          <Box direction="row" flex>
+            <Box
+              flex
+              overflow="auto"
+              style={{ WebkitOverflowScrolling: "touch" }}
+            >
+              <Suspense fallback={<Spinner />}>
+                <Router>
+                  <Homepage path="/" />
+                  <RecordNew path="/new" />
+                  <RecordList path="/manage" />
+                  <RecordEdit path="/record/:recordId" />
+                </Router>
+              </Suspense>
+            </Box>
           </Box>
         </Box>
-      </Box>
-    </Grommet>
+      </Grommet>
+    </PouchDB>
   );
 };
 

@@ -1,15 +1,7 @@
 import React from "react";
 
-import {
-  Anchor,
-  Box,
-  DropButton,
-  Menu,
-  ResponsiveContext,
-  Text,
-  RoutedAnchor,
-} from "grommet";
-import { Link, navigate } from "@reach/router";
+import { Anchor, Box, Menu, ResponsiveContext, Text } from "grommet";
+import { navigate } from "@reach/router";
 
 export const AppHeader = ({ appName, appIcon, userSession, open }) => (
   <Box

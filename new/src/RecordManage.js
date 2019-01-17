@@ -1,4 +1,4 @@
-import { Box, DataTable } from "grommet";
+import { Box, DataTable, Heading, Text } from "grommet";
 import React, { Component } from "react";
 import db from "./db";
 import { Checkmark, Flag } from "grommet-icons";
@@ -45,7 +45,13 @@ export default class RecordList extends Component {
   }
   render() {
     return (
-      <Box align="center" pad="medium">
+      <Box pad="medium">
+        <Box margin={{ vertical: "large" }}>
+          <Heading level="1" align="left">
+            Quản lí hồ sơ
+          </Heading>
+          <Text size="large" color="dark-1">Liệt kê, sửa và tạo hồ sơ</Text>
+        </Box>
         <DataTable
           primaryKey="id"
           size="medium"

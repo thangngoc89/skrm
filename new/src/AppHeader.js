@@ -7,8 +7,9 @@ import {
   Menu,
   ResponsiveContext,
   Text,
+  RoutedAnchor,
 } from "grommet";
-import { Down } from "grommet-icons";
+import { Link, navigate } from "@reach/router";
 
 export const AppHeader = ({ appName, appIcon, userSession, open }) => (
   <Box
@@ -20,7 +21,6 @@ export const AppHeader = ({ appName, appIcon, userSession, open }) => (
     justify="between"
     responsive={false}
     elevation="xsmall"
-    className="z-30"
   >
     <Box
       pad={{ horizontal: "medium", vertical: "small" }}
@@ -39,8 +39,8 @@ export const AppHeader = ({ appName, appIcon, userSession, open }) => (
             dropAlign={{ right: "right", top: "top" }}
             label="Menu"
             items={[
-              { label: "Nhập mới", href: "#" },
-              { label: "Quản lí", href: "#" },
+              { label: "Thêm hồ sơ", onClick: () => navigate("/new") },
+              { label: "Quản lí", onClick: () => navigate("/manage") },
             ]}
           />
         ) : (
@@ -51,8 +51,24 @@ export const AppHeader = ({ appName, appIcon, userSession, open }) => (
             align="center"
             pad={{ horizontal: "small" }}
           >
-            <Anchor href="" label="Nhập mới" margin="small" />
-            <Anchor href="" label="Quản lí" margin="small" />
+            <Anchor
+              label="Thêm hồ sơ"
+              href="/new"
+              onClick={e => {
+                e.preventDefault();
+                navigate("/new");
+              }}
+              margin="small"
+            />
+            <Anchor
+              label="Quản lí"
+              href="/manage"
+              onClick={e => {
+                e.preventDefault();
+                navigate("/manage");
+              }}
+              margin="small"
+            />
           </Box>
         )
       }

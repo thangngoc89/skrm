@@ -106,28 +106,32 @@ class RecordInputContainer extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      recordState: { type: "INITIAL" },
+      recordState: props.new
+        ? { type: "LOADED", value: { _id: props.id } }
+        : { type: "INITIAL" },
     };
   }
 
   componentDidMount() {
-    const recordId = this.props.id;
-    this.setState({ recordState: { type: "LOADING" } }, () => {
-      db.get(recordId)
-        .catch(err => {
-          if (err.name === "not_found") {
-            return {
-              _id: recordId,
-            };
-          } else {
-            throw err;
-          }
-        })
-        .then(doc =>
-          this.setState({ recordState: { type: "LOADED", value: doc } })
-        )
-        .catch(err => console.error(err));
-    });
+    if (!this.props.new) {
+      const recordId = this.props.id;
+      this.setState({ recordState: { type: "LOADING" } }, () => {
+        db.get(recordId)
+          .catch(err => {
+            if (err.name === "not_found") {
+              return {
+                _id: recordId,
+              };
+            } else {
+              throw err;
+            }
+          })
+          .then(doc =>
+            this.setState({ recordState: { type: "LOADED", value: doc } })
+          )
+          .catch(err => console.error(err));
+      });
+    }
   }
 
   render() {

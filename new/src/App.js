@@ -1,8 +1,9 @@
 import { Box, Grommet, Button, Text, ResponsiveContext } from "grommet";
 import React, { useState } from "react";
 import RecordNew from "./RecordNew";
-import RecordList from "./RecordList";
+import RecordList from "./RecordManage";
 import { AppHeader } from "./AppHeader";
+import { Router, Link } from "@reach/router";
 
 const items = [
   {
@@ -24,6 +25,8 @@ const items = [
   },
 ];
 
+const Homepage = () => <div>Homepage</div>;
+
 const App = () => {
   return (
     <Grommet full>
@@ -35,8 +38,11 @@ const App = () => {
             overflow="auto"
             style={{ WebkitOverflowScrolling: "touch" }}
           >
-            {/* <RecordNew />  */}
-            <RecordList />
+            <Router>
+              <Homepage path="/" />
+              <RecordNew path="/new" />
+              <RecordList path="/manage" />
+            </Router>
           </Box>
         </Box>
       </Box>

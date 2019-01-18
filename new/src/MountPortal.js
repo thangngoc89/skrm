@@ -14,7 +14,7 @@ export default class MountPortal extends React.Component {
     });
   }
   render() {
-    return this.state.mounted
+    return this.state.mounted && document.getElementById(this.props.id)
       ? ReactDOM.createPortal(
           this.props.children,
           document.getElementById(this.props.id)

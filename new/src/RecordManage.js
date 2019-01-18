@@ -9,8 +9,6 @@ const RenderFormStatus = ({ status }) => {
     case "COMPLETE":
       return <Checkmark color="status-ok" />;
     case "DRAFT":
-      return <Alert color="status-warning" />;
-    case "EMPTY":
       return <Clear color="dark-3" />;
     default:
       return status;
@@ -24,18 +22,14 @@ const RenderEmptyText = ({ value, ...props }) => {
     return <Text {...props}>{value}</Text>;
   }
 };
-const toStatus = draft => {
-  switch (typeof draft) {
-    case "boolean":
-      if (draft) {
-        return "DRAFT";
-      } else {
-        return "COMPLETE";
-      }
-    default:
-      return "EMPTY";
+const toStatus = complete => {
+  if (typeof complete === "boolean" && complete) {
+    return "COMPLETE";
+  } else {
+    return "DRAFT";
   }
 };
+
 export default class RecordList extends Component {
   constructor(props) {
     super(props);
@@ -57,8 +51,8 @@ export default class RecordList extends Component {
           hoVaTen: phieuDieuTra.hoVaTen,
           nguoiKham: phieuDieuTra.nguoiKham,
           soHoSo: phieuDieuTra.soHoSo,
-          phieuDieuTra: toStatus(phieuDieuTra.draft),
-          bangCauHoi: toStatus(bangCauHoi.draft),
+          phieuDieuTra: toStatus(phieuDieuTra.complete),
+          bangCauHoi: toStatus(bangCauHoi.complete),
         };
       });
 
@@ -88,17 +82,12 @@ export default class RecordList extends Component {
             <Checkmark color="status-ok" />
             Hoàn tất
           </Box>
-
           <Box direction="row" align="center" gap="xsmall">
-            <Alert color="status-warning" /> Nháp
-          </Box>
-          <Box direction="row" align="center" gap="xsmall">
-            <Clear color="dark-3" /> Chưa điền
+            <Clear color="dark-3" /> Chưa hoàn tất
           </Box>
         </Box>
         <DataTable
           primaryKey="id"
-          size="medium"
           columns={[
             {
               property: "soHoSo",

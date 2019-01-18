@@ -2,48 +2,48 @@ import React, { Component } from "react";
 import PhieuDieuTra from "./exam_form/PhieuDieuTra_Main";
 import BangCauHoi from "./questions/Render_question_form";
 import db from "./db";
-import { Box, Text } from "grommet";
+import { Box, Select } from "grommet";
 
 const tabPhieuDieuTra = "phieuDieuTra";
 const tabBangCauHoi = "bangCauHoi";
 const tabChildOIDP = "childOIDP";
 
-const tabToName = tab => {
-  switch (tab) {
-    case 0:
-      return tabPhieuDieuTra;
-    case 1:
-      return tabBangCauHoi;
-    case 2:
-      return tabChildOIDP;
-    default:
-      throw new Error("Unknown tab id");
-  }
-};
+const tabs = [
+  { label: "Phiếu điều tra", value: tabPhieuDieuTra },
+  { label: "Bảng câu hỏi", value: tabBangCauHoi },
+  { label: "Child-OIDP", value: tabChildOIDP },
+];
 
 class RecordInput extends Component {
   constructor(props) {
     super(props);
     this.state = {
       recordValue: props.value,
-      currentTab: 0,
+      currentTab: tabs[0],
     };
   }
 
+  changeTab = tab => {
+    this.setState({ currentTab: tab });
+  };
+
   nextTab = () => {
     const currentTab = this.state.currentTab;
-    if (currentTab < 2) {
-      this.setState({ currentTab: currentTab + 1 });
+    const currentTabIndex = tabs.findIndex(
+      ({ value }) => value === currentTab.value
+    );
+    if (currentTabIndex < 2) {
+      this.setState({ currentTab: tabs[currentTabIndex + 1] });
     }
   };
 
-  handleSave = tab => {
-    return (value, draft = false) => {
-      let tabName = tabToName(tab);
-
+  handleSave = tabName => {
+    return (value, autosave = false) => {
       let doc = this.state.recordValue;
 
-      doc[tabName] = value;
+      let tabValue = !autosave ? { ...value, complete: true } : value;
+
+      doc[tabName] = tabValue;
 
       return db
         .put(doc)
@@ -56,7 +56,9 @@ class RecordInput extends Component {
               },
             },
             () => {
-              this.nextTab();
+              if (!autosave) {
+                this.nextTab();
+              }
             }
           );
         })
@@ -66,46 +68,51 @@ class RecordInput extends Component {
 
   render() {
     const { currentTab, recordValue } = this.state;
+    const { value: currentTabValue } = currentTab;
     return (
-      <>
-        <Box style={{ WebkitOverflowScrolling: "touch" }} pad="medium">
-          {currentTab === 0 && (
-            <PhieuDieuTra
-              initialValues={recordValue.phieuDieuTra}
-              onSave={this.handleSave(0)}
-            />
-          )}
-          {currentTab === 1 && (
-            <BangCauHoi
-              initialValues={recordValue.bangCauHoi}
-              onSave={this.handleSave(1)}
-            />
-          )}
-          {currentTab === 2 && "unimplemented"}
-          {currentTab === 3 && "Kiểm tra thông tin"}
-        </Box>
+      <Box fill>
         <Box
-          className="fixed pin-b pin-r pin-l z-20"
           background="brand"
-          justify="between"
+          pad={{ horizontal: "medium", vertical: "small" }}
           direction="row"
+          justify="between"
           align="center"
-          pad={{
-            left: "medium",
-            top: "xxsmall",
-            bottom: "xxsmall",
-            right: "xxsmall",
-          }}
         >
-          <Text weight="bold">
-            {currentTab === 0 && "Phiếu điều tra"}
-            {currentTab === 1 && "Bảng câu hỏi"}
-            {currentTab === 2 && "Child-OIDP"}
-            {currentTab === 3 && "Kiểm tra thông tin"}
-          </Text>
+          <Select
+            id="select"
+            name="select"
+            placeholder="Select"
+            options={tabs}
+            valueKey="value"
+            labelKey="label"
+            value={currentTab}
+            onChange={({ option }) => {
+              this.changeTab(option);
+            }}
+          />
           <div id="footerAction" />
         </Box>
-      </>
+        <Box
+          fill
+          style={{ WebkitOverflowScrolling: "touch" }}
+          pad="medium"
+          overflow="auto"
+        >
+          {currentTabValue === tabPhieuDieuTra && (
+            <PhieuDieuTra
+              initialValues={recordValue.phieuDieuTra}
+              onSave={this.handleSave(tabPhieuDieuTra)}
+            />
+          )}
+          {currentTabValue === tabBangCauHoi && (
+            <BangCauHoi
+              initialValues={recordValue.bangCauHoi}
+              onSave={this.handleSave(tabBangCauHoi)}
+            />
+          )}
+          {currentTabValue === tabChildOIDP && "unimplemented"}
+        </Box>
+      </Box>
     );
   }
 }

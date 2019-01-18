@@ -6,15 +6,11 @@ import RecordInput from "./RecordInput";
 const RecordEdit = ({ recordId }) => {
   const doc = useGet({ id: recordId });
 
-  return (
-    <Box>
-      {!doc ? (
-        "Không tìm thấy hồ sơ với id " + recordId
-      ) : (
-        <RecordInput value={doc} />
-      )}
-    </Box>
-  );
+  if (!doc) {
+    return "Không tìm thấy hồ sơ với id " + recordId;
+  } else {
+    return <RecordInput value={doc} />;
+  }
 };
 
 export default RecordEdit;

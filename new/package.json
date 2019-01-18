@@ -12,6 +12,7 @@
     "grommet": "^2.3.1",
     "grommet-icons": "^4.1.0",
     "idb": "^3.0.2",
+    "lodash": "^4.17.11",
     "pouchdb": "^7.0.0",
     "re-classnames": "^3.0.0",
     "re-formality": "^1.1.1",

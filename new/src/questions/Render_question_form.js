@@ -3,16 +3,16 @@ import { Formik, Form } from "formik";
 import schema from "./data/Question_schema";
 import blankInitialValues from "./data/Question_schema_initialValues";
 import RenderQuestion from "./Render_question";
-import { Box, Heading, Button, CheckBox } from "../components";
+import { Box, Heading, Button } from "../components";
 import MountPortal from "../MountPortal";
+import FormikAutosave from "../FormikAutosave";
 
 const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
-  
   return (
     <Formik
       initialValues={initialValues}
       onSubmit={(values, { setSubmitting }) => {
-        onSave(values, values.draft).then(() => setSubmitting(false));
+        onSave(values, false).then(() => setSubmitting(false));
       }}
     >
       {({
@@ -50,24 +50,35 @@ const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
               );
             })}
           </Box>
-          <div style={{ height: "64px" }} />
+
           <MountPortal id="footerAction">
             <Box justifyContent="end" direction="row" alignItems="center">
-              <CheckBox
-                label={"Lưu nháp"}
-                checked={values.draft}
-                onChange={e => setFieldValue("draft", e.target.checked)}
-                inverse={true}
+              <FormikAutosave
+                values={values}
+                render={({ type }) => {
+                  switch (type) {
+                    case "INITIAL":
+                      return null;
+                    case "SAVING":
+                      return "Đang lưu";
+                    case "SUCCESS":
+                      return "Đã lưu";
+                    case "ERROR":
+                      return "Có lỗi xảy ra khi lưu";
+                  }
+                }}
+                onSave={value => onSave(value, true)}
               />
               <Button
                 primary
-                label="Lưu"
+                label="Kiểm tra"
                 type="submit"
-                className="mx-2"
                 size="small"
+                className="font-bold"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
                 color="white"
+                margin={{ left: "small" }}
               />
             </Box>
           </MountPortal>

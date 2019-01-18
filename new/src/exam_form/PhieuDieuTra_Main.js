@@ -1,5 +1,4 @@
 import React from "react";
-
 import { Formik, Form, FastField } from "formik";
 import {
   Box,
@@ -17,7 +16,7 @@ import {
 } from "./PDT_RenderTinhTrangNhuCau.gen";
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
-import { CheckBox as GCheckBox } from "grommet";
+import FormikAutosave from "../FormikAutosave";
 
 yup.setLocale({
   mixed: {
@@ -340,10 +339,7 @@ const getValidationSchema = schema => {
   return yupSchema;
 };
 
-export const blankInitialValues = () => ({
-  ...getInitialValues(schema),
-  draft: false,
-});
+export const blankInitialValues = () => getInitialValues(schema);
 
 const validationSchema = getValidationSchema(schema);
 
@@ -353,23 +349,7 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
     onSubmit={(values, { setSubmitting }) => {
       onSave(values, values.draft).then(() => setSubmitting(false));
     }}
-    validate={values => {
-      if (Boolean(values.draft)) {
-        return {};
-      } else {
-        return validationSchema
-          .validate(values, { abortEarly: false })
-          .catch(error => {
-            let messages = error.inner.reduce((acc, innerBag) => {
-              return {
-                ...acc,
-                [innerBag.path]: innerBag.message,
-              };
-            }, {});
-            throw messages;
-          });
-      }
-    }}
+    validationSchema={validationSchema}
     validateOnBlur={true}
     validateOnChange={false}
   >
@@ -406,21 +386,32 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
 
           <MountPortal id="footerAction">
             <Box justifyContent="end" direction="row" alignItems="center">
-              <CheckBox
-                label={"Lưu nháp"}
-                checked={values.draft}
-                onChange={e => setFieldValue("draft", e.target.checked)}
-                inverse={true}
+              <FormikAutosave
+                values={values}
+                render={({ type }) => {
+                  switch (type) {
+                    case "INITIAL":
+                      return null;
+                    case "SAVING":
+                      return "Đang lưu";
+                    case "SUCCESS":
+                      return "Đã lưu";
+                    case "ERROR":
+                      return "Có lỗi xảy ra khi lưu";
+                  }
+                }}
+                onSave={value => onSave(value, true)}
               />
               <Button
                 primary
-                label="Lưu"
+                label="Kiểm tra"
                 type="submit"
-                className="mx-2"
                 size="small"
+                className="font-bold"
                 onClick={handleSubmit}
                 disabled={isSubmitting}
                 color="white"
+                margin={{ left: "small" }}
               />
             </Box>
           </MountPortal>
@@ -442,7 +433,6 @@ const PhieuDieuTra = ({ initialValues, onSave }) => {
         </Heading>
       </Box>
       <PhieuDieuTraForm initialValues={initialValues} onSave={onSave} />
-      <div style={{ height: "64px" }} />
     </div>
   );
 };

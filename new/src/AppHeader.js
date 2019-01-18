@@ -16,7 +16,6 @@ export const AppHeader = ({ appName }) => (
   >
     <Box
       pad={{ horizontal: "medium", vertical: "small" }}
-      responsive={false}
       direction="row"
       align="center"
       gap="small"

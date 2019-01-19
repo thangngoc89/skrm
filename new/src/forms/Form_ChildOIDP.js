@@ -1,11 +1,33 @@
 import React from "react";
-import { Formik, Form, FastField } from "formik";
+import { Formik, Form, FastField, Field } from "formik";
 import { Box, Heading, Text } from "grommet";
-import { RadioGroup } from "../components";
+import { RadioGroup, SelectGroup } from "../components";
 
 const blankInitialValues = {
   coKhoChiu: null,
+  lietke: [],
 };
+
+const lietke = [
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  99,
+].map(a => ({ label: `${a}. lorem ipsum`, value: a }));
 
 const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
   <Formik
@@ -53,7 +75,7 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
                         { label: "Có", value: "1" },
                         { label: "Không", value: "0" },
                       ]}
-                      onChange={value => setFieldValue("coKhoChiu", value)}
+                      onChange={value => setFieldValue(field.name, value)}
                       direction="row"
                       gap="medium"
                       margin={{ vertical: "small" }}
@@ -71,6 +93,21 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
                 <Text size="large" level={2}>
                   Liệt kê các khó chịu
                 </Text>
+                <Field
+                  name="lietke"
+                  render={({ field }) => {
+                    return (
+                      <SelectGroup
+                        name={field.name}
+                        value={field.value}
+                        options={lietke}
+                        onChange={value => setFieldValue(field.name, value)}
+                        gap="medium"
+                        margin={{ vertical: "small" }}
+                      />
+                    );
+                  }}
+                />
               </Box>
             )}
           </Form>

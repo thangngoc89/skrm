@@ -1,14 +1,15 @@
 import React from "react";
 import { Formik, Form, FastField, Field } from "formik";
 import { Box, Heading, Text } from "grommet";
-import { RadioGroup, SelectGroup } from "../components";
+import { RadioGroup, SelectGroup, TextInput } from "../components";
 
 const blankInitialValues = {
-  coKhoChiu: null,
-  lietke: [],
+  coKhoChiu: "1",
+  lietke: ["99"],
+  lietkeCustom: "",
 };
 
-const lietke = [
+const lietkeOptions = [
   1,
   2,
   3,
@@ -27,8 +28,41 @@ const lietke = [
   16,
   17,
   99,
-].map(a => ({ label: `${a}. lorem ipsum`, value: a }));
+].map(a => ({ label: `${a}. lorem ipsum`, value: String(a) }));
 
+const lietkeName = "lietke";
+const lietkeCustomName = "lietkeCustom";
+const Part2 = ({ setFieldValue, lietke, lietkeCustom }) => {
+  return (
+    <Box>
+      <Heading level="2" color="brand">
+        Phần 2
+      </Heading>
+      <Text size="large" level={2}>
+        Liệt kê các khó chịu
+      </Text>
+
+      <SelectGroup
+        name={lietkeName}
+        value={lietke}
+        options={lietkeOptions}
+        onChange={value => setFieldValue(lietkeName, value)}
+        gap="small"
+        margin={{ vertical: "small" }}
+      />
+
+      {lietke.indexOf("99") !== -1 && (
+        <TextInput
+          value={lietkeCustom}
+          className="p-2"
+          onChange={event => {
+            setFieldValue(lietkeCustomName, event.target.value);
+          }}
+        />
+      )}
+    </Box>
+  );
+};
 const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
   <Formik
     initialValues={initialValues}
@@ -86,29 +120,11 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
             </Box>
 
             {values.coKhoChiu === "1" && (
-              <Box>
-                <Heading level="2" color="brand">
-                  Phần 2
-                </Heading>
-                <Text size="large" level={2}>
-                  Liệt kê các khó chịu
-                </Text>
-                <Field
-                  name="lietke"
-                  render={({ field }) => {
-                    return (
-                      <SelectGroup
-                        name={field.name}
-                        value={field.value}
-                        options={lietke}
-                        onChange={value => setFieldValue(field.name, value)}
-                        gap="medium"
-                        margin={{ vertical: "small" }}
-                      />
-                    );
-                  }}
-                />
-              </Box>
+              <Part2
+                setFieldValue={setFieldValue}
+                lietke={values.lietke}
+                lietkeCustom={values.lietkeCustom}
+              />
             )}
           </Form>
         </Box>

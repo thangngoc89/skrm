@@ -25,7 +25,7 @@ const SelectGroup = ({
               } else {
                 const idx = groupValue.indexOf(value);
                 onChange([
-                  ...groupValue.slice(0, idx - 1),
+                  ...groupValue.slice(0, idx),
                   ...groupValue.slice(idx + 1),
                 ]);
               }

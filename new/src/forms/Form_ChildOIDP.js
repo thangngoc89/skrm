@@ -1,5 +1,5 @@
 import React from "react";
-import { Formik, Form, FastField } from "formik";
+import { Formik, Form, Field, FastField } from "formik";
 import { Box, Heading, Text } from "grommet";
 import { RadioGroup, SelectGroup, TextInput, DottedLabel } from "../components";
 
@@ -133,33 +133,48 @@ const levelOptions = [
   { label: "2", value: "2" },
   { label: "3", value: "3" },
 ];
-const Part3 = ({ values }) => {
+
+const Part3 = ({ values, selected }) => {
+  console.log(selected);
   return (
     <Section>
       <Title title="Phần 3" subtitle="Phiếu ghi nhận chỉ số Child-OIDP" />
 
-      <table className="Form-table Form-table-khochiu">
+      <table className="w-full table-auto my-4">
         <thead>
-          <tr>
-            <th>Các hoạt động</th>
-            <th>Mức trầm trọng</th>
-            <th>Tần suất</th>
-            <th>Nguyên nhân</th>
+          <tr className="h-12 border-b-2">
+            <th scope="col" className="font-bold center">
+              Các hoạt động
+            </th>
+            <th scope="col" className="font-bold center">
+              Mức trầm trọng
+            </th>
+            <th scope="col" className="font-bold center">
+              Tần suất
+            </th>
+            <th scope="col" className="font-bold center">
+              Nguyên nhân
+            </th>
           </tr>
         </thead>
         <tbody>
           {hoatDong.map(row => {
             return (
-              <tr key={row.value}>
-                <td>
-                  {row.label} <br /> {row.secondaryLabel}
+              <tr
+                key={row.value}
+                className="border-b border-light-6 hover:bg-light-1"
+              >
+                <td scope="row" className="py-4">
+                  <strong>{row.label}</strong>
+                  <br /> {row.secondaryLabel}
                 </td>
                 <td>
-                  <FastField
+                  <Field
                     name={`${row.value}-mucdo`}
                     render={({ field, form: { setFieldValue } }) => {
                       return (
                         <RadioGroup
+                          name={field.name}
                           onChange={value => {
                             setFieldValue(field.name, value);
                           }}
@@ -168,14 +183,14 @@ const Part3 = ({ values }) => {
                           direction="row"
                           justify="center"
                           flex
-                          gap="medium"
+                          gap="small"
                         />
                       );
                     }}
                   />
                 </td>
                 <td>
-                  <FastField
+                  <Field
                     name={`${row.value}-tansuat`}
                     render={({ field, form: { setFieldValue } }) => {
                       const mucdo = values[`${row.value}-mucdo`];
@@ -184,6 +199,7 @@ const Part3 = ({ values }) => {
                       }
                       return (
                         <RadioGroup
+                          name={field.name}
                           onChange={value => {
                             setFieldValue(field.name, value);
                           }}
@@ -192,23 +208,32 @@ const Part3 = ({ values }) => {
                           direction="row"
                           justify="center"
                           flex
-                          gap="medium"
+                          gap="small"
                         />
                       );
                     }}
                   />
                 </td>
-                <td>
-                  <FastField
+                <td className="max-w-xs">
+                  <Field
                     name={`${row.value}-nguyennhan`}
                     render={({ field, form: { setFieldValue } }) => {
                       const mucdo = values[`${row.value}-mucdo`];
                       const tanso = values[`${row.value}-tansuat`];
-                      const selectedTags = values[`${row.value}-nguyennhan`];
+
                       if (!(mucdo !== 0 && tanso !== 0)) {
                         return null;
                       }
-                      return "foo";
+                      return (
+                        <SelectGroup
+                          name={field.name}
+                          options={selected}
+                          value={field.value}
+                          onChange={value => setFieldValue(field.name, value)}
+                          gap="small"
+                          margin={{ vertical: "small" }}
+                        />
+                      );
                     }}
                   />
                 </td>
@@ -237,10 +262,10 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
       isSubmitting,
       setFieldValue,
     }) => {
+      const selected = values.lietke;
       return (
         <Box pad="medium">
           <Form>
-            <Part3 values={values} />
             <Section margin={{ bottom: "large" }}>
               <Heading level="1" textAlign="center">
                 Bảng câu hỏi về những khó chịu từ răng miệng
@@ -279,6 +304,12 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
                   setFieldValue={setFieldValue}
                   lietke={values.lietke}
                   lietkeCustom={values.lietkeCustom}
+                />
+                <Part3
+                  values={values}
+                  selected={lietkeOptions.filter(
+                    ({ value }) => selected.indexOf(value) !== -1
+                  )}
                 />
               </>
             )}

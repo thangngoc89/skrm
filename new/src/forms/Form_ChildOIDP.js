@@ -7,7 +7,7 @@ import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
 import { hoatDong, lietkeOptions } from "./Form_ChildOIDP_data";
 
-const blankInitialValues = {
+export const blankInitialValues = {
   coKhoChiu: null,
   lietke: [],
   lietkeCustom: "",
@@ -222,85 +222,7 @@ const findLabelFromId = id => {
   return row.label;
 };
 
-const handleValidation = values =>
-  new Promise((resolve, reject) => {
-    if (values.coKhoChiu !== "1" && values.coKhoChiu !== "0") {
-      raiseError("Phần 1", `Chưa chọn có khó chịu hay không`);
-      return reject();
-    }
 
-    const processedValues = {
-      ...values,
-    };
-    const cacKhoChiu = processedValues.lietke;
-    const khoChiu_tuBangNguyenNhan = new Set();
-
-    if (Array.isArray(cacKhoChiu) && cacKhoChiu.length === 0) {
-      raiseError("Phần 2", "Phải chọn ít nhất 1 nguyên nhân");
-      return reject();
-    }
-
-    for (let i = 1; i <= 8; i++) {
-      const keyMucdo = i + "-mucdo";
-      const keyTansuat = i + "-tansuat";
-      const keyNguyenNhan = i + "-nguyennhan";
-
-      const valueMucdo = processedValues[keyMucdo];
-      const valueTansuat = processedValues[keyTansuat];
-      const valueNguyenNhan = processedValues[keyNguyenNhan];
-
-      const label = findLabelFromId(String(i));
-
-      /*
-       * Nguyên nhân
-       */
-      if (valueMucdo === null) {
-        raiseError("Chọn mức trầm trọng", label);
-        return reject();
-      }
-      // Có mức độ, thiếu tần suất
-      if (valueTansuat === 0) {
-        raiseError("Chọn tần suất", label);
-        // Reset tần suất, nguyên nhân khi mức độ = 0
-        processedValues[keyTansuat] = "0";
-        processedValues[keyNguyenNhan] = [];
-        return reject();
-      }
-      // Có mức độ và tần số, thiếu  nguyên nhân
-      if (valueNguyenNhan.length === 0) {
-        const label = findLabelFromId(String(i));
-        raiseError("Chọn nguyên nhân", label);
-        return reject();
-      }
-
-      /*
-       * Đảm bảo các nguyên nhân của hoạt động này
-       * chỉ nằm trong các nguyên nhân được liệt kê
-       * Tránh trường hợp chọn ở liệt kê => chọn nguyên nhân
-       * => bỏ chọn liệt kê => nguyên nhân chưa được bỏ chọn
-       */
-      const newNguyenNhan = valueNguyenNhan.filter(
-        nguyennhan => cacKhoChiu.indexOf(nguyennhan) !== -1
-      );
-
-      processedValues[keyNguyenNhan] = newNguyenNhan;
-
-      // Thỏa mọi điều kiện, thêm nguyên nhân vào Set
-      newNguyenNhan.forEach(nguyennhan => {
-        khoChiu_tuBangNguyenNhan.add(nguyennhan);
-      });
-    }
-
-    /* Các khó chịu đã chọn ở trên mà chưa được đánh vào mục nguyên nhân */
-    for (let i = 0; i < cacKhoChiu.length; i++) {
-      const khochiu = cacKhoChiu[i];
-      if (!khoChiu_tuBangNguyenNhan.has(khochiu)) {
-        raiseError(`Khó chịu số ${khochiu} chưa được chọn ở mục nguyên nhân`);
-        return reject();
-      }
-    }
-    return resolve(processedValues);
-  });
 
 const noop = function() {
   return new Promise(resolve => resolve());

@@ -21,9 +21,46 @@ export const SUCCESS = value => ({
   value,
 });
 
+export const REQUIRED = {
+  type: "REQUIRED",
+};
+
 const truthyLevel = ["1", "2", "3"];
+
 const isTruthyLevel = level => {
   return truthyLevel.indexOf(level) !== -1;
+};
+
+export const validateHoatdong = ({
+  mucdo,
+  tansuat,
+  nguyennhan,
+  keyMucdo,
+  keyTansuat,
+  keyNguyenNhan,
+  lietke,
+}) => {
+  if (mucdo === "0") {
+    return {};
+  } else if (mucdo === null) {
+    return { [keyMucdo]: REQUIRED };
+  } else {
+    if (!isTruthyLevel(tansuat)) {
+      return { [keyTansuat]: REQUIRED };
+    } else if (nguyennhan.length === 0) {
+      return { [keyNguyenNhan]: REQUIRED };
+    } else {
+      /* Filter unselected NGUYENNHAN */
+      const nguyennhanFiltered = nguyennhan.filter(
+        n => lietke.indexOf(n) !== -1
+      );
+
+      if (nguyennhanFiltered.length === 0) {
+        return { [keyNguyenNhan]: REQUIRED };
+      }
+      return {};
+    }
+  }
 };
 /*
  * @return
@@ -37,79 +74,37 @@ const isTruthyLevel = level => {
  */
 export const validate = values => {
   if (values.coKhoChiu !== "1" && values.coKhoChiu !== "0") {
-    return PART_1_REQUIRED;
+    return { coKhoChiu: REQUIRED };
   } else if (values.coKhoChiu === "0") {
-    return SUCCESS(values);
+    return {};
   }
 
-  const processedValues = {
-    ...values,
-  };
-  const cacKhoChiu = processedValues.lietke;
-  const khoChiu_tuBangNguyenNhan = new Set();
+  const lietke = values.lietke;
 
-  if (Array.isArray(cacKhoChiu) && cacKhoChiu.length === 0) {
-    return PART_2_REQUIRED;
+  if (Array.isArray(lietke) && lietke.length === 0) {
+    return { lietke: REQUIRED };
+  } else if (lietke.indexOf("99") !== -1 && lietke.lietkeCustom === "") {
+    return { lietkeCustom: REQUIRED };
   }
 
-  for (let i = 1; i <= 8; i++) {
+  return [1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, i) => {
     const keyMucdo = i + "-mucdo";
     const keyTansuat = i + "-tansuat";
     const keyNguyenNhan = i + "-nguyennhan";
 
-    const valueMucdo = processedValues[keyMucdo];
-    const valueTansuat = processedValues[keyTansuat];
-    const valueNguyenNhan = processedValues[keyNguyenNhan];
+    const valueMucdo = values[keyMucdo];
+    const valueTansuat = values[keyTansuat];
+    const valueNguyenNhan = values[keyNguyenNhan];
 
-    /*
-     * Nguyên nhân
-     */
-    if (valueMucdo === null) {
-      return REQUIRED_MUCDO(i);
-    }
-    // Có mức độ, thiếu tần suất
-    if (valueMucdo !== "0" && !isTruthyLevel(valueTansuat)) {
-      // Reset tần suất, nguyên nhân khi mức độ = 0
-      processedValues[keyTansuat] = "0";
-      processedValues[keyNguyenNhan] = [];
-      return REQUIRED_TANSUAT(i);
-    } else if (
-      // Có mức độ và tần số, thiếu  nguyên nhân
-      valueMucdo !== "0" &&
-      valueTansuat !== "0" &&
-      valueNguyenNhan.length === 0
-    ) {
-      return REQUIRED_NGUYENNHAN(i);
-    } else {
-      /*
-       * Đảm bảo các nguyên nhân của hoạt động này
-       * chỉ nằm trong các nguyên nhân được liệt kê
-       * Tránh trường hợp chọn ở liệt kê => chọn nguyên nhân
-       * => bỏ chọn liệt kê => nguyên nhân chưa được bỏ chọn
-       */
-      const newNguyenNhan = valueNguyenNhan.filter(
-        nguyennhan => cacKhoChiu.indexOf(nguyennhan) !== -1
-      );
-
-      if (newNguyenNhan.length === 0) {
-        return REQUIRED_NGUYENNHAN(i);
-      }
-
-      processedValues[keyNguyenNhan] = newNguyenNhan;
-
-      // Thỏa mọi điều kiện, thêm nguyên nhân vào Set
-      newNguyenNhan.forEach(nguyennhan => {
-        khoChiu_tuBangNguyenNhan.add(nguyennhan);
-      });
-    }
-  }
-
-  /* Các khó chịu đã chọn ở trên mà chưa được đánh vào mục nguyên nhân */
-  for (let i = 0; i < cacKhoChiu.length; i++) {
-    const khochiu = cacKhoChiu[i];
-    if (!khoChiu_tuBangNguyenNhan.has(khochiu)) {
-      return UNSASTIFIED_SUM_NGUYENNHAN(khochiu);
-    }
-  }
-  return resolve(processedValues);
+    const result = validateHoatdong({
+      mucdo: valueMucdo,
+      tansuat: valueTansuat,
+      nguyennhan: valueNguyenNhan,
+      keyMucdo,
+      keyTansuat,
+      keyNguyenNhan,
+      lietke: values.lietke,
+    });
+    return { ...acc, ...result };
+  }, {});
 };

@@ -222,8 +222,6 @@ const findLabelFromId = id => {
   return row.label;
 };
 
-
-
 const noop = function() {
   return new Promise(resolve => resolve());
 };
@@ -255,6 +253,7 @@ const FormChildOIDP = ({
       isSubmitting,
       setFieldValue,
     }) => {
+      console.log(values);
       const selected = values.lietke;
       return (
         <Box pad="medium">

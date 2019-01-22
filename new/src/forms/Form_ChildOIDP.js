@@ -4,32 +4,32 @@ import { Box, Heading, Text } from "grommet";
 import { RadioGroup, SelectGroup, TextInput, DottedLabel } from "../components";
 
 const blankInitialValues = {
-  coKhoChiu: "1",
-  lietke: ["99"],
+  coKhoChiu: null,
+  lietke: [],
   lietkeCustom: "",
-  "1-mucdo": "0",
-  "1-tansuat": "0",
+  "1-mucdo": null,
+  "1-tansuat": null,
   "1-nguyennhan": [],
-  "2-mucdo": "0",
-  "2-tansuat": "0",
+  "2-mucdo": null,
+  "2-tansuat": null,
   "2-nguyennhan": [],
-  "3-mucdo": "0",
-  "3-tansuat": "0",
+  "3-mucdo": null,
+  "3-tansuat": null,
   "3-nguyennhan": [],
-  "4-mucdo": "0",
-  "4-tansuat": "0",
+  "4-mucdo": null,
+  "4-tansuat": null,
   "4-nguyennhan": [],
-  "5-mucdo": "0",
-  "5-tansuat": "0",
+  "5-mucdo": null,
+  "5-tansuat": null,
   "5-nguyennhan": [],
-  "6-mucdo": "0",
-  "6-tansuat": "0",
+  "6-mucdo": null,
+  "6-tansuat": null,
   "6-nguyennhan": [],
-  "7-mucdo": "0",
-  "7-tansuat": "0",
+  "7-mucdo": null,
+  "7-tansuat": null,
   "7-nguyennhan": [],
-  "8-mucdo": "0",
-  "8-tansuat": "0",
+  "8-mucdo": null,
+  "8-tansuat": null,
   "8-nguyennhan": [],
 };
 
@@ -217,7 +217,7 @@ const Part3 = ({ values, selected }) => {
                     name={`${row.value}-tansuat`}
                     render={({ field, form: { setFieldValue } }) => {
                       const mucdo = values[`${row.value}-mucdo`];
-                      if (mucdo === "0") {
+                      if (["1", "2", "3"].indexOf(mucdo) === -1) {
                         return null;
                       }
                       return (
@@ -243,7 +243,7 @@ const Part3 = ({ values, selected }) => {
                     render={({ field, form: { setFieldValue } }) => {
                       const mucdo = values[`${row.value}-mucdo`];
 
-                      if (mucdo === "0") {
+                      if (["1", "2", "3"].indexOf(mucdo) === -1) {
                         return null;
                       }
                       return (
@@ -267,6 +267,75 @@ const Part3 = ({ values, selected }) => {
     </Section>
   );
 };
+
+const handleValidation = values => {
+  if (values.coKhoChiu !== "1" || values.coKhoChiu !== "0") {
+    message.error(`Chọn có khó chịu hay không`);
+    setSubmitting(false);
+    return;
+  }
+  const processedValues = {
+    ...values,
+  };
+  const cacKhoChiu = processedValues["liet-ke-kho-chiu"];
+  const khoChiu_tuBangNguyenNhan = new Set();
+  for (let i = 1; i <= 8; i++) {
+    const keyMucdo = i + "-mucdo";
+    const keyTansuat = i + "-tansuat";
+    const keyNguyenNhan = i + "-nguyennhan";
+
+    const valueMucdo = processedValues[keyMucdo];
+    const valueTansuat = processedValues[keyTansuat];
+    const valueNguyenNhan = processedValues[keyNguyenNhan];
+
+    /*
+     * Nguyen nhan
+     */
+    // Có mức độ mà chưa đánh tần suất
+    if (valueMucdo !== 0 && valueTansuat === 0) {
+      const label = findLabelFromId(i);
+      message.error(`${label} chưa chọn tần suất`);
+      setSubmitting(false);
+      return;
+    }
+    // Reset tần suất về 0 khi mức độ về 0
+    else if (valueMucdo === 0 && valueTansuat !== 0) {
+      processedValues[keyTansuat] = 0;
+    }
+    // Có mức độ và tần số mà chưa đánh nguyên nhân
+    else if (
+      valueMucdo !== 0 &&
+      valueTansuat !== 0 &&
+      valueNguyenNhan.length === 0
+    ) {
+      const label = findLabelFromId(i);
+      message.error(`${label} chưa chọn nguyên nhân`);
+      setSubmitting(false);
+      return;
+    } else {
+      const newNguyenNhan = valueNguyenNhan.filter(
+        nguyennhan => cacKhoChiu.indexOf(nguyennhan) !== -1
+      );
+      processedValues[keyNguyenNhan] = newNguyenNhan;
+      newNguyenNhan.forEach(nguyennhan => {
+        khoChiu_tuBangNguyenNhan.add(nguyennhan);
+      });
+    }
+  }
+
+  /* Các khó chịu đã chọn ở trên mà chưa được đánh vào mục nguyên nhân */
+  for (let i = 0; i < cacKhoChiu.length; i++) {
+    const khochiu = cacKhoChiu[i];
+    if (!khoChiu_tuBangNguyenNhan.has(khochiu)) {
+      message.error(`Khó chịu số ${khochiu} chưa được chọn ở mục nguyên nhân`);
+      setSubmitting(false);
+      return;
+    }
+  }
+  props.done(processedValues);
+  setSubmitting(false);
+};
+
 const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
   <Formik
     initialValues={initialValues}

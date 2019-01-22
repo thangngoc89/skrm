@@ -159,6 +159,6 @@ describe("part 3", () => {
       "8-tansuat": "1",
       "8-nguyennhan": ["1"],
     };
-    expect(validate(values)).toEqual("foo");
+    expect(validate(values)).toEqual(["4"]);
   });
 });

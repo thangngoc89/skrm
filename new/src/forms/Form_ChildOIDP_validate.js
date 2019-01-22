@@ -87,7 +87,7 @@ export const validate = values => {
     return { lietkeCustom: REQUIRED };
   }
 
-  return [1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, i) => {
+  const result = [1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, i) => {
     const keyMucdo = i + "-mucdo";
     const keyTansuat = i + "-tansuat";
     const keyNguyenNhan = i + "-nguyennhan";
@@ -107,4 +107,20 @@ export const validate = values => {
     });
     return { ...acc, ...result };
   }, {});
+
+  if (Object.keys(result).length !== 0) {
+    return {
+      type: "VALIDATE_ERROR",
+      value: result,
+    };
+  } else {
+    /* NGUYENNHAN exhaustiveness check */
+    const selectedSet = new Set();
+    [1, 2, 3, 4, 5, 6, 7, 8].forEach(i => {
+      const rowSelect = values[`${i}-nguyennhan`];
+      rowSelect.forEach(a => selectedSet.add(a));
+    });
+    const unexhaustiveValues = values.lietke.filter(a => !selectedSet.has(a));
+    return { type: "EXHAUSTIVE_CHECK", value: unexhaustiveValues };
+  }
 };

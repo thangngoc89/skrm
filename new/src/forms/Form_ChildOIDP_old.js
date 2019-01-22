@@ -2,6 +2,8 @@ import React, { Fragment } from "react";
 import { withFormik, FastField } from "formik";
 import { Form, Input, Button, Row, Radio, Checkbox, Tag, message } from "antd";
 
+import ButterToast, { Cinnamon } from "butter-toast";
+
 const CheckableTag = Tag.CheckableTag;
 const RadioGroup = Radio.Group;
 const CheckboxGroup = Checkbox.Group;

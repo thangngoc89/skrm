@@ -1,7 +1,10 @@
 import React from "react";
 import { Formik, Form, Field, FastField } from "formik";
-import { Box, Heading, Text } from "grommet";
+import { Box, Heading, Text, Button } from "grommet";
 import { RadioGroup, SelectGroup, TextInput, DottedLabel } from "../components";
+import ButterToast, { Cinnamon } from "butter-toast";
+import MountPortal from "../MountPortal";
+import FormikAutosave from "../FormikAutosave";
 
 const blankInitialValues = {
   coKhoChiu: null,
@@ -268,80 +271,116 @@ const Part3 = ({ values, selected }) => {
   );
 };
 
-const handleValidation = values => {
-  if (values.coKhoChiu !== "1" || values.coKhoChiu !== "0") {
-    message.error(`Chọn có khó chịu hay không`);
-    setSubmitting(false);
-    return;
-  }
-  const processedValues = {
-    ...values,
-  };
-  const cacKhoChiu = processedValues["liet-ke-kho-chiu"];
-  const khoChiu_tuBangNguyenNhan = new Set();
-  for (let i = 1; i <= 8; i++) {
-    const keyMucdo = i + "-mucdo";
-    const keyTansuat = i + "-tansuat";
-    const keyNguyenNhan = i + "-nguyennhan";
-
-    const valueMucdo = processedValues[keyMucdo];
-    const valueTansuat = processedValues[keyTansuat];
-    const valueNguyenNhan = processedValues[keyNguyenNhan];
-
-    /*
-     * Nguyen nhan
-     */
-    // Có mức độ mà chưa đánh tần suất
-    if (valueMucdo !== 0 && valueTansuat === 0) {
-      const label = findLabelFromId(i);
-      message.error(`${label} chưa chọn tần suất`);
-      setSubmitting(false);
-      return;
-    }
-    // Reset tần suất về 0 khi mức độ về 0
-    else if (valueMucdo === 0 && valueTansuat !== 0) {
-      processedValues[keyTansuat] = 0;
-    }
-    // Có mức độ và tần số mà chưa đánh nguyên nhân
-    else if (
-      valueMucdo !== 0 &&
-      valueTansuat !== 0 &&
-      valueNguyenNhan.length === 0
-    ) {
-      const label = findLabelFromId(i);
-      message.error(`${label} chưa chọn nguyên nhân`);
-      setSubmitting(false);
-      return;
-    } else {
-      const newNguyenNhan = valueNguyenNhan.filter(
-        nguyennhan => cacKhoChiu.indexOf(nguyennhan) !== -1
-      );
-      processedValues[keyNguyenNhan] = newNguyenNhan;
-      newNguyenNhan.forEach(nguyennhan => {
-        khoChiu_tuBangNguyenNhan.add(nguyennhan);
-      });
-    }
-  }
-
-  /* Các khó chịu đã chọn ở trên mà chưa được đánh vào mục nguyên nhân */
-  for (let i = 0; i < cacKhoChiu.length; i++) {
-    const khochiu = cacKhoChiu[i];
-    if (!khoChiu_tuBangNguyenNhan.has(khochiu)) {
-      message.error(`Khó chịu số ${khochiu} chưa được chọn ở mục nguyên nhân`);
-      setSubmitting(false);
-      return;
-    }
-  }
-  props.done(processedValues);
-  setSubmitting(false);
+const raiseError = (title, content) => {
+  ButterToast.raise({
+    sticky: true,
+    content: (
+      <Cinnamon.Crunch
+        title={title}
+        content={content}
+        scheme={Cinnamon.Crunch.SCHEME_RED}
+      />
+    ),
+  });
 };
 
-const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
+const findLabelFromId = id => {
+  const row = lietkeOptions.find(row => row.value === id);
+  console.log(id);
+  return row.label;
+};
+
+const handleValidation = values =>
+  new Promise((resolve, reject) => {
+    if (values.coKhoChiu !== "1" && values.coKhoChiu !== "0") {
+      raiseError("Phần 1", `Chưa chọn có khó chịu hay không`);
+      return reject();
+    }
+
+    const processedValues = {
+      ...values,
+    };
+    const cacKhoChiu = processedValues.lietke;
+    const khoChiu_tuBangNguyenNhan = new Set();
+
+    if (Array.isArray(cacKhoChiu) && cacKhoChiu.length === 0) {
+      raiseError("Phần 2", "Phải chọn ít nhất 1 nguyên nhân");
+      return reject();
+    }
+
+    for (let i = 1; i <= 8; i++) {
+      const keyMucdo = i + "-mucdo";
+      const keyTansuat = i + "-tansuat";
+      const keyNguyenNhan = i + "-nguyennhan";
+
+      const valueMucdo = processedValues[keyMucdo];
+      const valueTansuat = processedValues[keyTansuat];
+      const valueNguyenNhan = processedValues[keyNguyenNhan];
+
+      /*
+       * Nguyen nhan
+       */
+      // Có mức độ mà chưa đánh tần suất
+      if (valueMucdo !== 0 && valueTansuat === 0) {
+        const label = findLabelFromId(String(i));
+        raiseError("Thiếu tần suất", label);
+        return reject();
+      }
+      // Reset tần suất về 0 khi mức độ về 0
+      else if (valueMucdo === 0 && valueTansuat !== 0) {
+        processedValues[keyTansuat] = 0;
+      }
+      // Có mức độ và tần số mà chưa đánh nguyên nhân
+      else if (
+        valueMucdo !== 0 &&
+        valueTansuat !== 0 &&
+        valueNguyenNhan.length === 0
+      ) {
+        const label = findLabelFromId(String(i));
+        raiseError("Thiếu nguyên nhân", label);
+        return reject();
+      } else {
+        const newNguyenNhan = valueNguyenNhan.filter(
+          nguyennhan => cacKhoChiu.indexOf(nguyennhan) !== -1
+        );
+        processedValues[keyNguyenNhan] = newNguyenNhan;
+        newNguyenNhan.forEach(nguyennhan => {
+          khoChiu_tuBangNguyenNhan.add(nguyennhan);
+        });
+      }
+    }
+
+    /* Các khó chịu đã chọn ở trên mà chưa được đánh vào mục nguyên nhân */
+    for (let i = 0; i < cacKhoChiu.length; i++) {
+      const khochiu = cacKhoChiu[i];
+      if (!khoChiu_tuBangNguyenNhan.has(khochiu)) {
+        raiseError(`Khó chịu số ${khochiu} chưa được chọn ở mục nguyên nhân`);
+        return reject();
+      }
+    }
+    return resolve(processedValues);
+  });
+
+const noop = function() {
+  return new Promise(resolve => resolve());
+};
+const FormChildOIDP = ({
+  initialValues = blankInitialValues,
+  onSave = noop,
+}) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      onSave(values, values.draft).then(() => setSubmitting(false));
+      handleValidation(values)
+        .then(values => onSave(values, values.draft))
+        .then(() => setSubmitting(false))
+        .catch(err => {
+          setSubmitting(false);
+          console.log(err);
+        });
     }}
+    validateOnChange={false}
+    validateOnBlur={false}
   >
     {({
       values,
@@ -354,10 +393,40 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
       setFieldValue,
     }) => {
       const selected = values.lietke;
-      console.log(values);
       return (
         <Box pad="medium">
           <Form>
+            <MountPortal id="footerAction">
+              <Box justifyContent="end" direction="row" alignItems="center">
+                <FormikAutosave
+                  values={values}
+                  render={({ type }) => {
+                    switch (type) {
+                      case "INITIAL":
+                        return null;
+                      case "SAVING":
+                        return "Đang lưu";
+                      case "SUCCESS":
+                        return "Đã lưu";
+                      case "ERROR":
+                        return "Có lỗi xảy ra khi lưu";
+                    }
+                  }}
+                  onSave={value => onSave(value, true)}
+                />
+                <Button
+                  primary
+                  label="Kiểm tra"
+                  type="submit"
+                  size="small"
+                  className="font-bold"
+                  onClick={handleSubmit}
+                  disabled={isSubmitting}
+                  color="white"
+                  margin={{ left: "small" }}
+                />
+              </Box>
+            </MountPortal>
             <Section margin={{ bottom: "large" }}>
               <Heading level="1" textAlign="center">
                 Bảng câu hỏi về những khó chịu từ răng miệng

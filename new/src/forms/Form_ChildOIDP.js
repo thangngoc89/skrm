@@ -7,6 +7,30 @@ const blankInitialValues = {
   coKhoChiu: "1",
   lietke: ["99"],
   lietkeCustom: "",
+  "1-mucdo": "0",
+  "1-tansuat": "0",
+  "1-nguyennhan": [],
+  "2-mucdo": "0",
+  "2-tansuat": "0",
+  "2-nguyennhan": [],
+  "3-mucdo": "0",
+  "3-tansuat": "0",
+  "3-nguyennhan": [],
+  "4-mucdo": "0",
+  "4-tansuat": "0",
+  "4-nguyennhan": [],
+  "5-mucdo": "0",
+  "5-tansuat": "0",
+  "5-nguyennhan": [],
+  "6-mucdo": "0",
+  "6-tansuat": "0",
+  "6-nguyennhan": [],
+  "7-mucdo": "0",
+  "7-tansuat": "0",
+  "7-nguyennhan": [],
+  "8-mucdo": "0",
+  "8-tansuat": "0",
+  "8-nguyennhan": [],
 };
 
 const lietkeOptions = [
@@ -135,12 +159,11 @@ const levelOptions = [
 ];
 
 const Part3 = ({ values, selected }) => {
-  console.log(selected);
   return (
     <Section>
       <Title title="Phần 3" subtitle="Phiếu ghi nhận chỉ số Child-OIDP" />
 
-      <table className="w-full table-auto my-4">
+      <table className="w-full table-fixed my-4">
         <thead>
           <tr className="h-12 border-b-2">
             <th scope="col" className="font-bold center">
@@ -194,7 +217,7 @@ const Part3 = ({ values, selected }) => {
                     name={`${row.value}-tansuat`}
                     render={({ field, form: { setFieldValue } }) => {
                       const mucdo = values[`${row.value}-mucdo`];
-                      if (mucdo === 0) {
+                      if (mucdo === "0") {
                         return null;
                       }
                       return (
@@ -219,9 +242,8 @@ const Part3 = ({ values, selected }) => {
                     name={`${row.value}-nguyennhan`}
                     render={({ field, form: { setFieldValue } }) => {
                       const mucdo = values[`${row.value}-mucdo`];
-                      const tanso = values[`${row.value}-tansuat`];
 
-                      if (!(mucdo !== 0 && tanso !== 0)) {
+                      if (mucdo === "0") {
                         return null;
                       }
                       return (
@@ -263,6 +285,7 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
       setFieldValue,
     }) => {
       const selected = values.lietke;
+      console.log(values);
       return (
         <Box pad="medium">
           <Form>

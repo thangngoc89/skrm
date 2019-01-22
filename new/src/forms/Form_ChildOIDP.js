@@ -151,7 +151,9 @@ const Part3 = ({ values }) => {
           {hoatDong.map(row => {
             return (
               <tr key={row.value}>
-                <td>{row.label}</td>
+                <td>
+                  {row.label} <br /> {row.secondaryLabel}
+                </td>
                 <td>
                   <FastField
                     name={`${row.value}-mucdo`}
@@ -163,6 +165,10 @@ const Part3 = ({ values }) => {
                           }}
                           options={levelOptions}
                           value={field.value}
+                          direction="row"
+                          justify="center"
+                          flex
+                          gap="medium"
                         />
                       );
                     }}
@@ -183,6 +189,10 @@ const Part3 = ({ values }) => {
                           }}
                           options={levelOptions}
                           value={field.value}
+                          direction="row"
+                          justify="center"
+                          flex
+                          gap="medium"
                         />
                       );
                     }}
@@ -230,6 +240,7 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
       return (
         <Box pad="medium">
           <Form>
+            <Part3 values={values} />
             <Section margin={{ bottom: "large" }}>
               <Heading level="1" textAlign="center">
                 Bảng câu hỏi về những khó chịu từ răng miệng
@@ -269,7 +280,6 @@ const FormChildOIDP = ({ initialValues = blankInitialValues, onSave }) => (
                   lietke={values.lietke}
                   lietkeCustom={values.lietkeCustom}
                 />
-                <Part3 values={values} />
               </>
             )}
           </Form>

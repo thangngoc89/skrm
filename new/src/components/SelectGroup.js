@@ -6,7 +6,7 @@ const SelectGroup = ({
   options,
   name,
   onChange,
-
+  label: RenderLabel,
   value: groupValue = [],
   ...props
 }) => {
@@ -17,7 +17,9 @@ const SelectGroup = ({
           <CheckBox
             key={value + label}
             name={name}
-            label={label}
+            label={
+              RenderLabel ? <RenderLabel label={label} value={value} /> : label
+            }
             checked={groupValue.indexOf(value) !== -1}
             onChange={event => {
               if (event.target.checked) {

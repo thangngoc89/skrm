@@ -1,14 +1,12 @@
 import React from "react";
 import { FastField } from "formik";
-import { Box, TextInput, CheckBox, RadioButton } from "../components";
-
-const DottedLabel = ({ value, label }) => (
-  <Box direction="row" alignContent="end" className="w-full">
-    {label}
-    <span className="flex-1 border-b border-dotted border-dark-3 mx-2 mb-1" />
-    {value}
-  </Box>
-);
+import {
+  Box,
+  TextInput,
+  CheckBox,
+  RadioButton,
+  DottedLabel,
+} from "../components";
 
 const RenderQuestionHeader = function({ id, question }) {
   return (

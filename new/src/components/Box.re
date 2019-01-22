@@ -55,6 +55,6 @@ let make =
         ->Cn.unpack,
         Cn.unpack(className),
       ]);
-    <div className> children </div>;
+    <div className> ...children </div>;
   },
 };

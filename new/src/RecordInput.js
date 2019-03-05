@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import PhieuDieuTra from "./exam_form/PhieuDieuTra_Main";
 import BangCauHoi from "./questions/Render_question_form";
+import ChildOIDP from "./forms/Form_ChildOIDP";
+
 import db from "./db";
 import { Box, Select } from "grommet";
 
@@ -19,7 +21,7 @@ class RecordInput extends Component {
     super(props);
     this.state = {
       recordValue: props.value,
-      currentTab: tabs[0],
+      currentTab: tabs[2],
     };
   }
 
@@ -74,7 +76,7 @@ class RecordInput extends Component {
         <Box
           background="brand"
           pad={{ horizontal: "medium", vertical: "small" }}
-          direction="row"
+          direction="row-responsive"
           justify="between"
           align="center"
         >
@@ -90,7 +92,7 @@ class RecordInput extends Component {
               this.changeTab(option);
             }}
           />
-          <div id="footerAction" />
+          <div id="footerAction" className="mt-2 mb-4 md:m-0" />
         </Box>
         <Box
           fill
@@ -110,7 +112,12 @@ class RecordInput extends Component {
               onSave={this.handleSave(tabBangCauHoi)}
             />
           )}
-          {currentTabValue === tabChildOIDP && "unimplemented"}
+          {currentTabValue === tabChildOIDP && (
+            <ChildOIDP
+              initialValues={recordValue.childOIDP}
+              onSave={this.handleSave(tabChildOIDP)}
+            />
+          )}
         </Box>
       </Box>
     );

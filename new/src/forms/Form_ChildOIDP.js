@@ -1,11 +1,18 @@
 import React from "react";
 import { Formik, Form, Field, FastField } from "formik";
-import { Box, Heading, Text, Button } from "grommet";
-import { RadioGroup, SelectGroup, TextInput, DottedLabel } from "../components";
+import { Box as GBox, Heading, Text, Button } from "grommet";
+import {
+  RadioGroup,
+  SelectGroup,
+  TextInput,
+  DottedLabel,
+  Box,
+} from "../components";
 import ButterToast, { Cinnamon } from "butter-toast";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
 import { hoatDong, lietkeOptions } from "./Form_ChildOIDP_data";
+import { validate as handleValidation } from "./Form_ChildOIDP_validate";
 
 export const blankInitialValues = {
   coKhoChiu: null,
@@ -55,9 +62,9 @@ const Title = ({ title, subtitle }) => {
 
 const Section = ({ children, ...props }) => {
   return (
-    <Box as="section" margin={{ bottom: "large" }} {...props}>
+    <GBox as="section" margin={{ bottom: "large" }} {...props}>
       {children}
-    </Box>
+    </GBox>
   );
 };
 const Part2 = ({ setFieldValue, lietke, lietkeCustom }) => {
@@ -256,7 +263,7 @@ const FormChildOIDP = ({
       console.log(values);
       const selected = values.lietke;
       return (
-        <Box pad="medium">
+        <Box>
           <Form>
             <MountPortal id="footerAction">
               <Box justifyContent="end" direction="row" alignItems="center">
@@ -289,11 +296,12 @@ const FormChildOIDP = ({
                 />
               </Box>
             </MountPortal>
-            <Section margin={{ bottom: "large" }}>
-              <Heading level="1" textAlign="center">
+
+            <Box direction="row" justifyContent="center" className="mb-6 lg:mb-12">
+              <Heading level={2} textAlign="center" size="medium">
                 Bảng câu hỏi về những khó chịu từ răng miệng
               </Heading>
-            </Section>
+            </Box>
 
             <Section>
               <Title
@@ -328,12 +336,14 @@ const FormChildOIDP = ({
                   lietke={values.lietke}
                   lietkeCustom={values.lietkeCustom}
                 />
-                <Part3
-                  values={values}
-                  selected={lietkeOptions.filter(
-                    ({ value }) => selected.indexOf(value) !== -1
-                  )}
-                />
+                {Boolean(values.lietke.length) && (
+                  <Part3
+                    values={values}
+                    selected={lietkeOptions.filter(
+                      ({ value }) => selected.indexOf(value) !== -1
+                    )}
+                  />
+                )}
               </>
             )}
           </Form>

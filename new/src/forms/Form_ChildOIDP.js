@@ -134,7 +134,9 @@ const Part3 = ({ values, selected }) => {
                 className="border-b border-light-6 hover:bg-light-1"
               >
                 <td scope="row" className="py-4">
-                  <strong>{row.label}</strong>
+                  <strong>
+                    {row.value}. {row.label}
+                  </strong>
                   <br /> {row.secondaryLabel}
                 </td>
                 <td>
@@ -239,6 +241,15 @@ const itemIdToName = id => {
     case "lietkeCustom":
       return "Khó chịu khác - Phần 2";
     default:
+      const value = hoatDong.find(row => row.value === id.slice(0, 1));
+
+      if (/^[1-8]-mucdo$/.test(id)) {
+        return `Mức độ ${id.slice(0, 1)} - ${value && value.label}`;
+      } else if (/^[1-8]-nguyennhan$/.test(id)) {
+        return `Nguyên nhân ${id.slice(0, 1)} - ${value && value.label}`;
+      } else if (/^[1-8]-tansuat$/.test(id)) {
+        return `Tần suất ${id.slice(0, 1)} - ${value && value.label}`;
+      }
       return id;
   }
 };
@@ -249,7 +260,6 @@ const FormChildOIDP = ({
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      console.log(values);
       new Promise((resolve, reject) => {
         const validateResult = handleValidation(values);
         if (validateResult.type === "SUCCESS") {
@@ -257,18 +267,30 @@ const FormChildOIDP = ({
           resolve(values);
         } else if (validateResult.type === "REQUIRED") {
           notify.error("Các mục dưới đây chưa hoàn tất", () => (
-            <div>
+            <ul>
               {validateResult.value.map(item => (
-                <p key={item}> {itemIdToName(item)} </p>
+                <li key={item} className="py-2">
+                  {itemIdToName(item)}
+                </li>
               ))}
-            </div>
+            </ul>
           ));
           reject(validateResult);
         } else if (validateResult.type === "EXHAUSTIVE_CHECK") {
-          notify.error(
-            "EXHAUSTIVE_CHECK",
-            () => "Vui lòng chọn ít nhất một khó chịu ở phần 2"
-          );
+          console.log(validateResult.value);
+          notify.error("Chưa chọn đủ các nguyên nhân khó chịu", () => (
+            <div>
+              Các khó chịu dưới đây phải nguyên nhân gây khó chịu của ít nhất
+              một hoạt động
+              <ul>
+                {validateResult.value.map(item => (
+                  <li key={item} className="py-2">
+                    {lietkeOptions.find(row => row.value === item).label}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ));
           reject(validateResult);
         } else {
           notify.error("Có lỗi xảy ra", () =>

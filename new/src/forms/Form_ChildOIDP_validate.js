@@ -1,3 +1,5 @@
+import { lastDayOfISOYear } from "date-fns";
+
 export const PART_1_REQUIRED = { type: "PART_1_REQUIRED" };
 export const PART_2_REQUIRED = { type: "PART_2_REQUIRED" };
 export const REQUIRED_MUCDO = value => ({
@@ -39,6 +41,7 @@ export const validateHoatdong = ({
   keyNguyenNhan,
   lietke,
 }) => {
+  console.log(mucdo);
   if (mucdo === "0") {
     return [];
   } else if (mucdo === null) {
@@ -69,7 +72,8 @@ export const validate = values => {
     return {
       type: "REQUIRED",
       value: ["coKhoChiu"],
-    };  } else if (values.coKhoChiu === "0") {
+    };
+  } else if (values.coKhoChiu === "0") {
     return SUCCESS;
   }
 
@@ -80,11 +84,13 @@ export const validate = values => {
       type: "REQUIRED",
       value: ["lietke"],
     };
-  } else if (lietke.indexOf("99") !== -1 && lietke.lietkeCustom === "") {
+  }
+  console.log(lietke);
+  if (lietke.indexOf("99") !== -1 && values.lietkeCustom === "") {
     required.push("lietkeCustom");
   }
 
-  const result = [1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, i) => {
+  [1, 2, 3, 4, 5, 6, 7, 8].forEach(i => {
     const keyMucdo = i + "-mucdo";
     const keyTansuat = i + "-tansuat";
     const keyNguyenNhan = i + "-nguyennhan";
@@ -102,10 +108,8 @@ export const validate = values => {
       keyNguyenNhan,
       lietke: values.lietke,
     });
-    return [...acc, ...result];
-  }, []);
-
-  required.push(result);
+    required = [...required, ...result];
+  });
 
   if (Array.isArray(required) && Boolean(required.length)) {
     return {

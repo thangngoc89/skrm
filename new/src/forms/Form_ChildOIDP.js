@@ -8,11 +8,14 @@ import {
   DottedLabel,
   Box,
 } from "../components";
-import ButterToast, { Cinnamon } from "butter-toast";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
 import { hoatDong, lietkeOptions } from "./Form_ChildOIDP_data";
-import { validate as handleValidation } from "./Form_ChildOIDP_validate";
+import {
+  validate as handleValidation,
+  REQUIRED,
+} from "./Form_ChildOIDP_validate";
+import * as notify from "../Notify";
 
 export const blankInitialValues = {
   coKhoChiu: null,
@@ -211,19 +214,6 @@ const Part3 = ({ values, selected }) => {
   );
 };
 
-const raiseError = (title, content) => {
-  ButterToast.raise({
-    sticky: true,
-    content: (
-      <Cinnamon.Crunch
-        title={title}
-        content={content}
-        scheme={Cinnamon.Crunch.SCHEME_RED}
-      />
-    ),
-  });
-};
-
 const findLabelFromId = id => {
   const row = hoatDong.find(row => row.value === id);
   return row.label;
@@ -232,6 +222,14 @@ const findLabelFromId = id => {
 const noop = function() {
   return new Promise(resolve => resolve());
 };
+
+function isEmpty(obj) {
+  for (var key in obj) {
+    if (obj.hasOwnProperty(key)) return false;
+  }
+  return true;
+}
+
 const FormChildOIDP = ({
   initialValues = blankInitialValues,
   onSave = noop,
@@ -239,7 +237,39 @@ const FormChildOIDP = ({
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      handleValidation(values)
+      console.log(values);
+      new Promise((resolve, reject) => {
+        const validateResult = handleValidation(values);
+        if (isEmpty(validateResult)) {
+          notify.success("Kiểm tra hoàn tất");
+          resolve(values);
+        } else if (
+          validateResult.coKhoChiu &&
+          validateResult.coKhoChiu.type &&
+          validateResult.coKhoChiu.type === "REQUIRED"
+        ) {
+          notify.error(
+            "Câu hỏi phần 1 chưa được trả lời",
+            () => "Vui lòng chọn câu trả lời ở phần 1"
+          );
+          reject(validateResult);
+        } else if (
+          validateResult.lietke &&
+          validateResult.lietke.type &&
+          validateResult.lietke.type === "REQUIRED"
+        ) {
+          notify.error(
+            "Phần 2: liệt kê các khó chịu chưa được chọn",
+            () => "Vui lòng chọn ít nhất một khó chịu ở phần 2"
+          );
+          reject(validateResult);
+        } else {
+          notify.error("Có lỗi xảy ra", () =>
+            JSON.stringify(validateResult, null, 2)
+          );
+          reject(validateResult);
+        }
+      })
         .then(values => onSave(values, values.draft))
         .then(() => setSubmitting(false))
         .catch(err => {
@@ -260,7 +290,6 @@ const FormChildOIDP = ({
       isSubmitting,
       setFieldValue,
     }) => {
-      console.log(values);
       const selected = values.lietke;
       return (
         <Box>
@@ -297,7 +326,11 @@ const FormChildOIDP = ({
               </Box>
             </MountPortal>
 
-            <Box direction="row" justifyContent="center" className="mb-6 lg:mb-12">
+            <Box
+              direction="row"
+              justifyContent="center"
+              className="mb-6 lg:mb-12"
+            >
               <Heading level={2} textAlign="center" size="medium">
                 Bảng câu hỏi về những khó chịu từ răng miệng
               </Heading>

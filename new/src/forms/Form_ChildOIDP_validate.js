@@ -16,9 +16,8 @@ export const UNSASTIFIED_SUM_NGUYENNHAN = value => ({
   type: "UNSASTIFIED_SUM_NGUYENNHAN",
   value: value,
 });
-export const SUCCESS = value => ({
+export const SUCCESS = () => ({
   type: "SUCCESS",
-  value,
 });
 
 export const REQUIRED = {
@@ -70,7 +69,7 @@ export const validateHoatdong = ({
  *   | { type: "REQUIRED_TANSUAT", value: int}
  *   | { type: "REQUIRED_NGUYENNHAN", value: int}
  *   | { type: "UNSASTIFIED_SUM_NGUYENNHAN", value: array(int) }
- *   | { type: "SUCCESS", value}
+ *   | { type: "SUCCESS"}
  */
 export const validate = values => {
   if (values.coKhoChiu !== "1" && values.coKhoChiu !== "0") {

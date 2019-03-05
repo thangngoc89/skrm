@@ -10,8 +10,6 @@ import RecordList from "./RecordManage";
 import RecordNew from "./RecordNew";
 import RecordEdit from "./RecordEdit";
 
-import ChildOIDP from "./forms/Form_ChildOIDP";
-
 const Homepage = () => <div>Homepage</div>;
 
 const App = () => {
@@ -26,7 +24,6 @@ const App = () => {
               <RecordNew path="/new" />
               <RecordList path="/manage" />
               <RecordEdit path="/record/:recordId" />
-              <ChildOIDP path="/test" />
             </Router>
           </Suspense>
         </Box>

@@ -40,14 +40,14 @@ export const validateHoatdong = ({
   lietke,
 }) => {
   if (mucdo === "0") {
-    return {};
+    return [];
   } else if (mucdo === null) {
-    return { [keyMucdo]: REQUIRED };
+    return [keyMucdo];
   } else {
     if (!isTruthyLevel(tansuat)) {
-      return { [keyTansuat]: REQUIRED };
+      return [keyTansuat];
     } else if (nguyennhan.length === 0) {
-      return { [keyNguyenNhan]: REQUIRED };
+      return [keyNguyenNhan];
     } else {
       /* Filter unselected NGUYENNHAN */
       const nguyennhanFiltered = nguyennhan.filter(
@@ -55,35 +55,33 @@ export const validateHoatdong = ({
       );
 
       if (nguyennhanFiltered.length === 0) {
-        return { [keyNguyenNhan]: REQUIRED };
+        return [keyNguyenNhan];
       }
-      return {};
+      return [];
     }
   }
 };
-/*
- * @return
- *   | { type: "PART_1_REQUIRED" }
- *   | { type: "PART_2_REQUIRED" }
- *   | { type: "REQUIRED_MUCDO", value: int}
- *   | { type: "REQUIRED_TANSUAT", value: int}
- *   | { type: "REQUIRED_NGUYENNHAN", value: int}
- *   | { type: "UNSASTIFIED_SUM_NGUYENNHAN", value: array(int) }
- *   | { type: "SUCCESS"}
- */
+
 export const validate = values => {
+  let required = [];
+
   if (values.coKhoChiu !== "1" && values.coKhoChiu !== "0") {
-    return { coKhoChiu: REQUIRED };
-  } else if (values.coKhoChiu === "0") {
-    return {};
+    return {
+      type: "REQUIRED",
+      value: ["coKhoChiu"],
+    };  } else if (values.coKhoChiu === "0") {
+    return SUCCESS;
   }
 
   const lietke = values.lietke;
 
   if (Array.isArray(lietke) && lietke.length === 0) {
-    return { lietke: REQUIRED };
+    return {
+      type: "REQUIRED",
+      value: ["lietke"],
+    };
   } else if (lietke.indexOf("99") !== -1 && lietke.lietkeCustom === "") {
-    return { lietkeCustom: REQUIRED };
+    required.push("lietkeCustom");
   }
 
   const result = [1, 2, 3, 4, 5, 6, 7, 8].reduce((acc, i) => {
@@ -104,13 +102,15 @@ export const validate = values => {
       keyNguyenNhan,
       lietke: values.lietke,
     });
-    return { ...acc, ...result };
-  }, {});
+    return [...acc, ...result];
+  }, []);
 
-  if (Object.keys(result).length !== 0) {
+  required.push(result);
+
+  if (Array.isArray(required) && Boolean(required.length)) {
     return {
-      type: "VALIDATE_ERROR",
-      value: result,
+      type: "REQUIRED",
+      value: required,
     };
   } else {
     /* NGUYENNHAN exhaustiveness check */
@@ -120,6 +120,14 @@ export const validate = values => {
       rowSelect.forEach(a => selectedSet.add(a));
     });
     const unexhaustiveValues = values.lietke.filter(a => !selectedSet.has(a));
-    return { type: "EXHAUSTIVE_CHECK", value: unexhaustiveValues };
+
+    if (
+      Array.isArray(unexhaustiveValues) &&
+      Boolean(unexhaustiveValues.length)
+    ) {
+      return { type: "EXHAUSTIVE_CHECK", value: unexhaustiveValues };
+    } else {
+      return SUCCESS;
+    }
   }
 };

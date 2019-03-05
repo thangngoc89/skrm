@@ -56,7 +56,7 @@ const Title = ({ title, subtitle }) => {
       <Heading level="2" color="brand">
         {title}
       </Heading>
-      <Text size="large" level={2}>
+      <Text size="medium" level={2}>
         {subtitle}
       </Text>
     </Box>
@@ -230,6 +230,18 @@ function isEmpty(obj) {
   return true;
 }
 
+const itemIdToName = id => {
+  switch (id) {
+    case "coKhoChiu":
+      return "Có khó chịu hay không - Phần 1";
+    case "lietke":
+      return "Liệt kê các khó chịu - Phần 2";
+    case "lietkeCustom":
+      return "Khó chịu khác - Phần 2";
+    default:
+      return id;
+  }
+};
 const FormChildOIDP = ({
   initialValues = blankInitialValues,
   onSave = noop,
@@ -240,26 +252,21 @@ const FormChildOIDP = ({
       console.log(values);
       new Promise((resolve, reject) => {
         const validateResult = handleValidation(values);
-        if (isEmpty(validateResult)) {
+        if (validateResult.type === "SUCCESS") {
           notify.success("Kiểm tra hoàn tất");
           resolve(values);
-        } else if (
-          validateResult.coKhoChiu &&
-          validateResult.coKhoChiu.type &&
-          validateResult.coKhoChiu.type === "REQUIRED"
-        ) {
-          notify.error(
-            "Câu hỏi phần 1 chưa được trả lời",
-            () => "Vui lòng chọn câu trả lời ở phần 1"
-          );
+        } else if (validateResult.type === "REQUIRED") {
+          notify.error("Các mục dưới đây chưa hoàn tất", () => (
+            <div>
+              {validateResult.value.map(item => (
+                <p key={item}> {itemIdToName(item)} </p>
+              ))}
+            </div>
+          ));
           reject(validateResult);
-        } else if (
-          validateResult.lietke &&
-          validateResult.lietke.type &&
-          validateResult.lietke.type === "REQUIRED"
-        ) {
+        } else if (validateResult.type === "EXHAUSTIVE_CHECK") {
           notify.error(
-            "Phần 2: liệt kê các khó chịu chưa được chọn",
+            "EXHAUSTIVE_CHECK",
             () => "Vui lòng chọn ít nhất một khó chịu ở phần 2"
           );
           reject(validateResult);

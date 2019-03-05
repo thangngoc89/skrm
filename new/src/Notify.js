@@ -1,5 +1,5 @@
 import React from "react";
-import ButterToast, { Cinnamon, POS_BOTTOM, POS_RIGHT } from "butter-toast";
+import ButterToast, { Cinnamon } from "butter-toast";
 
 export const error = (title, content) => {
   ButterToast.raise({
@@ -9,6 +9,7 @@ export const error = (title, content) => {
         scheme={Cinnamon.Crisp.SCHEME_RED}
         content={content}
         title={title}
+        className="notify"
       />
     ),
   });
@@ -21,6 +22,7 @@ export const success = (title, content) => {
         scheme={Cinnamon.Crisp.SCHEME_GREEN}
         content={content}
         title={title}
+        className="notify"
       />
     ),
   });

@@ -21,7 +21,7 @@ class RecordInput extends Component {
     super(props);
     this.state = {
       recordValue: props.value,
-      currentTab: tabs[2],
+      currentTab: tabs[0],
     };
   }
 

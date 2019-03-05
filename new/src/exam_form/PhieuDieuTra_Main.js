@@ -9,6 +9,8 @@ import {
   TextInput,
   CheckBox,
 } from "../components";
+import { Text, Box as GBox } from "grommet";
+
 import { format } from "date-fns";
 import {
   HamTren as TTNCHamTren,
@@ -425,12 +427,14 @@ const PhieuDieuTra = ({ initialValues, onSave }) => {
   return (
     <div>
       <Box direction="row" alignContent="center" justifyContent="center">
-        <Heading level={2} textAlign="center">
-          Phiếu điều tra sức khỏe răng miệng <br />
-          <span className="text-lg lg:text-2xl">
+        <GBox align="center">
+          <Heading level={1} textAlign="center">
+            Phiếu điều tra sức khỏe răng miệng
+          </Heading>
+          <Text size="large" color="dark-1">
             (dành cho trẻ dưới 15 tuổi)
-          </span>
-        </Heading>
+          </Text>
+        </GBox>
       </Box>
       <PhieuDieuTraForm initialValues={initialValues} onSave={onSave} />
     </div>

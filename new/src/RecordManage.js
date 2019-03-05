@@ -62,6 +62,7 @@ export default class RecordList extends Component {
   render() {
     return (
       <Box pad="medium">
+      
         <Box margin={{ vertical: "large" }}>
           <Heading level="1" align="left">
             Quản lí hồ sơ

@@ -4,4 +4,7 @@ export { default as CheckBox } from "./Checkbox.gen";
 export { default as Box } from "./Box.gen";
 export { default as Select } from "./Select.gen";
 export { default as FormField } from "./FormField.gen";
-export { Heading, Button } from "grommet";
+export { default as RadioGroup } from "./RadioGroup";
+export { default as SelectGroup } from "./SelectGroup";
+export { default as DottedLabel } from "./DottedLabel.gen";
+export { Heading, Button, Text } from "grommet";

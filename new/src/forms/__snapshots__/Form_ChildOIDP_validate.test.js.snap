@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`part 3 MUCDO = null => it should require MUCDO 1`] = `
+Object {
+  "1-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "2-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "3-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "4-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "5-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "6-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "7-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "8-mucdo": Object {
+    "type": "REQUIRED",
+  },
+}
+`;
+
+exports[`part 3 MUCDO = truthy => it should require TANSUAT 1`] = `
+Object {
+  "1-tansuat": Object {
+    "type": "REQUIRED",
+  },
+  "2-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "3-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "4-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "5-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "6-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "7-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "8-mucdo": Object {
+    "type": "REQUIRED",
+  },
+}
+`;
+
+exports[`part 3 MUCDO = truthy, TANSUAT = truthy => it should require NGUYENNHAN 1`] = `
+Object {
+  "1-nguyennhan": Object {
+    "type": "REQUIRED",
+  },
+  "2-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "3-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "4-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "5-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "6-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "7-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "8-mucdo": Object {
+    "type": "REQUIRED",
+  },
+}
+`;
+
+exports[`part 3 MUCDO = truthy, TANSUAT = truthy, NGUYENNHAN = truthy => it should pass 1`] = `
+Object {
+  "2-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "3-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "4-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "5-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "6-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "7-mucdo": Object {
+    "type": "REQUIRED",
+  },
+  "8-mucdo": Object {
+    "type": "REQUIRED",
+  },
+}
+`;

@@ -19,6 +19,6 @@ export default class MountPortal extends React.Component {
           this.props.children,
           document.getElementById(this.props.id)
         )
-      : null;
+      : this.props.children;
   }
 }

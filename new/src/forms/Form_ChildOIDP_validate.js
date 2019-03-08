@@ -1,26 +1,6 @@
-import { lastDayOfISOYear } from "date-fns";
-
-export const PART_1_REQUIRED = { type: "PART_1_REQUIRED" };
-export const PART_2_REQUIRED = { type: "PART_2_REQUIRED" };
-export const REQUIRED_MUCDO = value => ({
-  type: "REQUIRED_MUCDO",
-  value,
-});
-export const REQUIRED_TANSUAT = value => ({
-  type: "REQUIRED_TANSUAT",
-  value,
-});
-export const REQUIRED_NGUYENNHAN = value => ({
-  type: "REQUIRED_NGUYENNHAN",
-  value,
-});
-export const UNSASTIFIED_SUM_NGUYENNHAN = value => ({
-  type: "UNSASTIFIED_SUM_NGUYENNHAN",
-  value: value,
-});
-export const SUCCESS = () => ({
+export const SUCCESS = {
   type: "SUCCESS",
-});
+};
 
 export const REQUIRED = {
   type: "REQUIRED",
@@ -41,7 +21,6 @@ export const validateHoatdong = ({
   keyNguyenNhan,
   lietke,
 }) => {
-  console.log(mucdo);
   if (mucdo === "0") {
     return [];
   } else if (mucdo === null) {
@@ -85,7 +64,6 @@ export const validate = values => {
       value: ["lietke"],
     };
   }
-  console.log(lietke);
   if (lietke.indexOf("99") !== -1 && values.lietkeCustom === "") {
     required.push("lietkeCustom");
   }

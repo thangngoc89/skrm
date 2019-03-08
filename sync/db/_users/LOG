@@ -1,0 +1,14 @@
+2019/03/08-21:52:16.382700 7facfcdf3700 Recovering log #38
+2019/03/08-21:52:16.382765 7facfcdf3700 Level-0 table #40: started
+2019/03/08-21:52:16.391867 7facfcdf3700 Level-0 table #40: 310 bytes OK
+2019/03/08-21:52:16.414096 7facfcdf3700 Delete type=0 #38
+2019/03/08-21:52:16.414155 7facfcdf3700 Delete type=3 #36
+2019/03/08-21:52:16.414207 7facef7fe700 Compacting 4@0 + 1@1 files
+2019/03/08-21:52:16.422788 7facef7fe700 Generated table #42@0: 5 keys, 2376 bytes
+2019/03/08-21:52:16.422816 7facef7fe700 Compacted 4@0 + 1@1 files => 2376 bytes
+2019/03/08-21:52:16.433626 7facef7fe700 compacted to: files[ 0 1 0 0 0 0 0 ]
+2019/03/08-21:52:16.433724 7facef7fe700 Delete type=2 #29
+2019/03/08-21:52:16.433814 7facef7fe700 Delete type=2 #37
+2019/03/08-21:52:16.433872 7facef7fe700 Delete type=2 #40
+2019/03/08-21:52:16.433927 7facef7fe700 Delete type=2 #34
+2019/03/08-21:52:16.433979 7facef7fe700 Delete type=2 #31

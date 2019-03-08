@@ -176,3 +176,161 @@ module Tinh_trang_ham_duoi: TableRender = {
       (),
     );
 };
+
+module OHIS = {
+  let options = ["0", "1", "2", "3", "X"];
+  let table = [
+    [Static("16N"), Static("11N"), Static("26N")],
+    [Data("ohis16N", options), Data("ohis11N", options), Data("ohis26N", options)],
+    [Data("ohis46T", options), Data("ohis31N", options), Data("ohis36N", options)],
+    [Static("46(T)"), Static("31N"), Static("36(T)")],
+  ];
+};
+
+module MocChenChuc = {
+  let options = ["0", "1"];
+  let table = [
+    [Data("mcc16", options), Data("mcc11", options), Data("mcc26", options)],
+    [Data("mcc46", options), Data("mcc31", options), Data("mcc36", options)],
+  ];
+};
+
+module MIH = {
+  let options = ["0", "1", "2", "3", "4", "5"];
+  let table = [
+    [
+      Static("16"),
+      Static("12"),
+      Static("11"),
+      Static("21"),
+      Static("22"),
+      Static("26"),
+    ],
+    [
+      Data("mih16", options),
+      Data("mih12", options),
+      Data("mih11", options),
+      Data("mih21", options),
+      Data("mih22", options),
+      Data("mih26", options),
+    ],
+    [
+      Data("mih46", options),
+      Data("mih42", options),
+      Data("mih41", options),
+      Data("mih31", options),
+      Data("mih32", options),
+      Data("mih36", options),
+    ],
+    [
+      Static("46"),
+      Static("42"),
+      Static("41"),
+      Static("31"),
+      Static("32"),
+      Static("36"),
+    ],
+  ];
+};
+
+module CPI = {
+  let options = ["0", "1", "9", "X"];
+  let table = [
+    [
+      Empty,
+      Empty,
+      Static("55"),
+      Static("54"),
+      Static("53"),
+      Static("52"),
+      Static("51"),
+      Static("61"),
+      Static("62"),
+      Static("63"),
+      Static("64"),
+      Static("65"),
+      Empty,
+      Empty,
+    ],
+    [
+      Static("17"),
+      Static("16"),
+      Static("15"),
+      Static("14"),
+      Static("13"),
+      Static("12"),
+      Static("11"),
+      Static("21"),
+      Static("22"),
+      Static("23"),
+      Static("24"),
+      Static("25"),
+      Static("26"),
+      Static("27"),
+    ],
+    [
+      Data("cpi17", options),
+      Data("cpi16", options),
+      Data("cpi15", options),
+      Data("cpi14", options),
+      Data("cpi13", options),
+      Data("cpi12", options),
+      Data("cpi11", options),
+      Data("cpi21", options),
+      Data("cpi22", options),
+      Data("cpi23", options),
+      Data("cpi24", options),
+      Data("cpi25", options),
+      Data("cpi26", options),
+      Data("cpi27", options),
+    ],
+    [
+      Data("cpi47", options),
+      Data("cpi46", options),
+      Data("cpi45", options),
+      Data("cpi44", options),
+      Data("cpi43", options),
+      Data("cpi42", options),
+      Data("cpi41", options),
+      Data("cpi31", options),
+      Data("cpi32", options),
+      Data("cpi33", options),
+      Data("cpi34", options),
+      Data("cpi35", options),
+      Data("cpi36", options),
+      Data("cpi37", options),
+    ],
+    [
+      Static("47"),
+      Static("46"),
+      Static("45"),
+      Static("44"),
+      Static("43"),
+      Static("42"),
+      Static("41"),
+      Static("31"),
+      Static("32"),
+      Static("33"),
+      Static("34"),
+      Static("35"),
+      Static("36"),
+      Static("37"),
+    ],
+    [
+      Empty,
+      Empty,
+      Static("85"),
+      Static("84"),
+      Static("83"),
+      Static("82"),
+      Static("81"),
+      Static("71"),
+      Static("72"),
+      Static("73"),
+      Static("74"),
+      Static("75"),
+      Empty,
+      Empty,
+    ],
+  ];
+};

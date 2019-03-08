@@ -16,6 +16,13 @@ import {
   HamTren as TTNCHamTren,
   HamDuoi as TTNCHamDuoi,
 } from "./PDT_RenderTinhTrangNhuCau.gen";
+import {
+  OHIS as OHISTable,
+  CPI as CPITable,
+  MocChenChuc as MocChenChucTable,
+  MIH as MIHTable,
+} from "./PDT_AllTables.gen";
+import * as entitySchema from "./PhieuDieuTra_validate";
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
@@ -91,6 +98,23 @@ const schema = {
     type: "tinhTrangNhuCauHamDuoi",
     default: {},
   },
+  pi: {
+    label: "PI",
+    type: "ohis",
+    default: {},
+    validate: entitySchema.ohis,
+  },
+  ci: {
+    label: "CI",
+    type: "ohis",
+    default: {},
+    validate: entitySchema.ohis,
+  },
+  cpi: {
+    label: "CPI",
+    type: "cpi",
+    default: {},
+  },
   canPhu: {
     label: "Độ cắn phủ",
     type: "number",
@@ -119,6 +143,38 @@ const schema = {
   angleR3T: { label: "R3T", type: "select_one", typeData: selectOneAngle },
   angleR6P: { label: "R6P", type: "select_one", typeData: selectOneAngle },
   angleR6T: { label: "R6T", type: "select_one", typeData: selectOneAngle },
+  fluorMaSo: {
+    label: "Mã số",
+    type: "select_one",
+    typeData: [
+      { label: "0", value: "0" },
+      { label: "1", value: "1" },
+      { label: "2", value: "2" },
+      { label: "3", value: "3" },
+      { label: "4", value: "4" },
+      { label: "5", value: "5" },
+    ],
+  },
+  fluorSoRang: {
+    label: "Số răng",
+    type: "number",
+    validate: yup
+      .number()
+      .integer()
+      .required(),
+  },
+  mocChenChuc: {
+    label: "Mọc chen chúc",
+    type: "mocChenChuc",
+    default: {},
+    validate: entitySchema.mocChenChuc,
+  },
+  mih: {
+    label: "MIH",
+    type: "mih",
+    default: {},
+    validate: entitySchema.mih,
+  },
 };
 
 const layout = [
@@ -140,15 +196,22 @@ const layout = [
     items: [[{ id: "ttncHamTren" }, { id: "ttncHamDuoi" }]],
   },
   {
+    title: "Tình trạng vệ sinh răng miệng",
+    items: [[{ id: "pi" }, { id: "ci" }]],
+  },
+  {
+    title: "Tình trạng răng nhiễm Fluor",
+    items: [[{ id: "fluorMaSo" }, { id: "fluorSoRang" }]],
+  },
+  {
     title: "Chỉ số CPI - Chỉ số chảu máu nướu",
-    items: [[{ id: "chiSoCPI" }]],
+    items: [[{ id: "cpi" }]],
   },
   {
     title: "Tình trạng khớp cắn",
     items: [
       [{ id: "canPhu" }, { id: "canChia" }],
       [{ id: "canNguocRangTruoc" }, { id: "canNguocRangSau" }, { id: "canHo" }],
-
       [{ id: "mocChenChuc" }],
     ],
   },
@@ -164,14 +227,23 @@ const layout = [
     ],
   },
   {
-    title: "Tình trạng mảng bám răng",
-    items: [[{ id: "mangBamTruocChaiRang" }], [{ id: "mangBamSauChaiRang" }]],
-  },
-  {
     title: "MIH",
     items: [[{ id: "mih" }]],
   },
 ];
+
+const RenderObjectError = ({ error }) => {
+  if (typeof error === "undefined") {
+    return null;
+  }
+  return (
+    <div className="text-status-error">
+      {Object.keys(error).map(key => {
+        return <p key={key}>{error[key]}</p>;
+      })}
+    </div>
+  );
+};
 
 function RenderRow({ row, setFieldValue }) {
   return (
@@ -258,6 +330,80 @@ function RenderRow({ row, setFieldValue }) {
                               });
                             }}
                           />
+                        </Box>
+                      );
+                    case "ohis":
+                      return (
+                        <Box className="my-2 lg:my-0">
+                          <Heading level={3} size="small">
+                            {label}
+                          </Heading>
+                          <OHISTable
+                            value={field.value}
+                            onChange={(cellLabel, value) => {
+                              setFieldValue(field.name, {
+                                ...field.value,
+                                [cellLabel]: value,
+                              });
+                            }}
+                          />
+                          {isFieldTouched && (
+                            <RenderObjectError error={error} />
+                          )}
+                        </Box>
+                      );
+                    case "cpi":
+                      return (
+                        <Box className="my-2 lg:my-0">
+                          <CPITable
+                            value={field.value}
+                            onChange={(cellLabel, value) => {
+                              setFieldValue(field.name, {
+                                ...field.value,
+                                [cellLabel]: value,
+                              });
+                            }}
+                          />
+                          {isFieldTouched && (
+                            <RenderObjectError error={error} />
+                          )}
+                        </Box>
+                      );
+                    case "mih":
+                      return (
+                        <Box className="my-2 lg:my-0">
+                          <MIHTable
+                            value={field.value}
+                            onChange={(cellLabel, value) => {
+                              setFieldValue(field.name, {
+                                ...field.value,
+                                [cellLabel]: value,
+                              });
+                            }}
+                          />
+                          {isFieldTouched && (
+                            <RenderObjectError error={error} />
+                          )}
+                        </Box>
+                      );
+                    case "mocChenChuc":
+                      return (
+                        <Box className="my-2 lg:my-0">
+                          <Heading level={3} size="small">
+                            {label}
+                          </Heading>
+                          <MocChenChucTable
+                            value={field.value}
+                            onChange={(cellLabel, value) => {
+                              setFieldValue(field.name, {
+                                ...field.value,
+                                [cellLabel]: value,
+                              });
+                            }}
+                          />
+                          {isFieldTouched && (
+                            <RenderObjectError error={error} />
+                          )}
                         </Box>
                       );
                     default:

@@ -147,3 +147,149 @@ export const ohis = yup
       .label("36(T)"),
   })
   .required();
+
+const cpiOptions = ["0", "1", "9", "X"];
+export const cpi = yup
+  .object({
+    cpi17: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("17"),
+    cpi16: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("16"),
+    cpi15: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("15"),
+    cpi14: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("14"),
+    cpi13: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("13"),
+    cpi12: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("12"),
+    cpi11: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("11"),
+    cpi21: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("21"),
+    cpi22: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("22"),
+    cpi23: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("23"),
+    cpi24: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("24"),
+    cpi25: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("25"),
+    cpi26: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("26"),
+    cpi27: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("27"),
+    cpi37: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("37"),
+    cpi36: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("36"),
+    cpi35: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("35"),
+    cpi34: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("34"),
+    cpi33: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("33"),
+    cpi32: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("32"),
+    cpi31: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("31"),
+    cpi41: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("41"),
+    cpi42: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("42"),
+    cpi43: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("43"),
+    cpi44: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("44"),
+    cpi45: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("45"),
+    cpi46: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("46"),
+    cpi47: yup
+      .string()
+      .oneOf(cpiOptions)
+      .required()
+      .label("47"),
+  })
+  .required();

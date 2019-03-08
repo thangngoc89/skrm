@@ -114,6 +114,7 @@ const schema = {
     label: "CPI",
     type: "cpi",
     default: {},
+    validate: entitySchema.cpi,
   },
   canPhu: {
     label: "Độ cắn phủ",

@@ -9,8 +9,7 @@ import ButterToast, { POS_BOTTOM, POS_RIGHT } from "butter-toast";
 import RecordList from "./RecordManage";
 import RecordNew from "./RecordNew";
 import RecordEdit from "./RecordEdit";
-
-const Homepage = () => <div>Homepage</div>;
+import Homepage from "./Homepage";
 
 const App = () => {
   return (

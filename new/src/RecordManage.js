@@ -1,8 +1,9 @@
 import { Box, DataTable, Heading, Text, Button } from "grommet";
 import React, { Component } from "react";
 import db from "./db";
-import { Checkmark, Clear, Alert } from "grommet-icons";
+import { Checkmark, Clear } from "grommet-icons";
 import { navigate } from "@reach/router";
+import { saveAs } from "file-saver";
 
 const RenderFormStatus = ({ status }) => {
   switch (status) {
@@ -28,6 +29,16 @@ const toStatus = complete => {
   } else {
     return "DRAFT";
   }
+};
+
+const getDataForSave = () => {
+  db.allDocs({ include_docs: true }).then(docs => {
+    const processedData = docs.rows.map(r => r.doc);
+    const blob = new Blob([JSON.stringify(processedData)], {
+      type: "application/json",
+    });
+    saveAs(blob, "data.hmong");
+  });
 };
 
 export default class RecordList extends Component {
@@ -59,10 +70,10 @@ export default class RecordList extends Component {
       this.setState({ data: processedDoc });
     });
   }
+
   render() {
     return (
       <Box pad="medium">
-      
         <Box margin={{ vertical: "large" }}>
           <Heading level="1" align="left">
             Quản lí hồ sơ
@@ -75,16 +86,26 @@ export default class RecordList extends Component {
         <Box
           direction="row"
           align="center"
-          justify="end"
-          gap="medium"
+          justify="between"
           margin={{ bottom: "small" }}
         >
-          <Box direction="row" align="center" gap="xsmall">
-            <Checkmark color="status-ok" />
-            Hoàn tất
+          <Box>
+            <Button
+              primary
+              label="Save dữ liệu"
+              onClick={() => {
+                getDataForSave();
+              }}
+            />
           </Box>
-          <Box direction="row" align="center" gap="xsmall">
-            <Clear color="dark-3" /> Chưa hoàn tất
+          <Box direction="row" align="end" gap="medium">
+            <Box direction="row" align="center" gap="xsmall">
+              <Checkmark color="status-ok" />
+              Hoàn tất
+            </Box>
+            <Box direction="row" align="center" gap="xsmall">
+              <Clear color="dark-3" /> Chưa hoàn tất
+            </Box>
           </Box>
         </Box>
         <DataTable

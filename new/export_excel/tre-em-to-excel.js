@@ -12,151 +12,172 @@ const ws = workbook.Sheets[first_sheet_name];
 const encode_col = XLSX.utils.encode_col;
 const decode_col = XLSX.utils.decode_col;
 
-const getNhuCauValue = (source, row, col) => {
-  const cellData = source[row][col];
-  const value = cellData.value;
-  if (value === null) {
-    return 9;
+const getNhuCauValue = (source, col, row) => {
+  const value = source[`${col}_${row}`];
+  /* TODO: Show validation error instead */
+  if (typeof value === "undefined") {
+    return `${col}_${row}`;
   }
   switch (value) {
-    case "a":
     case "A":
       return 10;
       break;
-    case "b":
     case "B":
       return 11;
       break;
-    case "c":
     case "C":
       return 12;
       break;
-    case "d":
     case "D":
       return 13;
       break;
-    case "e":
     case "E":
       return 14;
       break;
-    case "f":
     case "F":
       return 16;
       break;
-    case "g":
-    case "G":
-      return 17;
-      break;
-    case "":
-      return 9;
-      break;
     default:
-      let parseResult = parseInt(value, 10);
-      return Number.isNaN(parseResult) ? 9 : parseResult;
+      return parseInt(value, 10);
       break;
   }
 };
+
 const toNumber = num => {
-  if (num === "X" || num === "x") {
-    return "X";
-  }
-  if (typeof num === null) {
+  const parsed = parseInt(num, 10);
+  /* TODO: validation error */
+  if (isNaN(parsed)) {
     return "";
-  }
-  if (typeof num === "number") {
-    return num;
-  }
-  const parsed = parseInt(num, 10);
-  if (typeof parsed === "undefined") {
-    return 0;
-  }
-  if (isNaN(parsed)) {
-    return num;
-  }
-  return parsed;
-};
-const toNumberUndefined = num => {
-  if (num === "X" || num === "x") {
-    return "X";
-  }
-  if (typeof num === null) {
-    return 9;
-  }
-  if (typeof num === "number") {
-    return num;
-  }
-  const parsed = parseInt(num, 10);
-  if (typeof parsed === "undefined") {
-    return 9;
-  }
-  if (isNaN(parsed)) {
-    return num;
   }
   return parsed;
 };
 
-const rows = readFileSync("./data.json").toString();
-const dataToWrite = rows
-  .split("\n")
-  .map(a => a && JSON.parse(a))
+const toNumberUndefined = num => num;
+
+const rows = readFileSync("./data.hmong").toString();
+
+const dataToWrite = JSON.parse(rows)
+
   .map(rowData => {
     if (!rowData) {
       return null;
     }
-    const rowKhamData = rowData.kham;
-    const ncLeft = JSON.parse(rowKhamData["nhucauLeft"]);
-    const ncRight = JSON.parse(rowKhamData["nhucauRight"]);
+    const rowKhamData = rowData.phieuDieuTra;
 
     const row = {
-      A: rowKhamData["so-ho-so"],
-      B: rowKhamData["nguoi-kham"],
-      C: rowKhamData["ho-va-ten"].toUpperCase(),
-      D: rowKhamData["gioi"],
+      A: rowKhamData["soHoSo"],
+      B: rowKhamData["nguoiKham"],
+      C: rowKhamData["hoVaTen"].toUpperCase(),
+      D: toNumber(rowKhamData["gioiTinh"]),
       E: rowKhamData["tuoi"],
-      F: rowKhamData["dan-toc"],
-      G: rowKhamData["dia-chi-gia-dinh"],
-      H:
-        rowKhamData["truong"] === "phuoc-hoi"
-          ? "Trường tiểu học Phước Hội"
-          : "Trường tiểu học Long Mỹ",
+      F: rowKhamData["danToc"],
+      G: rowKhamData["diaChi"],
+      H: rowKhamData["truong"],
     };
+
+    const ncLeft = rowKhamData.ttncHamTren;
+
+    const ncLeftRow = [
+      "17",
+      "16",
+      "15",
+      "14",
+      "13",
+      "12",
+      "11",
+      "21",
+      "22",
+      "23",
+      "24",
+      "25",
+      "26",
+      "27",
+    ];
     // nhuCauLeft
     let colCounter = 8;
-    for (let i = 1; i <= 14; i++) {
-      if (i < 5 || i > 10) {
-        row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 3);
+    for (let i = 0; i <= 13; i++) {
+      /* Nhai */
+      if (i < 4 || i > 9) {
+        row[encode_col(colCounter)] = getNhuCauValue(
+          ncLeft,
+          "Nhai",
+          ncLeftRow[i]
+        );
         colCounter = colCounter + 1;
       }
-      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 4);
+      /* Ng */
+      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, "N", ncLeftRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 5);
+      /* Tr */
+      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, "T", ncLeftRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 6);
+      /* G */
+      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, "G", ncLeftRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 7);
+      /* X */
+      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, "X", ncLeftRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 2);
+      /* TT */
+      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, "TT", ncLeftRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, i, 1);
+      /* NC */
+      row[encode_col(colCounter)] = getNhuCauValue(ncLeft, "NC", ncLeftRow[i]);
       colCounter = colCounter + 1;
     }
+    const ncRight = rowKhamData.ttncHamDuoi;
+
+    const ncRightRow = [
+      "37",
+      "36",
+      "35",
+      "34",
+      "33",
+      "32",
+      "31",
+      "41",
+      "42",
+      "43",
+      "44",
+      "45",
+      "46",
+      "47",
+    ];
     // nhuCauRight
-    for (let i = 1; i <= 14; i++) {
-      if (i < 5 || i > 10) {
-        row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 5);
+    for (let i = 0; i < 14; i++) {
+      /* Nhai */
+      if (i < 4 || i > 9) {
+        row[encode_col(colCounter)] = getNhuCauValue(
+          ncRight,
+          "Nhai",
+          ncRightRow[i]
+        );
         colCounter = colCounter + 1;
       }
-      row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 4);
+      /* Ng */
+      row[encode_col(colCounter)] = getNhuCauValue(ncRight, "N", ncRightRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 3);
+      /* Tr */
+      row[encode_col(colCounter)] = getNhuCauValue(ncRight, "T", ncRightRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 2);
+      /* G */
+      row[encode_col(colCounter)] = getNhuCauValue(ncRight, "G", ncRightRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 1);
+      /* X */
+      row[encode_col(colCounter)] = getNhuCauValue(ncRight, "X", ncRightRow[i]);
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 6);
+      /* TT */
+      row[encode_col(colCounter)] = getNhuCauValue(
+        ncRight,
+        "TT",
+        ncRightRow[i]
+      );
       colCounter = colCounter + 1;
-      row[encode_col(colCounter)] = getNhuCauValue(ncRight, i, 7);
+      /* NC */
+      row[encode_col(colCounter)] = getNhuCauValue(
+        ncRight,
+        "NC",
+        ncRightRow[i]
+      );
       colCounter = colCounter + 1;
     }
 
@@ -232,7 +253,11 @@ const dataToWrite = rows
     row.JA = toNumber(rowKhamData["mih-46"]) || 9;
 
     // thoiquen
-    const rowThoiQuenData = rowData.thoiquen;
+    const rowThoiQuenData = rowData.bangCauHoi;
+    if (typeof rowThoiQuenData === "undefined") {
+      console.log(`${rowData._id} khong co bang cau hoi`);
+      return null;
+    }
     row.JB = rowThoiQuenData["b2"];
     row.JC = rowThoiQuenData["b4"];
     row.JD = rowThoiQuenData["b5"];
@@ -304,7 +329,7 @@ const dataToWrite = rows
     row.LG = rowThoiQuenData["b24"] || "";
 
     // kho chiu
-    const rowKhoChiuData = rowData.khochiu;
+    const rowKhoChiuData = rowData.childOIDP;
     let khoChiu = rowKhoChiuData["liet-ke-kho-chiu"] || [];
     row.LH = khoChiu.indexOf(1) !== -1 ? 1 : 0;
     row.LI = khoChiu.indexOf(2) !== -1 ? 1 : 0;

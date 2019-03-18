@@ -361,6 +361,12 @@ const dataToSheet = data =>
 
       // kho chiu
       const rowKhoChiuData = rowData.childOIDP;
+      if (typeof rowKhoChiuData === "undefined") {
+        console.log(
+          `${rowData._id} khong co bang ChildOIDP - ID: ${rowData.soHoSo}`
+        );
+        return null;
+      }
       let khoChiu = rowKhoChiuData.lietke || [];
       row.LH = khoChiu.indexOf(1) !== -1 ? 1 : 0;
       row.LI = khoChiu.indexOf(2) !== -1 ? 1 : 0;

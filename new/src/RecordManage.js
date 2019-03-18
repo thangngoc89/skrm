@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import db from "./db";
 import { Checkmark, Clear } from "grommet-icons";
 import { navigate } from "@reach/router";
-import { createWorkbook, saveWorkbook } from "./export_excel/export_excel";
 
 const RenderFormStatus = ({ status }) => {
   if (typeof status === "undefined") {
@@ -35,6 +34,16 @@ const toStatus = complete => {
 };
 
 const getDataForSave = () => {
+  // const getDataForSave = () => {
+  //   db.allDocs({ include_docs: true }).then(docs => {
+  //     const processedData = docs.rows.map(r => r.doc);
+  //     const blob = new Blob([JSON.stringify(processedData)], {
+  //       type: "application/json",
+  //     });
+  //     saveAs(blob, "data.hmong");
+  //   });
+  // };
+
   import("./export_excel/export_excel")
     .then(({ createWorkbook }) => {
       db.allDocs({ include_docs: true }).then(docs => {

@@ -7,4 +7,14 @@ const db = new PouchDb("hmong", { auto_compaction: true });
 //   retry: true,
 // });
 
+// const data = require("./export_excel/binhhuyen.json");
+// db.bulkDocs(
+//   data.map(row => {
+//     delete row._rev;
+//     return row;
+//   })
+// )
+//   .then(console.log)
+//   .catch(console.log);
+
 export default db;

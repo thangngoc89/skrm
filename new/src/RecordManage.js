@@ -3,9 +3,12 @@ import React, { Component } from "react";
 import db from "./db";
 import { Checkmark, Clear } from "grommet-icons";
 import { navigate } from "@reach/router";
-import { saveAs } from "file-saver";
+import { createWorkbook, saveWorkbook } from "./export_excel/export_excel";
 
 const RenderFormStatus = ({ status }) => {
+  if (typeof status === "undefined") {
+    return null;
+  }
   switch (status) {
     case "COMPLETE":
       return <Checkmark color="status-ok" />;
@@ -33,11 +36,10 @@ const toStatus = complete => {
 
 const getDataForSave = () => {
   db.allDocs({ include_docs: true }).then(docs => {
-    const processedData = docs.rows.map(r => r.doc);
-    const blob = new Blob([JSON.stringify(processedData)], {
-      type: "application/json",
-    });
-    saveAs(blob, "data.hmong");
+    const data = docs.rows.map(r => r.doc);
+    const wb = createWorkbook(data);
+    
+    // saveWorkbook(wb, "hmong");
   });
 };
 
@@ -55,7 +57,7 @@ export default class RecordList extends Component {
       const processedDoc = docs.rows.map(row => {
         const doc = row.doc;
 
-        const { phieuDieuTra = {}, bangCauHoi = {} } = doc;
+        const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
 
         return {
           id: row.id,
@@ -64,6 +66,7 @@ export default class RecordList extends Component {
           soHoSo: phieuDieuTra.soHoSo,
           phieuDieuTra: toStatus(phieuDieuTra.complete),
           bangCauHoi: toStatus(bangCauHoi.complete),
+          childOIDP: toStatus(childOIDP.complete),
         };
       });
 
@@ -141,6 +144,12 @@ export default class RecordList extends Component {
               header: "Bảng câu hỏi",
               align: "center",
               render: datum => <RenderFormStatus status={datum.bangCauHoi} />,
+            },
+            {
+              property: "childOIDP",
+              header: "ChildOIDP",
+              align: "center",
+              render: datum => <RenderFormStatus status={datum.childOIDP} />,
             },
             {
               render: datum => (

@@ -6,6 +6,9 @@ import { navigate } from "@reach/router";
 import { saveAs } from "file-saver";
 
 const RenderFormStatus = ({ status }) => {
+  if (typeof status === "undefined") {
+    return null;
+  }
   switch (status) {
     case "COMPLETE":
       return <Checkmark color="status-ok" />;
@@ -55,7 +58,7 @@ export default class RecordList extends Component {
       const processedDoc = docs.rows.map(row => {
         const doc = row.doc;
 
-        const { phieuDieuTra = {}, bangCauHoi = {} } = doc;
+        const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
 
         return {
           id: row.id,
@@ -64,6 +67,7 @@ export default class RecordList extends Component {
           soHoSo: phieuDieuTra.soHoSo,
           phieuDieuTra: toStatus(phieuDieuTra.complete),
           bangCauHoi: toStatus(bangCauHoi.complete),
+          childOIDP: toStatus(childOIDP.complete),
         };
       });
 
@@ -141,6 +145,12 @@ export default class RecordList extends Component {
               header: "Bảng câu hỏi",
               align: "center",
               render: datum => <RenderFormStatus status={datum.bangCauHoi} />,
+            },
+            {
+              property: "childOIDP",
+              header: "ChildOIDP",
+              align: "center",
+              render: datum => <RenderFormStatus status={datum.childOIDP} />,
             },
             {
               render: datum => (

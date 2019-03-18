@@ -35,12 +35,14 @@ const toStatus = complete => {
 };
 
 const getDataForSave = () => {
-  db.allDocs({ include_docs: true }).then(docs => {
-    const data = docs.rows.map(r => r.doc);
-    const wb = createWorkbook(data);
-    
-    // saveWorkbook(wb, "hmong");
-  });
+  import("./export_excel/export_excel")
+    .then(({ createWorkbook }) => {
+      db.allDocs({ include_docs: true }).then(docs => {
+        const data = docs.rows.map(r => r.doc);
+        const wb = createWorkbook(data);
+      });
+    })
+    .catch(error => console.error(error));
 };
 
 export default class RecordList extends Component {

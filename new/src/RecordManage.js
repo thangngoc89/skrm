@@ -95,7 +95,7 @@ export default class RecordList extends Component {
           <Box>
             <Button
               primary
-              label="Save dữ liệu"
+              label="Download Excel"
               onClick={() => {
                 getDataForSave();
               }}

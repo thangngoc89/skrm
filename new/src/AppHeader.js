@@ -15,12 +15,21 @@ export const AppHeader = ({ appName }) => (
     elevation="xsmall"
   >
     <Box
-      pad={{ horizontal: "medium", vertical: "small" }}
+      pad={{ horizontal: "medium" }}
       direction="row"
       align="center"
       gap="small"
     >
-      <Text color="brand">{appName}</Text>
+      <Anchor
+        pad="none"
+        label={appName}
+        href="/"
+        onClick={e => {
+          e.preventDefault();
+          navigate("/");
+        }}
+        margin="small"
+      />
     </Box>
 
     <ResponsiveContext.Consumer>

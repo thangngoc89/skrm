@@ -1,35 +1,101 @@
-import { Box, DataTable, Heading, Text, Button } from "grommet";
+import { Box, Heading, Text, Button } from "grommet";
 import React, { Component } from "react";
 import db from "./db";
-import { Checkmark, Clear } from "grommet-icons";
 import { navigate } from "@reach/router";
 
-const RenderFormStatus = ({ status }) => {
-  if (typeof status === "undefined") {
-    return null;
-  }
-  switch (status) {
-    case "COMPLETE":
-      return <Checkmark color="status-ok" />;
-    case "DRAFT":
-      return <Clear color="dark-3" />;
-    default:
-      return status;
-  }
-};
+import "react-tabulator/lib/styles.css"; // required styles
+import "react-tabulator/lib/css/tabulator.min.css"; // theme
+import { ReactTabulator, reactFormatter } from "react-tabulator";
 
-const RenderEmptyText = ({ value, ...props }) => {
-  if (value == "") {
-    return <Text color="status-error">???</Text>;
-  } else {
-    return <Text {...props}>{value}</Text>;
-  }
+const Custom = ({ cell }) => {
+  const id = cell._cell.value;
+  const link = "/record/" + id;
+
+  return (
+    <a
+      href={link}
+      className="text-brand no-underline font-bold"
+      onClick={event => {
+        event.preventDefault();
+        navigate("/record/" + id);
+      }}
+    >
+      Sửa
+    </a>
+    
+  );
 };
+const columns = [
+  {
+    formatter: "responsiveCollapse",
+    width: 30,
+    minWidth: 30,
+    align: "center",
+    resizable: false,
+    headerSort: false,
+  },
+  {
+    title: "Số hồ sơ",
+    field: "soHoSo",
+    align: "center",
+    width: 80,
+    headerVertical: true,
+    resizable: false,
+  },
+  { title: "Họ và tên", field: "hoVaTen", headerVertical: true, minWidth: 300 },
+  {
+    title: "Người khám",
+    field: "nguoiKham",
+    minWidth: 100,
+    headerVertical: true,
+    responsive: 1,
+  },
+  {
+    title: "Ngày khám",
+    field: "ngayKham",
+    headerVertical: true,
+    responsive: 1,
+  },
+  {
+    title: "Phiếu điều tra",
+    field: "phieuDieuTra",
+    formatter: "tickCross",
+    align: "center",
+    width: 50,
+    headerVertical: true,
+    responsive: 2,
+  },
+  {
+    title: "Bảng câu hỏi",
+    field: "bangCauHoi",
+    formatter: "tickCross",
+    align: "center",
+    width: 50,
+    headerVertical: true,
+    responsive: 2,
+  },
+  {
+    title: "Child-OIDP",
+    field: "childOIDP",
+    formatter: "tickCross",
+    align: "center",
+    width: 50,
+    headerVertical: true,
+    responsive: 2,
+  },
+  {
+    field: "id",
+    headerSort: false,
+    formatter: reactFormatter(<Custom />),
+  },
+];
+
 const toStatus = complete => {
   if (typeof complete === "boolean" && complete) {
-    return "COMPLETE";
+    return true;
   } else {
-    return "DRAFT";
+    return false;
+    
   }
 };
 
@@ -73,6 +139,7 @@ export default class RecordList extends Component {
         return {
           id: row.id,
           hoVaTen: phieuDieuTra.hoVaTen,
+          ngayKham: phieuDieuTra.ngayKham,
           nguoiKham: phieuDieuTra.nguoiKham,
           soHoSo: phieuDieuTra.soHoSo,
           phieuDieuTra: toStatus(phieuDieuTra.complete),
@@ -103,78 +170,23 @@ export default class RecordList extends Component {
           justify="between"
           margin={{ bottom: "small" }}
         >
-          <Box>
-            <Button
-              primary
-              label="Download Excel"
-              onClick={() => {
-                getDataForSave();
-              }}
-            />
-          </Box>
-          <Box direction="row" align="end" gap="medium">
-            <Box direction="row" align="center" gap="xsmall">
-              <Checkmark color="status-ok" />
-              Hoàn tất
-            </Box>
-            <Box direction="row" align="center" gap="xsmall">
-              <Clear color="dark-3" /> Chưa hoàn tất
-            </Box>
-          </Box>
+          <Button
+            primary
+            label="Download Excel"
+            onClick={() => {
+              getDataForSave();
+            }}
+          />
         </Box>
-        <DataTable
-          primaryKey="id"
-          columns={[
-            {
-              property: "soHoSo",
-              header: "Số hồ sơ",
-              render: datum => (
-                <RenderEmptyText value={datum.soHoSo} weight="bold" />
-              ),
-            },
-            {
-              property: "nguoiKham",
-              header: "Người khám",
-              render: datum => (
-                <RenderEmptyText value={datum.nguoiKham} weight="bold" />
-              ),
-            },
-            {
-              property: "hoVaTen",
-              header: "Họ và tên",
-              render: datum => <RenderEmptyText value={datum.hoVaTen} />,
-            },
-            {
-              property: "phieuDieuTra",
-              header: "Phiếu điều tra",
-              align: "center",
-              render: datum => <RenderFormStatus status={datum.phieuDieuTra} />,
-            },
-            {
-              property: "bangCauHoi",
-              header: "Bảng câu hỏi",
-              align: "center",
-              render: datum => <RenderFormStatus status={datum.bangCauHoi} />,
-            },
-            {
-              property: "childOIDP",
-              header: "ChildOIDP",
-              align: "center",
-              render: datum => <RenderFormStatus status={datum.childOIDP} />,
-            },
-            {
-              render: datum => (
-                <>
-                  <Button
-                    label="Sửa"
-                    color="accent-1"
-                    onClick={() => navigate("/record/" + datum.id)}
-                  />
-                </>
-              ),
-            },
-          ]}
+        <ReactTabulator
+          options={{
+            responsiveLayout: "collapse",
+            placeholder: "No data sets",
+          }}
           data={this.state.data}
+          columns={columns}
+          tooltips={true}
+          layout={"fitColumns"}
         />
       </Box>
     );

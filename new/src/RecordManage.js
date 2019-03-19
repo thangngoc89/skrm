@@ -48,7 +48,7 @@ const getDataForSave = () => {
     .then(({ createWorkbook }) => {
       db.allDocs({ include_docs: true }).then(docs => {
         const data = docs.rows.map(r => r.doc);
-        const wb = createWorkbook(data);
+        createWorkbook(data);
       });
     })
     .catch(error => console.error(error));

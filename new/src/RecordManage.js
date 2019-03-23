@@ -204,10 +204,16 @@ const getDataForSave = () => {
     .then(([exportExcel, docs]) => {
       const { createWorkbook } = exportExcel;
       const data = docs.rows.map(r => r.doc);
-      createWorkbook(data);
+      return Promise.all(data.map(row => validate(row)))
+        .then(result => {
+          // console.log(result);
+        })
+        .catch(error => console.log("catch error"));
+
+      // createWorkbook(data);
     })
     .catch(error => {
-      console.error(error);
+      // console.error(error);
       Notify.error(
         "Có lỗi xảy ra khi xuất dữ liệu",
         "Trong khi chờ khắc phục lỗi, vui lòng không xóa dữ liệu trình duyệt web"

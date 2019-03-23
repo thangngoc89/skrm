@@ -1,5 +1,5 @@
-import { Box, Heading, Text, Button } from "grommet";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+import { Box, Heading, Text, Button, Layer } from "grommet";
 import db from "./db";
 import { navigate } from "@reach/router";
 import { schema, validate } from "./export_excel/validate";
@@ -11,18 +11,83 @@ import { ReactTabulator, reactFormatter } from "react-tabulator";
 const Custom = ({ cell }) => {
   const id = cell._cell.value;
   const link = "/record/" + id;
+  const [show, setShow] = React.useState(false);
+
+  const close = () => setShow(false);
+  const open = () => setShow(true);
 
   return (
-    <a
-      href={link}
-      className="text-brand no-underline font-bold"
-      onClick={event => {
-        event.preventDefault();
-        navigate("/record/" + id);
-      }}
-    >
-      Sửa
-    </a>
+    <>
+      <a
+        href={link}
+        className="text-brand no-underline font-bold"
+        onClick={event => {
+          event.preventDefault();
+          navigate("/record/" + id);
+        }}
+      >
+        Sửa
+      </a>
+      <span className="mx-2"> - </span>
+      <button className="text-status-critical font-bold" onClick={open}>
+        Xóa
+      </button>
+
+      {show && (
+        <Layer position="center" modal onClickOutside={close} onEsc={close}>
+          <Box pad="medium" gap="small" width="medium">
+            <Heading level={3} margin="none">
+              Xác nhận xóa hồ sơ
+            </Heading>
+            <Text>
+              Bạn có muốn xóa hồ sơ{" "}
+              <strong>{cell._cell.row.data.soHoSo || "________"}</strong>?
+              <br />- Họ và tên:{" "}
+              <strong>{cell._cell.row.data.hoVaTen || "________"}</strong>
+              <br />- Người khám:{" "}
+              <strong>{cell._cell.row.data.nguoiKham || "________"}</strong>
+            </Text>
+            <Box
+              as="footer"
+              gap="small"
+              direction="row"
+              align="center"
+              justify="end"
+              pad={{ top: "medium", bottom: "small" }}
+            >
+              <Button label="Thoát" onClick={close} color="dark-3" />
+              <Button
+                label={
+                  <Text color="white">
+                    <strong>Xóa</strong>
+                  </Text>
+                }
+                onClick={() =>
+                  db
+                    .get(id)
+                    .then(function(doc) {
+                      return db.remove(doc);
+                    })
+                    .then(() => {
+                      Notify.success("Xóa hồ sơ thành công");
+                      close();
+                    })
+                    .catch(error => {
+                      console.error(error);
+                      Notify.error(
+                        "Xóa hồ sơ không thành công",
+                        "Vui lòng thử lại sau"
+                      );
+                    })
+                }
+                primary
+                color="status-critical"
+              />
+            </Box>
+          </Box>
+        </Layer>
+      )}
+    </>
   );
 };
 const columns = [
@@ -102,6 +167,7 @@ const columns = [
   {
     field: "id",
     headerSort: false,
+    minWidth: 100,
     formatter: reactFormatter(<Custom />),
   },
 ];
@@ -133,14 +199,11 @@ const getDataForSave = () => {
   //   .catch(console.error);
   Promise.all([
     import("./export_excel/export_excel"),
-    db.allDocs({ include_docs: true }),
+    db.allDocs({ include_docs: true, live: true }),
   ])
     .then(([exportExcel, docs]) => {
       const { createWorkbook } = exportExcel;
-      const data = docs.rows.map(r => {
-        console.log(r.doc._id);
-        return schema.cast(r.doc);
-      });
+      const data = docs.rows.map(r => r.doc);
       createWorkbook(data);
     })
     .catch(error => {
@@ -187,8 +250,31 @@ export default class RecordList extends Component {
 
       this.setState({ data: processedDoc });
     });
+
+    this.changes = db
+      .changes({
+        since: "now",
+        live: true,
+      })
+      .on("change", change => {
+        if (change.deleted) {
+          const currentDataSet = this.state.data;
+          this.setState({
+            data: currentDataSet.filter(r => r.id !== change.id),
+          });
+        }
+      })
+      // .on("complete", function(info) {
+      //   // changes() was canceled
+      // })
+      .on("error", function(err) {
+        console.log(err);
+      });
   }
 
+  componentWillUnmount() {
+    this.changes.cancel();
+  }
   render() {
     return (
       <Box pad="medium">

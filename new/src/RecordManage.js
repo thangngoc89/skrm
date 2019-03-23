@@ -22,7 +22,6 @@ const Custom = ({ cell }) => {
     >
       Sửa
     </a>
-    
   );
 };
 const columns = [
@@ -35,25 +34,30 @@ const columns = [
     headerSort: false,
   },
   {
-    title: "Số hồ sơ",
+    title: "SHS",
     field: "soHoSo",
     align: "center",
     width: 80,
-    headerVertical: true,
+    // headerVertical: true,
+    headerFilter: "input",
     resizable: false,
   },
-  { title: "Họ và tên", field: "hoVaTen", headerVertical: true, minWidth: 300 },
+  {
+    title: "Họ và tên",
+    field: "hoVaTen",
+    headerFilter: "input",
+    minWidth: 300,
+  },
   {
     title: "Người khám",
     field: "nguoiKham",
     minWidth: 100,
-    headerVertical: true,
+    headerFilter: "input",
     responsive: 1,
   },
   {
     title: "Ngày khám",
     field: "ngayKham",
-    headerVertical: true,
     responsive: 1,
   },
   {
@@ -95,7 +99,6 @@ const toStatus = complete => {
     return true;
   } else {
     return false;
-    
   }
 };
 

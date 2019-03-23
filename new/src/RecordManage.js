@@ -2,7 +2,7 @@ import { Box, Heading, Text, Button } from "grommet";
 import React, { Component } from "react";
 import db from "./db";
 import { navigate } from "@reach/router";
-import * as validate from "./export_excel/validate";
+import { schema, validate } from "./export_excel/validate";
 import * as Notify from "./Notify";
 import "react-tabulator/lib/styles.css"; // required styles
 import "react-tabulator/lib/css/tabulator.min.css"; // theme
@@ -124,14 +124,23 @@ const getDataForSave = () => {
   //     saveAs(blob, "data.hmong");
   //   });
   // };
-
+  // db.allDocs({ include_docs: true })
+  //   .then(docs => {
+  //     const data = docs.rows.map(r => r.doc);
+  //     return validate(data[1]);
+  //   })
+  //   .then(console.log)
+  //   .catch(console.error);
   Promise.all([
     import("./export_excel/export_excel"),
     db.allDocs({ include_docs: true }),
   ])
     .then(([exportExcel, docs]) => {
       const { createWorkbook } = exportExcel;
-      const data = docs.rows.map(r => r.doc);
+      const data = docs.rows.map(r => {
+        console.log(r.doc._id);
+        return schema.cast(r.doc);
+      });
       createWorkbook(data);
     })
     .catch(error => {

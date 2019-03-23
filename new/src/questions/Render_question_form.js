@@ -53,7 +53,7 @@ const makeValidationSchema = questionSchema => {
         acc[`${questionBag.id}_customMessage`] = yup
           .string()
           .when(questionBag.id, {
-            is: arr => arr.indexOf(questionBag.custom.value) !== -1,
+            is: (arr = []) => arr.indexOf(questionBag.custom.value) !== -1,
             then: yup.string().required(),
             otherwise: yup.string(),
           });
@@ -90,13 +90,7 @@ const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
       validateOnBlur={false}
       validateOnChange={true}
     >
-      {({
-        values,
-        errors,
-        handleSubmit,
-        isSubmitting,
-        setFieldValue,
-      }) => {
+      {({ values, errors, handleSubmit, isSubmitting, setFieldValue }) => {
         return (
           <Form>
             <Box

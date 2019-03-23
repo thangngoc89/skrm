@@ -1,7 +1,8 @@
 {
-  "name": "my-app",
-  "version": "0.1.0",
+  "name": "fang",
+  "version": "1.0.0",
   "private": true,
+  "homepage": "https://thucdia.khoanguyen.me",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "bs-epitath": "^0.1.0",

@@ -91,6 +91,15 @@ const columns = [
     responsive: 2,
   },
   {
+    title: "Hoàn tất",
+    field: "done",
+    formatter: "tickCross",
+    align: "center",
+    width: 50,
+    headerVertical: true,
+    responsive: 2,
+  },
+  {
     field: "id",
     headerSort: false,
     formatter: reactFormatter(<Custom />),
@@ -150,15 +159,20 @@ export default class RecordList extends Component {
 
         const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
 
+        const pdt = toStatus(phieuDieuTra.complete);
+        const bch = toStatus(bangCauHoi.complete);
+        const co = toStatus(childOIDP.complete);
+
         return {
           id: row.id,
           hoVaTen: phieuDieuTra.hoVaTen,
           ngayKham: phieuDieuTra.ngayKham,
           nguoiKham: phieuDieuTra.nguoiKham,
           soHoSo: phieuDieuTra.soHoSo,
-          phieuDieuTra: toStatus(phieuDieuTra.complete),
-          bangCauHoi: toStatus(bangCauHoi.complete),
-          childOIDP: toStatus(childOIDP.complete),
+          phieuDieuTra: pdt,
+          bangCauHoi: bch,
+          childOIDP: co,
+          done: pdt && bch && co,
         };
       });
 

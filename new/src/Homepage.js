@@ -2,6 +2,17 @@ import React from "react";
 import { Box, Button, Heading } from "grommet";
 import { navigate } from "@reach/router";
 import { Database, AddCircle } from "grommet-icons";
+import styled from "styled-components";
+
+const PrimaryButton = styled(Button)`
+  height: 4rem;
+  width: 100%;
+  font-size: 1.125rem;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-content: center;
+`;
 
 export default function Homepage() {
   return (
@@ -14,8 +25,7 @@ export default function Homepage() {
 
       <Heading level={3}>Chọn chức năng</Heading>
       <Box gap="large" direction="row" margin={{ vertical: "medium" }}>
-        <Button
-          className="h-16 w-full text-lg font-bold flex justify-center content-center"
+        <PrimaryButton
           primary
           color="accent-1"
           href="/new"
@@ -26,10 +36,9 @@ export default function Homepage() {
             navigate("/new");
           }}
         />
-        <Button
-        primary
-        color="accent-1"
-          className="h-16 w-full text-lg font-bold flex justify-center content-center"
+        <PrimaryButton
+          primary
+          color="accent-1"
           href="/manage"
           label="Quản lí hồ sơ"
           icon={<Database />}

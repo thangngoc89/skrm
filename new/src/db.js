@@ -6,6 +6,7 @@ const db = new PouchDb("hmong", { auto_compaction: true });
 //   live: true,
 //   retry: true,
 // });
+
 const demo = () => {
   const data = require("./export_excel/hong.json");
   db.bulkDocs(

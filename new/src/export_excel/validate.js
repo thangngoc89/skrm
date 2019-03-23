@@ -33,6 +33,7 @@ export const validate = record => {
   ])
     .then(([phieuDieuTra, bangCauHoi, childOIDP]) => {
       return {
+        doc: record,
         phieuDieuTra,
         bangCauHoi,
         childOIDP,

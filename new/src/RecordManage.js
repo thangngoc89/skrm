@@ -199,18 +199,30 @@ const getDataForSave = () => {
   //   .catch(console.error);
   Promise.all([
     import("./export_excel/export_excel"),
-    db.allDocs({ include_docs: true, live: true }),
+    db.allDocs({ include_docs: true }),
   ])
     .then(([exportExcel, docs]) => {
       const { createWorkbook } = exportExcel;
       const data = docs.rows.map(r => r.doc);
-      return Promise.all(data.map(row => validate(row)))
-        .then(result => {
-          console.log(result);
-        })
-        .catch(error => console.log("catch error"));
-
+      return Promise.all(data.map(row => validate(row)));
       // createWorkbook(data);
+    })
+    .then(result => {
+      return db.bulkDocs(
+        result.map(row => {
+          const doc = row.doc;
+          if (doc.phieuDieuTra) {
+            doc.phieuDieuTra.complete = row.phieuDieuTra;
+          }
+          if (doc.bangCauHoi) {
+            doc.bangCauHoi.complete = row.bangCauHoi;
+          }
+          if (doc.childOIDP) {
+            doc.childOIDP.complete = row.childOIDP;
+          }
+          return doc;
+        })
+      );
     })
     .catch(error => {
       console.error(error);

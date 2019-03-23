@@ -2,7 +2,8 @@ import { Box, Heading, Text, Button } from "grommet";
 import React, { Component } from "react";
 import db from "./db";
 import { navigate } from "@reach/router";
-
+import * as validate from "./export_excel/validate";
+import * as Notify from "./Notify";
 import "react-tabulator/lib/styles.css"; // required styles
 import "react-tabulator/lib/css/tabulator.min.css"; // theme
 import { ReactTabulator, reactFormatter } from "react-tabulator";
@@ -115,14 +116,22 @@ const getDataForSave = () => {
   //   });
   // };
 
-  import("./export_excel/export_excel")
-    .then(({ createWorkbook }) => {
-      db.allDocs({ include_docs: true }).then(docs => {
-        const data = docs.rows.map(r => r.doc);
-        createWorkbook(data);
-      });
+  Promise.all([
+    import("./export_excel/export_excel"),
+    db.allDocs({ include_docs: true }),
+  ])
+    .then(([exportExcel, docs]) => {
+      const { createWorkbook } = exportExcel;
+      const data = docs.rows.map(r => r.doc);
+      createWorkbook(data);
     })
-    .catch(error => console.error(error));
+    .catch(error => {
+      console.error(error);
+      Notify.error(
+        "Có lỗi xảy ra khi xuất dữ liệu",
+        "Trong khi chờ khắc phục lỗi, vui lòng không xóa dữ liệu trình duyệt web"
+      );
+    });
 };
 
 export default class RecordList extends Component {

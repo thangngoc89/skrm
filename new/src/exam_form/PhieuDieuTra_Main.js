@@ -490,7 +490,7 @@ const getValidationSchema = schema => {
 
 export const blankInitialValues = () => getInitialValues(schema);
 
-const validationSchema = getValidationSchema(schema);
+export const validationSchema = getValidationSchema(schema);
 
 const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
   <Formik

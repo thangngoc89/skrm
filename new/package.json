@@ -37,7 +37,7 @@
     "bsb:watch": "export BS_CMT_POST_PROCESS_CMD=\"gentype\" && bsb -make-world -w",
     "bsb:clean": "bsb -clean-world",
     "build:tailwind": "tailwind build src/styles/tailwind.css -c tailwind.js -o src/tailwind.css",
-    "deploy": "echo 'thucdia.surge.sh' >> build/CNAME && cp build/index.html build/200.html && surge build"
+    "deploy": "echo 'thucdia.khoanguyen.me' > build/CNAME && cp build/index.html build/200.html && surge build"
   },
   "devDependencies": {
     "bs-platform": "^5.0.0",

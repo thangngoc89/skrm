@@ -25,7 +25,6 @@
     "bs-epitath"
   ],
   "refmt": 3,
-  "ppx-flags": ["let-anything/lib/bs/native/let_anything.native"],
   "gentypeconfig": {
     "language": "untyped",
     "module": "es6",

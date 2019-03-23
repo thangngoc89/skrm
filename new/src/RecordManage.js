@@ -58,6 +58,8 @@ const columns = [
   {
     title: "Ngày khám",
     field: "ngayKham",
+    minWidth: 100,
+    headerFilter: "input",
     responsive: 1,
   },
   {
@@ -183,6 +185,7 @@ export default class RecordList extends Component {
         </Box>
         <ReactTabulator
           options={{
+            height: 500,
             responsiveLayout: "collapse",
             placeholder: "No data sets",
           }}

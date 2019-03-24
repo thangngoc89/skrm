@@ -4,6 +4,21 @@ import { decode } from "punycode";
 const encode_col = XLSX.utils.encode_col;
 const decode_col = XLSX.utils.decode_col;
 
+const toNumber = num => {
+  const parsed = parseInt(num, 10);
+  /* TODO: validation error */
+  if (isNaN(parsed)) {
+    return "";
+  }
+  return parsed;
+};
+
+const toNumberWithDefault = (num, def) => {
+  const parsed = toNumber(num);
+  return parsed === "" ? def : parsed;
+};
+
+
 const getNhuCauValue = (source = {}, col, row) => {
   const value = source[`${col}_${row}`];
   /* TODO: Show validation error instead */
@@ -29,24 +44,14 @@ const getNhuCauValue = (source = {}, col, row) => {
     case "F":
       return 16;
       break;
+    case "P":
+      return "P";
+    case "F":
+      return "F";
     default:
-      return parseInt(value, 10);
+      return toNumber(value);
       break;
   }
-};
-
-const toNumber = num => {
-  const parsed = parseInt(num, 10);
-  /* TODO: validation error */
-  if (isNaN(parsed)) {
-    return "";
-  }
-  return parsed;
-};
-
-const toNumberWithDefault = (num, def) => {
-  const parsed = toNumber(num);
-  return parsed === "" ? def : parsed;
 };
 
 const withDefault = (value, def, cb) => {

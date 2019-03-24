@@ -1,4 +1,4 @@
-import React, { Component, useState, useEffect, useReducer } from "react";
+import React, { useEffect, useReducer } from "react";
 import { Box, Heading, Text, Button, Layer } from "grommet";
 import db from "./db";
 import { navigate } from "@reach/router";
@@ -7,6 +7,7 @@ import * as Notify from "./Notify";
 import "react-tabulator/lib/styles.css"; // required styles
 import "react-tabulator/lib/css/tabulator.min.css"; // theme
 import { ReactTabulator, reactFormatter } from "react-tabulator";
+import Spinner from "./Spinner";
 
 const Custom = ({ cell }) => {
   const id = cell._cell.value;
@@ -90,6 +91,7 @@ const Custom = ({ cell }) => {
     </>
   );
 };
+
 const columns = [
   {
     formatter: "responsiveCollapse",
@@ -180,69 +182,154 @@ const toStatus = complete => {
   }
 };
 
-const getDataForSave = async () => {
-  // const getDataForSave = () => {
-  //   db.allDocs({ include_docs: true }).then(docs => {
-  //     const processedData = docs.rows.map(r => r.doc);
-  //     const blob = new Blob([JSON.stringify(processedData)], {
-  //       type: "application/json",
-  //     });
-  //     saveAs(blob, "data.hmong");
-  //   });
-  // };
-  // db.allDocs({ include_docs: true })
-  //   .then(docs => {
-  //     const data = docs.rows.map(r => r.doc);
-  //     return validate(data[1]);
-  //   })
-  //   .then(console.log)
-  //   .catch(console.error);
-  try {
-    const docs = await db.allDocs({ include_docs: true });
-    const data = docs.rows.map(r => r.doc);
-    const result = await Promise.all(data.map(row => validate(row)));
+// const getDataForSave = () => {
+//   db.allDocs({ include_docs: true }).then(docs => {
+//     const processedData = docs.rows.map(r => r.doc);
+//     const blob = new Blob([JSON.stringify(processedData)], {
+//       type: "application/json",
+//     });
+//     saveAs(blob, "data.hmong");
+//   });
+// };
+// db.allDocs({ include_docs: true })
+//   .then(docs => {
+//     const data = docs.rows.map(r => r.doc);
+//     return validate(data[1]);
+//   })
+//   .then(console.log)
+//   .catch(console.error);
 
-    await db.bulkDocs(
-      result.map(row => {
-        const doc = row.doc;
-        if (doc.phieuDieuTra) {
-          doc.phieuDieuTra.complete = row.phieuDieuTra;
-        }
-        if (doc.bangCauHoi) {
-          doc.bangCauHoi.complete = row.bangCauHoi;
-        }
-        if (doc.childOIDP) {
-          doc.childOIDP.complete = row.childOIDP;
-        }
-        return doc;
-      })
-    );
-
-    const { createWorkbook } = await import("./export_excel/export_excel");
-    // createWorkbook(data);
-  } catch (error) {
-    console.error(error);
-    Notify.error(
-      "Có lỗi xảy ra khi xuất dữ liệu",
-      "Trong khi chờ khắc phục lỗi, vui lòng không xóa dữ liệu trình duyệt web"
-    );
-  }
-};
-
-const initialState = { data: [], exportState: "INITIAL" };
+const initialState = { data: [], exportState: { type: "HIDDEN" } };
 
 function reducer(state, action) {
   switch (action.type) {
-    case "update":
-      return { data: action.payload };
+    case "DATA_UPDATE":
+      return { ...state, data: action.payload };
+    case "EXPORT_LOADING":
+      return { ...state, exportState: { type: "LOADING" } };
+    case "EXPORT_VALIDATE_ERROR":
+      return {
+        ...state,
+        exportState: { type: "VALIDATE_ERROR", payload: action.payload },
+      };
+    case "EXPORT_HIDDEN":
+      return {
+        ...state,
+        exportState: { type: "HIDDEN" },
+      };
     default:
       throw new Error();
   }
 }
+
+const ExportModal = ({ type, payload, close, onExportAnyway }) => {
+  switch (type) {
+    case "LOADING":
+      return (
+        <Box pad="medium" gap="small" width="large" overflow="auto">
+          <Heading level={3} margin="none">
+            Xuất dữ liệu ra Excel
+          </Heading>
+          <Text>1. Kiểm tra dữ liệu</Text>
+          <Spinner />
+        </Box>
+      );
+    case "VALIDATE_ERROR":
+      return (
+        <Box pad="medium" gap="small" width="large" overflow="auto">
+          <Heading level={3} margin="none">
+            Xuất dữ liệu ra Excel
+          </Heading>
+          <Text>1. Kiểm tra dữ liệu</Text>
+          <Text>2. Những hồ sơ sau đây chưa được hoàn thành:</Text>
+          <ul>
+            {payload.map(row => {
+              return <li key={row.doc._id}>{row.doc.phieuDieuTra.soHoSo}</li>;
+            })}
+          </ul>
+          <Text>Vui lòng hoàn tất các bộ hồ sơ trước khi xuất dữ liệu</Text>
+          <Box
+            as="footer"
+            gap="small"
+            direction="row"
+            align="center"
+            justify="end"
+            pad={{ top: "medium", bottom: "large" }}
+          >
+            <Button label="Thoát" onClick={close} color="dark-3" />
+            <Button
+              label={
+                <Text color="white">
+                  <strong>Export anyway</strong>
+                </Text>
+              }
+              onClick={onExportAnyway}
+              primary
+              color="brand"
+            />
+          </Box>
+        </Box>
+      );
+    case "HIDDEN":
+    default:
+      return null;
+  }
+};
 const RecordManage = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  const handleExport = async () => {
+    try {
+      dispatch({ type: "EXPORT_LOADING" });
+      const docs = await db.allDocs({ include_docs: true });
+      const data = docs.rows.map(r => r.doc);
+      const result = await Promise.all(data.map(row => validate(row)));
+
+      await db.bulkDocs(
+        result.map(row => {
+          const doc = row.doc;
+          if (doc.phieuDieuTra) {
+            doc.phieuDieuTra.complete = row.phieuDieuTra;
+          }
+          if (doc.bangCauHoi) {
+            doc.bangCauHoi.complete = row.bangCauHoi;
+          }
+          if (doc.childOIDP) {
+            doc.childOIDP.complete = row.childOIDP;
+          }
+          return doc;
+        })
+      );
+
+      dispatch({
+        type: "EXPORT_VALIDATE_ERROR",
+        payload: result,
+      });
+    } catch (error) {
+      console.error(error);
+      Notify.error(
+        "Có lỗi xảy ra khi xuất dữ liệu",
+        "Trong khi chờ khắc phục lỗi, vui lòng không xóa dữ liệu trình duyệt web"
+      );
+    }
+  };
+
+  const handleExportAnyway = async () => {
+    try {
+      const data = state.exportState.payload;
+      const { createWorkbook } = await import("./export_excel/export_excel");
+      createWorkbook(data);
+    } catch (error) {
+      console.error(error);
+      Notify.error(
+        "Có lỗi xảy ra khi tạo file Excel",
+        "Lỗi này thường do bạn xuất các bộ hồ sơ chưa hoàn tất. Vui lòng hoàn thành các bộ hồ sơ trước khi xuất"
+      );
+    }
+  };
+
   useEffect(() => {
+    let canceled = false;
     const changes = db
       .changes({
         since: "now",
@@ -252,18 +339,23 @@ const RecordManage = props => {
         if (change.deleted) {
           const currentDataSet = state.data;
           dispatch({
-            type: "update",
+            type: "DATA_UPDATE",
             payload: currentDataSet.filter(r => r.id !== change.id),
           });
         }
       })
-      // .on("complete", function(info) {
-      //   // changes() was canceled
-      // })
+      .on("complete", function(info) {
+        canceled = true;
+      })
       .on("error", function(err) {
         console.log(err);
       });
-    return changes.cancel;
+    return () => {
+      if (!canceled) {
+        canceled = true;
+        changes.cancel();
+      }
+    };
   }, []);
 
   useEffect(() => {
@@ -291,11 +383,13 @@ const RecordManage = props => {
           };
         });
 
-        dispatch({ type: "update", payload: processedDoc });
+        dispatch({ type: "DATA_UPDATE", payload: processedDoc });
       })
       .catch(console.error);
   }, []);
 
+  const showExportModal = state.exportState.type !== "HIDDEN";
+  const closeExportModal = () => dispatch({ type: "EXPORT_HIDDEN" });
   return (
     <Box pad="medium">
       <Box margin={{ vertical: "large" }}>
@@ -313,26 +407,38 @@ const RecordManage = props => {
         justify="between"
         margin={{ bottom: "small" }}
       >
-        <Button
-          primary
-          label="Download Excel"
-          onClick={() => {
-            getDataForSave();
-          }}
-        />
+        <Button primary label="Download Excel" onClick={handleExport} />
       </Box>
       <ReactTabulator
         options={{
           height: 500,
           responsiveLayout: "collapse",
-          placeholder: "No data sets",
+          placeholder: "Chưa có dữ liệu",
+          tooltip: true,
         }}
         data={state.data}
         columns={columns}
-        tooltips={true}
         layout={"fitColumns"}
       />
+
+      {showExportModal && (
+        <Layer
+          position="center"
+          modal
+          // onClickOutside={closeExportModal}
+          // onEsc={closeExportModal}
+          margin="large"
+        >
+          <ExportModal
+            type={state.exportState.type}
+            payload={state.exportState.payload}
+            close={closeExportModal}
+            onExportAnyway={handleExportAnyway}
+          />
+        </Layer>
+      )}
     </Box>
   );
 };
+
 export default RecordManage;

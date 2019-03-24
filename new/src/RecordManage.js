@@ -243,7 +243,7 @@ const ExportModal = ({ type, payload, close, onExportAnyway }) => {
           <Text>1. Kiểm tra dữ liệu</Text>
           <Text>2. Những hồ sơ sau đây chưa được hoàn thành:</Text>
           <ul>
-            {payload.map(row => {
+            {payload.hasError.map(row => {
               return <li key={row.doc._id}>{row.doc.phieuDieuTra.soHoSo}</li>;
             })}
           </ul>
@@ -300,10 +300,16 @@ const RecordManage = props => {
           return doc;
         })
       );
+      const hasError = result.filter(r => {
+        return !(r.phieuDieuTra && r.bangCauHoi && r.childOIDP);
+      });
 
       dispatch({
         type: "EXPORT_VALIDATE_ERROR",
-        payload: result,
+        payload: {
+          hasError,
+          data,
+        },
       });
     } catch (error) {
       console.error(error);
@@ -316,7 +322,7 @@ const RecordManage = props => {
 
   const handleExportAnyway = async () => {
     try {
-      const data = state.exportState.payload;
+      const data = state.exportState.payload.data;
       const { createWorkbook } = await import("./export_excel/export_excel");
       createWorkbook(data);
     } catch (error) {

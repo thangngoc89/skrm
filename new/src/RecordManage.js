@@ -180,7 +180,7 @@ const toStatus = complete => {
   }
 };
 
-const getDataForSave = () => {
+const getDataForSave = async () => {
   // const getDataForSave = () => {
   //   db.allDocs({ include_docs: true }).then(docs => {
   //     const processedData = docs.rows.map(r => r.doc);
@@ -197,40 +197,36 @@ const getDataForSave = () => {
   //   })
   //   .then(console.log)
   //   .catch(console.error);
-  Promise.all([
-    import("./export_excel/export_excel"),
-    db.allDocs({ include_docs: true }),
-  ])
-    .then(([exportExcel, docs]) => {
-      const { createWorkbook } = exportExcel;
-      const data = docs.rows.map(r => r.doc);
-      return Promise.all(data.map(row => validate(row)));
-      // createWorkbook(data);
-    })
-    .then(result => {
-      return db.bulkDocs(
-        result.map(row => {
-          const doc = row.doc;
-          if (doc.phieuDieuTra) {
-            doc.phieuDieuTra.complete = row.phieuDieuTra;
-          }
-          if (doc.bangCauHoi) {
-            doc.bangCauHoi.complete = row.bangCauHoi;
-          }
-          if (doc.childOIDP) {
-            doc.childOIDP.complete = row.childOIDP;
-          }
-          return doc;
-        })
-      );
-    })
-    .catch(error => {
-      console.error(error);
-      Notify.error(
-        "Có lỗi xảy ra khi xuất dữ liệu",
-        "Trong khi chờ khắc phục lỗi, vui lòng không xóa dữ liệu trình duyệt web"
-      );
-    });
+  try {
+    const docs = await db.allDocs({ include_docs: true });
+    const data = docs.rows.map(r => r.doc);
+    const result = await Promise.all(data.map(row => validate(row)));
+
+    await db.bulkDocs(
+      result.map(row => {
+        const doc = row.doc;
+        if (doc.phieuDieuTra) {
+          doc.phieuDieuTra.complete = row.phieuDieuTra;
+        }
+        if (doc.bangCauHoi) {
+          doc.bangCauHoi.complete = row.bangCauHoi;
+        }
+        if (doc.childOIDP) {
+          doc.childOIDP.complete = row.childOIDP;
+        }
+        return doc;
+      })
+    );
+
+    const { createWorkbook } = await import("./export_excel/export_excel");
+    // createWorkbook(data);
+  } catch (error) {
+    console.error(error);
+    Notify.error(
+      "Có lỗi xảy ra khi xuất dữ liệu",
+      "Trong khi chờ khắc phục lỗi, vui lòng không xóa dữ liệu trình duyệt web"
+    );
+  }
 };
 
 export default class RecordList extends Component {
@@ -242,7 +238,7 @@ export default class RecordList extends Component {
     };
   }
 
-  componentDidMount() {
+  loadData = () => {
     db.allDocs({ include_docs: true }).then(docs => {
       const processedDoc = docs.rows.map(row => {
         const doc = row.doc;
@@ -268,7 +264,10 @@ export default class RecordList extends Component {
 
       this.setState({ data: processedDoc });
     });
+  };
 
+  componentDidMount() {
+    this.loadData();
     this.changes = db
       .changes({
         since: "now",
@@ -293,6 +292,7 @@ export default class RecordList extends Component {
   componentWillUnmount() {
     this.changes.cancel();
   }
+
   render() {
     return (
       <Box pad="medium">

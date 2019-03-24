@@ -205,6 +205,11 @@ function reducer(state, action) {
   switch (action.type) {
     case "DATA_UPDATE":
       return { ...state, data: action.payload };
+    case "DATA_ROW_DELETE":
+      return {
+        ...state,
+        data: state.data.filter(r => r.id !== action.payload),
+      };
     case "EXPORT_LOADING":
       return { ...state, exportState: { type: "LOADING" } };
     case "EXPORT_VALIDATE_ERROR":
@@ -343,10 +348,9 @@ const RecordManage = props => {
       })
       .on("change", change => {
         if (change.deleted) {
-          const currentDataSet = state.data;
           dispatch({
-            type: "DATA_UPDATE",
-            payload: currentDataSet.filter(r => r.id !== change.id),
+            type: "DATA_ROW_DELETE",
+            payload: change.id,
           });
         }
       })

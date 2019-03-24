@@ -229,55 +229,31 @@ const getDataForSave = async () => {
   }
 };
 
-export default class RecordList extends Component {
-  constructor(props) {
-    super(props);
+const initialState = { data: [], exportState: "INITIAL" };
 
-    this.state = {
-      data: [],
-    };
+function reducer(state, action) {
+  switch (action.type) {
+    case "update":
+      return { data: action.payload };
+    default:
+      throw new Error();
   }
+}
+const RecordManage = props => {
+  const [state, dispatch] = useReducer(reducer, initialState);
 
-  loadData = () => {
-    db.allDocs({ include_docs: true }).then(docs => {
-      const processedDoc = docs.rows.map(row => {
-        const doc = row.doc;
-
-        const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
-
-        const pdt = toStatus(phieuDieuTra.complete);
-        const bch = toStatus(bangCauHoi.complete);
-        const co = toStatus(childOIDP.complete);
-
-        return {
-          id: row.id,
-          hoVaTen: phieuDieuTra.hoVaTen,
-          ngayKham: phieuDieuTra.ngayKham,
-          nguoiKham: phieuDieuTra.nguoiKham,
-          soHoSo: phieuDieuTra.soHoSo,
-          phieuDieuTra: pdt,
-          bangCauHoi: bch,
-          childOIDP: co,
-          done: pdt && bch && co,
-        };
-      });
-
-      this.setState({ data: processedDoc });
-    });
-  };
-
-  componentDidMount() {
-    this.loadData();
-    this.changes = db
+  useEffect(() => {
+    const changes = db
       .changes({
         since: "now",
         live: true,
       })
       .on("change", change => {
         if (change.deleted) {
-          const currentDataSet = this.state.data;
-          this.setState({
-            data: currentDataSet.filter(r => r.id !== change.id),
+          const currentDataSet = state.data;
+          dispatch({
+            type: "update",
+            payload: currentDataSet.filter(r => r.id !== change.id),
           });
         }
       })
@@ -287,50 +263,76 @@ export default class RecordList extends Component {
       .on("error", function(err) {
         console.log(err);
       });
-  }
+    return changes.cancel;
+  }, []);
 
-  componentWillUnmount() {
-    this.changes.cancel();
-  }
+  useEffect(() => {
+    db.allDocs({ include_docs: true })
+      .then(docs => {
+        const processedDoc = docs.rows.map(row => {
+          const doc = row.doc;
 
-  render() {
-    return (
-      <Box pad="medium">
-        <Box margin={{ vertical: "large" }}>
-          <Heading level="1" align="left">
-            Quản lí hồ sơ
-          </Heading>
-          <Text size="large" color="dark-1">
-            Liệt kê, sửa và tạo hồ sơ
-          </Text>
-        </Box>
+          const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
 
-        <Box
-          direction="row"
-          align="center"
-          justify="between"
-          margin={{ bottom: "small" }}
-        >
-          <Button
-            primary
-            label="Download Excel"
-            onClick={() => {
-              getDataForSave();
-            }}
-          />
-        </Box>
-        <ReactTabulator
-          options={{
-            height: 500,
-            responsiveLayout: "collapse",
-            placeholder: "No data sets",
+          const pdt = toStatus(phieuDieuTra.complete);
+          const bch = toStatus(bangCauHoi.complete);
+          const co = toStatus(childOIDP.complete);
+
+          return {
+            id: row.id,
+            hoVaTen: phieuDieuTra.hoVaTen,
+            ngayKham: phieuDieuTra.ngayKham,
+            nguoiKham: phieuDieuTra.nguoiKham,
+            soHoSo: phieuDieuTra.soHoSo,
+            phieuDieuTra: pdt,
+            bangCauHoi: bch,
+            childOIDP: co,
+            done: pdt && bch && co,
+          };
+        });
+
+        dispatch({ type: "update", payload: processedDoc });
+      })
+      .catch(console.error);
+  }, []);
+
+  return (
+    <Box pad="medium">
+      <Box margin={{ vertical: "large" }}>
+        <Heading level="1" align="left">
+          Quản lí hồ sơ
+        </Heading>
+        <Text size="large" color="dark-1">
+          Liệt kê, sửa và tạo hồ sơ
+        </Text>
+      </Box>
+
+      <Box
+        direction="row"
+        align="center"
+        justify="between"
+        margin={{ bottom: "small" }}
+      >
+        <Button
+          primary
+          label="Download Excel"
+          onClick={() => {
+            getDataForSave();
           }}
-          data={this.state.data}
-          columns={columns}
-          tooltips={true}
-          layout={"fitColumns"}
         />
       </Box>
-    );
-  }
-}
+      <ReactTabulator
+        options={{
+          height: 500,
+          responsiveLayout: "collapse",
+          placeholder: "No data sets",
+        }}
+        data={state.data}
+        columns={columns}
+        tooltips={true}
+        layout={"fitColumns"}
+      />
+    </Box>
+  );
+};
+export default RecordManage;

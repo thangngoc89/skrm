@@ -7,6 +7,7 @@ import {
   RadioButton,
   DottedLabel,
 } from "../components";
+import objStr from "obj-str";
 
 const RenderQuestionHeader = function({ id, question }) {
   return (
@@ -17,13 +18,25 @@ const RenderQuestionHeader = function({ id, question }) {
   );
 };
 
-const SelectOne = ({ setFieldValue, questionBag, questionValue }) => {
+const SelectOne = ({
+  setFieldValue,
+  questionBag,
+  questionValue,
+  hasError,
+  errors,
+}) => {
   const hasCustom = questionBag.hasOwnProperty("custom");
   const fieldName = questionBag.id;
   const fieldValue = questionValue;
 
   return (
-    <Box direction="row-responsive" className="my-3">
+    <Box
+      direction="row-responsive"
+      className={objStr({
+        "my-3": true,
+        "bg-error-bg py-3": hasError,
+      })}
+    >
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
@@ -62,13 +75,19 @@ const SelectOne = ({ setFieldValue, questionBag, questionValue }) => {
               }
             />
           )}
-          {hasCustom && questionValue === questionBag.custom.value && (
+          {hasCustom && questionValue.indexOf(questionBag.custom.value) !== -1 && (
             <FastField
               name={`${questionBag.id}_customMessage`}
               render={({ field }) => {
+                const hasCustomError =
+                  typeof errors[field.name] !== "undefined";
+
                 return (
                   <TextInput
-                    className="mt-2"
+                    className={objStr({
+                      "mt-2 py-2": true,
+                      "bg-error-bg": hasCustomError,
+                    })}
                     placeholder="Ghi rõ câu trả lời"
                     {...field}
                   />
@@ -110,12 +129,24 @@ const ControlledCheckBox = ({
   );
 };
 
-const SelectManyOrCustom = ({ questionValue, questionBag, setFieldValue }) => {
+const SelectManyOrCustom = ({
+  questionValue,
+  questionBag,
+  setFieldValue,
+  hasError,
+  errors,
+}) => {
   const hasCustom = questionBag.hasOwnProperty("custom");
   const fieldName = questionBag.id;
 
   return (
-    <Box direction="row-responsive" className="my-3">
+    <Box
+      direction="row-responsive"
+      className={objStr({
+        "my-3": true,
+        "bg-error-bg py-3": hasError,
+      })}
+    >
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}
@@ -145,9 +176,15 @@ const SelectManyOrCustom = ({ questionValue, questionBag, setFieldValue }) => {
             <FastField
               name={`${questionBag.id}_customMessage`}
               render={({ field }) => {
+                const hasCustomError =
+                  typeof errors[field.name] !== "undefined";
+
                 return (
                   <TextInput
-                    className="mt-2"
+                    className={objStr({
+                      "mt-2 py-2": true,
+                      "bg-error-bg": hasCustomError,
+                    })}
                     placeholder="Ghi rõ câu trả lời"
                     {...field}
                   />
@@ -161,7 +198,12 @@ const SelectManyOrCustom = ({ questionValue, questionBag, setFieldValue }) => {
   );
 };
 
-const GroupSelectOne = ({ setFieldValue, questionBag, questionValue }) => {
+const GroupSelectOne = ({
+  setFieldValue,
+  questionBag,
+  questionValue,
+  errors,
+}) => {
   return (
     <Box direction="column" className="my-3">
       <RenderQuestionHeader
@@ -187,10 +229,16 @@ const GroupSelectOne = ({ setFieldValue, questionBag, questionValue }) => {
               const fieldName = `${questionBag.id}.${subValue}`;
               const fieldValue = questionValue[subValue];
 
+              const hasError =
+                errors && typeof errors[subValue] !== "undefined";
+
               return (
                 <tr
                   key={subValue}
-                  className="h-10 border-b border-light-6 hover:bg-light-1"
+                  className={objStr({
+                    "h-10 border-b border-light-6 hover:bg-light-1": true,
+                    "bg-error-bg": hasError,
+                  })}
                 >
                   <td scope="row" className="text-left font-normal">
                     <strong>{subValue}.</strong> {subLabel}
@@ -222,29 +270,40 @@ const GroupSelectOne = ({ setFieldValue, questionBag, questionValue }) => {
   );
 };
 
-function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
+function RenderQuestion({
+  questionValue,
+  questionError,
+  setFieldValue,
+  questionBag,
+  errors,
+}) {
   switch (questionBag.type) {
     case "select_one":
     case "select_one_or_custom":
       return (
         <SelectOne
+          hasError={typeof questionError !== "undefined"}
           questionValue={questionValue}
           setFieldValue={setFieldValue}
           questionBag={questionBag}
+          errors={errors}
         />
       );
     case "select_many_or_custom":
     case "select_many":
       return (
         <SelectManyOrCustom
+          hasError={typeof questionError !== "undefined"}
           questionValue={questionValue}
           setFieldValue={setFieldValue}
           questionBag={questionBag}
+          errors={errors}
         />
       );
     case "group_select_one":
       return (
         <GroupSelectOne
+          errors={questionError}
           questionValue={questionValue}
           setFieldValue={setFieldValue}
           questionBag={questionBag}
@@ -259,8 +318,16 @@ function RenderQuestion({ questionValue, setFieldValue, questionBag }) {
   }
 }
 
+/* 
+// Not working because of required access to bx_customMessage
 function areEqual(prevProps, nextProps) {
-  return prevProps.questionValue === nextProps.questionValue;
+  return (
+    prevProps.questionValue === nextProps.questionValue &&
+    prevProps.questionError === nextProps.questionError
+  );
 }
 
 export default React.memo(RenderQuestion, areEqual);
+*/
+
+export default RenderQuestion;

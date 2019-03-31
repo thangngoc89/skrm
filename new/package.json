@@ -14,6 +14,7 @@
     "grommet": "^2.3.1",
     "grommet-icons": "^4.1.0",
     "lodash": "^4.17.11",
+    "obj-str": "^1.0.3",
     "pouchdb": "^7.0.0",
     "re-classnames": "^3.0.0",
     "re-formality": "^1.1.1",

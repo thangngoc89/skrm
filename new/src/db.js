@@ -8,7 +8,7 @@ const db = new PouchDb("hmong", { auto_compaction: true });
 // });
 
 const demo = () => {
-  const data = require("./export_excel/binhhuyen.json");
+  const data = require("./export_excel/hong.json");
   db.bulkDocs(
     data.map(row => {
       delete row._rev;

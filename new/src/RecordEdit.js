@@ -1,6 +1,5 @@
 import React from "react";
 import { useGet } from "react-pouchdb";
-import { Box } from "grommet";
 import RecordInput from "./RecordInput";
 
 const RecordEdit = ({ recordId }) => {

@@ -287,7 +287,7 @@ const ExportModal = ({ type, payload, close, onExport }) => {
             Xuất dữ liệu ra Excel
           </Heading>
           <Text>1. Kiểm tra dữ liệu</Text>
-          <Text>2. Đang xuất hồ sơ ra file Excel</Text>
+          <Text>2. Kiểm tra hoàn tất. Bấm "Xuất Excel" để tải dữ liệu về</Text>
           <Box
             as="footer"
             gap="small"
@@ -355,7 +355,7 @@ const RecordManage = props => {
       } else {
         dispatch({
           type: "EXPORT_VALIDATE_SUCCESS",
-          payloay: {
+          payload: {
             data,
           },
         });

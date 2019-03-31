@@ -9,23 +9,23 @@ import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 export const OHIS = ReasonReact.wrapReasonForJs(
   PDT_AllTablesBS.OHIS[0],
   (function _(jsProps) {
-     return Curry._3(PDT_AllTablesBS.OHIS[1], jsProps.value, jsProps.onChange, jsProps.children);
+     return Curry._4(PDT_AllTablesBS.OHIS[1], jsProps.value, jsProps.onChange, jsProps.error, jsProps.children);
   }));
 
 export const CPI = ReasonReact.wrapReasonForJs(
   PDT_AllTablesBS.CPI[0],
   (function _(jsProps) {
-     return Curry._3(PDT_AllTablesBS.CPI[1], jsProps.value, jsProps.onChange, jsProps.children);
+     return Curry._4(PDT_AllTablesBS.CPI[1], jsProps.value, jsProps.onChange, jsProps.error, jsProps.children);
   }));
 
 export const MIH = ReasonReact.wrapReasonForJs(
   PDT_AllTablesBS.MIH[0],
   (function _(jsProps) {
-     return Curry._3(PDT_AllTablesBS.MIH[1], jsProps.value, jsProps.onChange, jsProps.children);
+     return Curry._4(PDT_AllTablesBS.MIH[1], jsProps.value, jsProps.onChange, jsProps.error, jsProps.children);
   }));
 
 export const MocChenChuc = ReasonReact.wrapReasonForJs(
   PDT_AllTablesBS.MocChenChuc[0],
   (function _(jsProps) {
-     return Curry._3(PDT_AllTablesBS.MocChenChuc[1], jsProps.value, jsProps.onChange, jsProps.children);
+     return Curry._4(PDT_AllTablesBS.MocChenChuc[1], jsProps.value, jsProps.onChange, jsProps.error, jsProps.children);
   }));

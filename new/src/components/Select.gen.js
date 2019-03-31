@@ -9,7 +9,7 @@ import * as SelectBS from './Select.bs';
 export const Select = ReasonReact.wrapReasonForJs(
   SelectBS.component,
   (function _(jsProps) {
-     return Curry._7(SelectBS.make, jsProps.options.map(function _element(ArrayItem) { return [ArrayItem.value, ArrayItem.label]}), jsProps.name, jsProps.value, jsProps.onChange, jsProps.onBlur, jsProps.className, jsProps.children);
+     return Curry.app(SelectBS.make, [jsProps.options.map(function _element(ArrayItem) { return [ArrayItem.value, ArrayItem.label]}), jsProps.name, jsProps.value, jsProps.onChange, jsProps.onBlur, jsProps.block, jsProps.className, jsProps.hasError, jsProps.children]);
   }));
 
 export default Select;

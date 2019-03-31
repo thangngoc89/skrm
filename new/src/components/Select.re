@@ -21,15 +21,25 @@ let make =
       ~value,
       ~onChange,
       ~onBlur=?,
+      ~block=false,
       ~className=?,
+      ~hasError=false,
       _children,
     ) => {
   ...component,
   render: _self => {
-    <div className=s##container>
+    <div
+      className={Cn.make([
+        s##container,
+        Cn.ifTrue(s##selectBlockError, hasError),
+      ])}>
       <select
         name
-        className={Cn.make([s##select, Cn.unpack(className)])}
+        className={Cn.make([
+          s##select,
+          Cn.unpack(className),
+          Cn.ifTrue(s##selectBlock, block),
+        ])}
         onChange={event => event->ReactEvent.Form.target##value->onChange}
         ?onBlur
         value>

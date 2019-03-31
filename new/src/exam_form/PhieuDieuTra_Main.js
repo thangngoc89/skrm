@@ -345,6 +345,7 @@ function RenderRow({ row, setFieldValue }) {
                                 [cellLabel]: value,
                               });
                             }}
+                            error={error}
                           />
                           {isFieldTouched && (
                             <RenderObjectError error={error} />
@@ -362,6 +363,7 @@ function RenderRow({ row, setFieldValue }) {
                                 [cellLabel]: value,
                               });
                             }}
+                            error={error}
                           />
                           {isFieldTouched && (
                             <RenderObjectError error={error} />
@@ -379,6 +381,7 @@ function RenderRow({ row, setFieldValue }) {
                                 [cellLabel]: value,
                               });
                             }}
+                            error={error}
                           />
                           {isFieldTouched && (
                             <RenderObjectError error={error} />
@@ -399,6 +402,7 @@ function RenderRow({ row, setFieldValue }) {
                                 [cellLabel]: value,
                               });
                             }}
+                            error={error}
                           />
                           {isFieldTouched && (
                             <RenderObjectError error={error} />

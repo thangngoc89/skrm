@@ -6,6 +6,10 @@
     right 2px center no-repeat;
 }
 
+.selectBlockError {
+  @apply .bg-error-bg;
+}
+
 .select {
   @apply .w-full .h-10 .appearance-none .pr-4 .border-0 .m-0;
   box-shadow: none;
@@ -33,4 +37,8 @@
 
 :global(.formfield) .select:focus {
   @apply .shadow-none .border-accent-1;
+}
+
+.selectBlock:focus {
+  @apply .bg-accent-1 .shadow-none;
 }

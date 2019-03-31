@@ -479,8 +479,8 @@ const RecordManage = props => {
         <Layer
           position="center"
           modal
-          // onClickOutside={closeExportModal}
-          // onEsc={closeExportModal}
+          onClickOutside={closeExportModal}
+          onEsc={closeExportModal}
           margin="large"
         >
           <ExportModal

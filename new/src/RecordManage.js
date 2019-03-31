@@ -217,6 +217,11 @@ function reducer(state, action) {
         ...state,
         exportState: { type: "VALIDATE_ERROR", payload: action.payload },
       };
+    case "EXPORT_VALIDATE_SUCCESS":
+      return {
+        ...state,
+        exportState: { type: "VALIDATE_SUCCESS", payload: action.payload },
+      };
     case "EXPORT_HIDDEN":
       return {
         ...state,
@@ -227,7 +232,7 @@ function reducer(state, action) {
   }
 }
 
-const ExportModal = ({ type, payload, close, onExportAnyway }) => {
+const ExportModal = ({ type, payload, close, onExport }) => {
   switch (type) {
     case "LOADING":
       return (
@@ -268,7 +273,37 @@ const ExportModal = ({ type, payload, close, onExportAnyway }) => {
                   <strong>Export anyway</strong>
                 </Text>
               }
-              onClick={onExportAnyway}
+              onClick={onExport}
+              primary
+              color="brand"
+            />
+          </Box>
+        </Box>
+      );
+    case "VALIDATE_SUCCESS":
+      return (
+        <Box pad="medium" gap="small" width="large" overflow="auto">
+          <Heading level={3} margin="none">
+            Xuất dữ liệu ra Excel
+          </Heading>
+          <Text>1. Kiểm tra dữ liệu</Text>
+          <Text>2. Đang xuất hồ sơ ra file Excel</Text>
+          <Box
+            as="footer"
+            gap="small"
+            direction="row"
+            align="center"
+            justify="end"
+            pad={{ top: "medium", bottom: "large" }}
+          >
+            <Button label="Thoát" onClick={close} color="dark-3" />
+            <Button
+              label={
+                <Text color="white">
+                  <strong>Xuất Excel</strong>
+                </Text>
+              }
+              onClick={onExport}
               primary
               color="brand"
             />
@@ -283,7 +318,7 @@ const ExportModal = ({ type, payload, close, onExportAnyway }) => {
 const RecordManage = props => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  const handleExport = async () => {
+  const handleInitExport = async () => {
     try {
       dispatch({ type: "EXPORT_LOADING" });
       const docs = await db.allDocs({ include_docs: true });
@@ -309,13 +344,22 @@ const RecordManage = props => {
         return !(r.phieuDieuTra && r.bangCauHoi && r.childOIDP);
       });
 
-      dispatch({
-        type: "EXPORT_VALIDATE_ERROR",
-        payload: {
-          hasError,
-          data,
-        },
-      });
+      if (hasError.length !== 0) {
+        dispatch({
+          type: "EXPORT_VALIDATE_ERROR",
+          payload: {
+            hasError,
+            data,
+          },
+        });
+      } else {
+        dispatch({
+          type: "EXPORT_VALIDATE_SUCCESS",
+          payloay: {
+            data,
+          },
+        });
+      }
     } catch (error) {
       console.error(error);
       Notify.error(
@@ -325,7 +369,7 @@ const RecordManage = props => {
     }
   };
 
-  const handleExportAnyway = async () => {
+  const handleExport = async () => {
     try {
       const data = state.exportState.payload.data;
       const { createWorkbook } = await import("./export_excel/export_excel");
@@ -417,7 +461,7 @@ const RecordManage = props => {
         justify="between"
         margin={{ bottom: "small" }}
       >
-        <Button primary label="Download Excel" onClick={handleExport} />
+        <Button primary label="Download Excel" onClick={handleInitExport} />
       </Box>
       <ReactTabulator
         options={{
@@ -443,7 +487,7 @@ const RecordManage = props => {
             type={state.exportState.type}
             payload={state.exportState.payload}
             close={closeExportModal}
-            onExportAnyway={handleExportAnyway}
+            onExport={handleExport}
           />
         </Layer>
       )}

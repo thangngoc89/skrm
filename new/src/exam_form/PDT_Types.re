@@ -10,10 +10,5 @@ module Table = {
 
   type row = list(cell);
 
-  type table = {
-    heading: row,
-    rows: list(row),
-  };
-
-  type tableSimple = list(row);
+  type table = list(row);
 };

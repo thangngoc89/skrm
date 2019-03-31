@@ -25,53 +25,43 @@ let makeLabel = (~heading, ~left) => {
 };
 
 let makeTable =
-    (~colsMain, ~colsSub, ~reverse=false, ~disabledList=[], ~heading, ()) =>
-  if (Belt.List.length(colsMain) != Belt.List.length(colsSub)) {
-    Belt.Result.Error(`UnequalLeftAndRightColumns);
-  } else {
-    let tableHeading =
-      Belt.List.concatMany([|
-        [Empty],
-        heading->Belt.List.map(h => Static(h)),
-        [Empty],
-      |]);
+    (~colsMain, ~colsSub, ~reverse=false, ~disabledList=[], ~heading, ()) => {
+  let tableHeading =
+    Belt.List.concatMany([|
+      [Empty],
+      heading->Belt.List.map(h => Static(h)),
+      [Empty],
+    |]);
 
-    let rows =
-      colsMain
-      ->Belt.List.reduceWithIndex(
-          [],
-          (acc, currentLeft, index) => {
-            let main = [Static(currentLeft)];
-            let sub = [
-              colsSub
-              ->Belt.List.get(index)
-              ->Belt.Option.getWithDefault(Empty),
-            ];
-            let data =
-              heading->Belt.List.map(h => {
-                let label = makeLabel(~heading=h, ~left=currentLeft);
-                switch (Belt.List.getBy(disabledList, l => l == label)) {
-                | None =>
-                  Data(label, h == "NC" ? optionsNhuCau : optionsTinhTrang)
-                | Some(_) => Disabled
-                };
-              });
-            let toConcat =
-              !reverse ? [|main, data, sub|] : [|sub, data, main|];
-            let newRow = Belt.List.concatMany(toConcat);
-            [newRow, ...acc];
-          },
-        )
-      ->Belt.List.reverse;
-    let table = {heading: tableHeading, rows};
-    Belt.Result.Ok(table);
-  };
-
-module type TableRender = {
-  let table: Belt.Result.t(table, [> | `UnequalLeftAndRightColumns]);
+  let rows =
+    colsMain
+    ->Belt.List.reduceWithIndex(
+        [],
+        (acc, currentLeft, index) => {
+          let main = [Static(currentLeft)];
+          let sub = [
+            colsSub->Belt.List.get(index)->Belt.Option.getWithDefault(Empty),
+          ];
+          let data =
+            heading->Belt.List.map(h => {
+              let label = makeLabel(~heading=h, ~left=currentLeft);
+              switch (Belt.List.getBy(disabledList, l => l == label)) {
+              | None =>
+                Data(label, h == "NC" ? optionsNhuCau : optionsTinhTrang)
+              | Some(_) => Disabled
+              };
+            });
+          let toConcat =
+            !reverse ? [|main, data, sub|] : [|sub, data, main|];
+          let newRow = Belt.List.concatMany(toConcat);
+          [newRow, ...acc];
+        },
+      )
+    ->Belt.List.reverse;
+  [tableHeading, ...rows];
 };
 
-module Tinh_trang_ham_tren: TableRender = {
+module Tinh_trang_ham_tren = {
   let heading = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
 
   let colsMain = [
@@ -117,10 +107,11 @@ module Tinh_trang_ham_tren: TableRender = {
     makeLabel(~heading="Nhai", ~left="23"),
   ];
 
+  [@genType]
   let table = makeTable(~colsMain, ~colsSub, ~heading, ~disabledList, ());
 };
 
-module Tinh_trang_ham_duoi: TableRender = {
+module Tinh_trang_ham_duoi = {
   let heading = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
 
   let colsMain = [
@@ -166,6 +157,7 @@ module Tinh_trang_ham_duoi: TableRender = {
     makeLabel(~heading="Nhai", ~left="43"),
   ];
 
+  [@genType]
   let table =
     makeTable(
       ~colsMain,
@@ -179,24 +171,43 @@ module Tinh_trang_ham_duoi: TableRender = {
 
 module OHIS = {
   let options = ["0", "1", "2", "3", "X"];
+  [@genType]
   let table = [
     [Static("16N"), Static("11N"), Static("26N")],
-    [Data("ohis16N", options), Data("ohis11N", options), Data("ohis26N", options)],
-    [Data("ohis46T", options), Data("ohis31N", options), Data("ohis36N", options)],
+    [
+      Data("ohis16N", options),
+      Data("ohis11N", options),
+      Data("ohis26N", options),
+    ],
+    [
+      Data("ohis46T", options),
+      Data("ohis31N", options),
+      Data("ohis36N", options),
+    ],
     [Static("46(T)"), Static("31N"), Static("36(T)")],
   ];
 };
 
 module MocChenChuc = {
   let options = ["0", "1"];
+  [@genType]
   let table = [
-    [Data("mcc16", options), Data("mcc11", options), Data("mcc26", options)],
-    [Data("mcc46", options), Data("mcc31", options), Data("mcc36", options)],
+    [
+      Data("mcc16", options),
+      Data("mcc11", options),
+      Data("mcc26", options),
+    ],
+    [
+      Data("mcc46", options),
+      Data("mcc31", options),
+      Data("mcc36", options),
+    ],
   ];
 };
 
 module MIH = {
   let options = ["0", "1", "2", "3", "4", "5"];
+  [@genType]
   let table = [
     [
       Static("16"),
@@ -235,6 +246,7 @@ module MIH = {
 
 module CPI = {
   let options = ["0", "1", "9", "X"];
+  [@genType]
   let table = [
     [
       Empty,

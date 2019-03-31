@@ -1,4 +1,5 @@
 type tableLayout = [ | `fixed | `auto];
+
 let component = ReasonReact.statelessComponent("Table");
 
 let make = (~className=?, ~layout: tableLayout=`auto, children) => {

@@ -9,7 +9,7 @@ let emptyDict: Js.Dict.t(string) = Js.Dict.empty();
 let make =
     (
       ~table: table,
-      ~value as tableValue,
+      ~value as tableValue=emptyDict,
       ~error=emptyDict,
       ~onCellChange: (. string, string) => unit,
       ~onCellBlur=?,

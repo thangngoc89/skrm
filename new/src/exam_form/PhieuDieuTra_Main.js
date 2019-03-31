@@ -234,19 +234,6 @@ const layout = [
   },
 ];
 
-const RenderObjectError = ({ error }) => {
-  if (typeof error === "undefined") {
-    return null;
-  }
-  return (
-    <div className="text-status-error">
-      {Object.keys(error).map(key => {
-        return <p key={key}>{error[key]}</p>;
-      })}
-    </div>
-  );
-};
-
 function RenderRow({ row, setFieldValue }) {
   return (
     <Box direction="row-responsive">
@@ -504,16 +491,7 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
     validateOnBlur={true}
     validateOnChange={false}
   >
-    {({
-      values,
-      errors,
-      touched,
-      handleChange,
-      handleBlur,
-      handleSubmit,
-      isSubmitting,
-      setFieldValue,
-    }) => {
+    {({ values, handleSubmit, isSubmitting, setFieldValue }) => {
       return (
         <Form>
           <Box direction="column">

@@ -21,7 +21,7 @@ class FormikAutosave extends Component {
         () => this.setState({ type: "SUCCESS" }),
         () => this.setState({ type: "ERROR" })
       );
-  }, 300);
+  }, 1000);
 
   render() {
     return this.props.render(this.state);

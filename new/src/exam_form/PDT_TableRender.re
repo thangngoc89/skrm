@@ -11,8 +11,8 @@ let make =
       ~table: table,
       ~value as tableValue,
       ~error=emptyDict,
-      ~handleCellChange: (. string, string) => unit,
-      ~handleCellBlur=?,
+      ~onCellChange: (. string, string) => unit,
+      ~onCellBlur=?,
       _children,
     ) => {
   ...component,
@@ -56,10 +56,8 @@ let make =
                            className="text-centerI"
                            name=label
                            value=currentValue
-                           onChange={value =>
-                             handleCellChange(. label, value)
-                           }
-                           onBlur=?handleCellBlur
+                           onChange={value => onCellChange(. label, value)}
+                           onBlur=?onCellBlur
                          />
                        </Col>;
                      };

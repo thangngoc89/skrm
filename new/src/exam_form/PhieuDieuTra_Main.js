@@ -20,7 +20,6 @@ import * as entitySchema from "./PhieuDieuTra_validate";
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
-import { Tinh_trang_ham_tren } from "./PDT_TableSchema.bs";
 
 yup.setLocale({
   mixed: {
@@ -33,15 +32,17 @@ yup.setLocale({
 });
 
 const selectOneBinaryValue = [
-  { label: "Có", value: "1" },
-  { label: "Không", value: "0" },
+  { label: "0 - Không", value: "0" },
+  { label: "1 - Có", value: "1" },
 ];
+
 const selectOneAngle = [
   { label: "1", value: "1" },
   { label: "2", value: "2" },
   { label: "3", value: "3" },
   { label: "9", value: "9" },
 ];
+
 const schema = {
   ngayKham: {
     label: "Ngày khám",
@@ -79,7 +80,10 @@ const schema = {
   gioiTinh: {
     label: "Giới tính",
     type: "select_one",
-    typeData: [{ label: "Nam", value: "1" }, { label: "Nữ", value: "2" }],
+    typeData: [
+      { label: "1 - Nam", value: "1" },
+      { label: "2 - Nữ", value: "2" },
+    ],
     default: "",
   },
   lop: { label: "Lớp", type: "string", suggest: true },
@@ -311,7 +315,7 @@ function RenderRow({ row, setFieldValue }) {
                           <PDT_TableRender
                             table={Tinh_trang_ham_tren_table}
                             value={field.value}
-                            onChange={(cellLabel, value) => {
+                            onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
                                 ...field.value,
                                 [cellLabel]: value,
@@ -326,7 +330,7 @@ function RenderRow({ row, setFieldValue }) {
                           <PDT_TableRender
                             table={Tinh_trang_ham_duoi_table}
                             value={field.value}
-                            onChange={(cellLabel, value) => {
+                            onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
                                 ...field.value,
                                 [cellLabel]: value,
@@ -344,7 +348,7 @@ function RenderRow({ row, setFieldValue }) {
                           <PDT_TableRender
                             table={OHIS_table}
                             value={field.value}
-                            onChange={(cellLabel, value) => {
+                            onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
                                 ...field.value,
                                 [cellLabel]: value,
@@ -352,7 +356,6 @@ function RenderRow({ row, setFieldValue }) {
                             }}
                             error={error}
                           />
-                          
                         </Box>
                       );
                     case "cpi":
@@ -361,7 +364,7 @@ function RenderRow({ row, setFieldValue }) {
                           <PDT_TableRender
                             table={CPI_table}
                             value={field.value}
-                            onChange={(cellLabel, value) => {
+                            onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
                                 ...field.value,
                                 [cellLabel]: value,
@@ -369,7 +372,6 @@ function RenderRow({ row, setFieldValue }) {
                             }}
                             error={error}
                           />
-                          
                         </Box>
                       );
                     case "mih":
@@ -378,7 +380,7 @@ function RenderRow({ row, setFieldValue }) {
                           <PDT_TableRender
                             table={MIH_table}
                             value={field.value}
-                            onChange={(cellLabel, value) => {
+                            onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
                                 ...field.value,
                                 [cellLabel]: value,
@@ -386,7 +388,6 @@ function RenderRow({ row, setFieldValue }) {
                             }}
                             error={error}
                           />
-                          
                         </Box>
                       );
                     case "mocChenChuc":
@@ -398,7 +399,7 @@ function RenderRow({ row, setFieldValue }) {
                           <PDT_TableRender
                             table={MocChenChuc_table}
                             value={field.value}
-                            onChange={(cellLabel, value) => {
+                            onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
                                 ...field.value,
                                 [cellLabel]: value,
@@ -406,7 +407,6 @@ function RenderRow({ row, setFieldValue }) {
                             }}
                             error={error}
                           />
-                          
                         </Box>
                       );
                     default:

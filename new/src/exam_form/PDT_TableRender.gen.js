@@ -9,7 +9,7 @@ import * as ReasonReact from 'reason-react/src/ReasonReact.js';
 export const PDT_TableRender = ReasonReact.wrapReasonForJs(
   PDT_TableRenderBS.component,
   (function _(jsProps) {
-     return Curry._6(PDT_TableRenderBS.make, jsProps.table, jsProps.value, jsProps.error, jsProps.handleCellChange, jsProps.handleCellBlur, jsProps.children);
+     return Curry._6(PDT_TableRenderBS.make, jsProps.table, jsProps.value, jsProps.error, jsProps.onCellChange, jsProps.onCellBlur, jsProps.children);
   }));
 
 export default PDT_TableRender;

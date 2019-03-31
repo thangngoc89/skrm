@@ -19,7 +19,7 @@ export default function Homepage() {
     <Box pad="medium">
       <Box margin={{ vertical: "large" }}>
         <Heading level={1} textAlign="center">
-          Fang - Quản lí dữ liệu SKRM
+          VOSER - Quản lí dữ liệu SKRM
         </Heading>
       </Box>
 

@@ -1,15 +1,8 @@
 import React from "react";
 import { Formik, Form, FastField } from "formik";
-import {
-  Box,
-  Heading,
-  Button,
-  Select,
-  FormField,
-  TextInput,
-  CheckBox,
-} from "../components";
-import { Text, Box as GBox } from "grommet";
+import { Box, Heading, Button, Select } from "../components";
+import { Text, Box as GBox, TextInput, FormField } from "grommet";
+import AutosuggestTextInput from "../components/AutosuggestTextInput";
 
 import { format } from "date-fns";
 import {
@@ -60,6 +53,7 @@ const schema = {
   nguoiKham: {
     label: "Người khám",
     type: "string",
+    suggest: true,
   },
   hoVaTen: {
     label: "Họ và tên",
@@ -78,6 +72,7 @@ const schema = {
   danToc: {
     label: "Dân tộc",
     type: "string",
+    suggest: true,
   },
   gioiTinh: {
     label: "Giới tính",
@@ -85,9 +80,9 @@ const schema = {
     typeData: [{ label: "Nam", value: "1" }, { label: "Nữ", value: "2" }],
     default: "",
   },
-  lop: { label: "Lớp", type: "string" },
-  truong: { label: "Trường", type: "string" },
-  diaChi: { label: "Địa chỉ", type: "string" },
+  lop: { label: "Lớp", type: "string", suggest: true },
+  truong: { label: "Trường", type: "string", suggest: true },
+  diaChi: { label: "Địa chỉ", type: "string", suggest: true },
   ttncHamTren: {
     label: "Hàm trên",
     type: "tinhTrangNhuCauHamTren",
@@ -273,13 +268,16 @@ function RenderRow({ row, setFieldValue }) {
                     case "string":
                     case "date":
                     case "number":
+                      const InputComponent = schemaMetadata.suggest
+                        ? AutosuggestTextInput
+                        : TextInput;
                       return (
                         <FormField
                           label={label}
                           htmlFor={field.name}
                           error={isFieldTouched ? error : undefined}
                         >
-                          <TextInput
+                          <InputComponent
                             name={field.name}
                             id={field.name}
                             type={type}

@@ -2,7 +2,7 @@ import React, { useEffect, useReducer } from "react";
 import { Box, Heading, Text, Button, Layer } from "grommet";
 import db from "./db";
 import { navigate } from "@reach/router";
-import { schema, validate } from "./export_excel/validate";
+import { validate } from "./export_excel/validate";
 import * as Notify from "./Notify";
 import "react-tabulator/lib/styles.css"; // required styles
 import "react-tabulator/lib/css/tabulator.min.css"; // theme
@@ -315,13 +315,13 @@ const ExportModal = ({ type, payload, close, onExport }) => {
       return null;
   }
 };
-const RecordManage = props => {
+const RecordManage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const handleInitExport = async () => {
     try {
       dispatch({ type: "EXPORT_LOADING" });
-      const docs = await db.allDocs({ include_docs: true });
+      const docs = await db.allDocs({ include_docs: true, descending: true });
       const data = docs.rows.map(r => r.doc);
       const result = await Promise.all(data.map(row => validate(row)));
 
@@ -413,7 +413,7 @@ const RecordManage = props => {
   }, []);
 
   useEffect(() => {
-    db.allDocs({ include_docs: true })
+    db.allDocs({ include_docs: true, descending: true })
       .then(docs => {
         const processedDoc = docs.rows.map(row => {
           const doc = row.doc;

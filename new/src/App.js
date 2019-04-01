@@ -16,7 +16,7 @@ const App = () => {
     <PouchDB name="hmong" auto_compaction={true}>
       <Grommet full>
         <Box fill flex={false}>
-          <AppHeader appName="Quản lí dữ liệu SKRM" />
+          <AppHeader appName="VOSER" />
           <Suspense fallback={<Spinner />}>
             <Router style={{ height: "100%", overflow: "auto" }}>
               <Homepage path="/" />

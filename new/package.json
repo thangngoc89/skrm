@@ -2,7 +2,7 @@
   "name": "fang",
   "version": "1.0.0",
   "private": true,
-  "homepage": "https://thucdia.khoanguyen.me",
+  "homepage": "https://voser.khoa.xyz",
   "dependencies": {
     "@reach/router": "^1.2.1",
     "bs-epitath": "^0.1.0",
@@ -41,7 +41,7 @@
     "bsb:watch": "bsb -make-world -w",
     "bsb:clean": "bsb -clean-world",
     "build:tailwind": "tailwind build src/styles/tailwind.css -c tailwind.js -o src/tailwind.css",
-    "deploy": "echo 'thucdia.khoanguyen.me' > build/CNAME && cp build/index.html build/200.html && surge build",
+    "deploy": "echo 'voser.khoa.xyz' > build/CNAME && cp build/index.html build/200.html && surge build",
     "predeploy": "npm run build"
   },
   "devDependencies": {

@@ -317,6 +317,7 @@ const FormChildOIDP = ({
       handleBlur,
       handleSubmit,
       isSubmitting,
+      isValidating,
       setFieldValue,
     }) => {
       const selected = values.lietke;
@@ -348,7 +349,7 @@ const FormChildOIDP = ({
                   size="small"
                   className="font-bold"
                   onClick={handleSubmit}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isValidating}
                   color="white"
                   margin={{ left: "small" }}
                 />

@@ -31,6 +31,7 @@ const SelectOne = ({
 
   return (
     <Box
+      id={questionBag.id}
       direction="row-responsive"
       className={objStr({
         "my-3": true,
@@ -89,6 +90,7 @@ const SelectOne = ({
                       "bg-error-bg": hasCustomError,
                     })}
                     placeholder="Ghi rõ câu trả lời"
+                    id={field.name}
                     {...field}
                   />
                 );
@@ -141,6 +143,7 @@ const SelectManyOrCustom = ({
 
   return (
     <Box
+      id={questionBag.id}
       direction="row-responsive"
       className={objStr({
         "my-3": true,
@@ -186,6 +189,7 @@ const SelectManyOrCustom = ({
                       "bg-error-bg": hasCustomError,
                     })}
                     placeholder="Ghi rõ câu trả lời"
+                    id={field.name}
                     {...field}
                   />
                 );
@@ -205,7 +209,7 @@ const GroupSelectOne = ({
   errors,
 }) => {
   return (
-    <Box direction="column" className="my-3">
+    <Box direction="column" className="my-3" id={questionBag.id}>
       <RenderQuestionHeader
         id={questionBag.id}
         question={questionBag.question}

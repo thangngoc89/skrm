@@ -6,6 +6,8 @@ import RenderQuestion from "./Render_question";
 import { Box, Heading, Button } from "../components";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
+import FormikNotify from "../FormikNotify";
+
 import * as yup from "yup";
 
 const makeOneOf = values => values.map(row => row.value);
@@ -78,6 +80,13 @@ const makeValidationSchema = questionSchema => {
 };
 
 export const validationSchema = makeValidationSchema(schema);
+const flattenLayout = schema.reduce((acc, q) => {
+  if (q.custom) {
+    return [...acc, q.id, q.id + "_customMessage"];
+  } else {
+    return [...acc, q.id];
+  }
+}, []);
 
 const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
   return (
@@ -90,7 +99,14 @@ const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
       validateOnBlur={false}
       validateOnChange={true}
     >
-      {({ values, errors, handleSubmit, isSubmitting, setFieldValue }) => {
+      {({
+        values,
+        errors,
+        handleSubmit,
+        isSubmitting,
+        setFieldValue,
+        isValidating,
+      }) => {
         return (
           <Form>
             <Box
@@ -119,6 +135,12 @@ const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
               })}
             </Box>
 
+            <FormikNotify
+              isValidating={isValidating}
+              errors={errors}
+              ids={flattenLayout}
+            />
+
             <MountPortal id="footerAction">
               <Box justifyContent="end" direction="row" alignItems="center">
                 <FormikAutosave
@@ -144,7 +166,7 @@ const RenderQuestionForm = ({ initialValues = blankInitialValues, onSave }) => {
                   size="small"
                   className="font-bold"
                   onClick={handleSubmit}
-                  disabled={isSubmitting}
+                  disabled={isSubmitting || isValidating}
                   color="white"
                   margin={{ left: "small" }}
                 />

@@ -504,7 +504,7 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
                 size="small"
                 className="font-bold"
                 onClick={handleSubmit}
-                disabled={isSubmitting}
+                disabled={isSubmitting || isValidating}
                 color="white"
                 margin={{ left: "small" }}
               />

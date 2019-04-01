@@ -32,6 +32,7 @@ let make =
       ~justifyContent: option(align)=?,
       ~alignItems: option(align)=?,
       ~className=?,
+      ~id=?,
       children,
     ) => {
   ...component,
@@ -55,6 +56,6 @@ let make =
         ->Cn.unpack,
         Cn.unpack(className),
       ]);
-    <div className> ...children </div>;
+    <div className ?id> ...children </div>;
   },
 };

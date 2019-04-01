@@ -23,7 +23,7 @@ export default function Homepage() {
         </Heading>
       </Box>
 
-      <Heading level={3}>Chọn chức năng</Heading>
+      <Heading level={2}>Chọn chức năng</Heading>
       <Box gap="large" direction="row-responsive" margin={{ vertical: "medium" }}>
         <PrimaryButton
           primary

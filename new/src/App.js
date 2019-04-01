@@ -1,15 +1,15 @@
+import React, { Suspense, lazy } from "react";
 import { Router } from "@reach/router";
 import { Box, Grommet } from "grommet";
-import React, { Suspense } from "react";
 import { PouchDB } from "react-pouchdb";
 import { AppHeader } from "./AppHeader";
 import Spinner from "./Spinner";
 import ButterToast, { POS_BOTTOM, POS_RIGHT } from "butter-toast";
 
-import RecordList from "./RecordManage";
-import RecordNew from "./RecordNew";
-import RecordEdit from "./RecordEdit";
-import Homepage from "./Homepage";
+const RecordList = lazy(() => import("./RecordManage"));
+const RecordNew = lazy(() => import("./RecordNew"));
+const RecordEdit = lazy(() => import("./RecordEdit"));
+const Homepage = lazy(() => import("./Homepage"));
 
 const App = () => {
   return (

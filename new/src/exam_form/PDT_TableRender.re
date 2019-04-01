@@ -13,11 +13,12 @@ let make =
       ~error=emptyDict,
       ~onCellChange: (. string, string) => unit,
       ~onCellBlur=?,
+      ~id=?,
       _children,
     ) => {
   ...component,
   render: _self => {
-    <Table className="border-2 text-dark-1" layout=`fixed>
+  <Table className="border-2 text-dark-1" layout=`fixed ?id>
       <Table.Body>
         Table.Body.(
           table

@@ -25,6 +25,7 @@ import { PDT_TableRender } from "./PDT_TableRender.gen";
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
+import FormikNotify from "../FormikNotify";
 
 yup.setLocale({
   mixed: {
@@ -253,6 +254,15 @@ const layout = [
   },
 ];
 
+const flattenItems = items =>
+  items.reduce((acc, row) => {
+    return acc.concat(row.map(r => r.id));
+  }, []);
+
+const flattenLayout = layout.reduce((acc, group) => {
+  return acc.concat(flattenItems(group.items));
+}, []);
+
 function RenderRow({ row, setFieldValue }) {
   return (
     <Box direction="row-responsive">
@@ -324,6 +334,7 @@ function RenderRow({ row, setFieldValue }) {
                             </Heading>
                           )}
                           <PDT_TableRender
+                            id={id}
                             table={schemaMetadata.table}
                             value={field.value}
                             onCellChange={(cellLabel, value) => {
@@ -435,7 +446,14 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
     validateOnBlur={true}
     validateOnChange={false}
   >
-    {({ values, handleSubmit, isSubmitting, setFieldValue }) => {
+    {({
+      values,
+      handleSubmit,
+      isSubmitting,
+      setFieldValue,
+      isValidating,
+      errors,
+    }) => {
       return (
         <Form>
           <Box direction="column">
@@ -456,7 +474,11 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
               );
             })}
           </Box>
-
+          <FormikNotify
+            isValidating={isValidating}
+            errors={errors}
+            ids={flattenLayout}
+          />
           <MountPortal id="footerAction">
             <Box justifyContent="end" direction="row" alignItems="center">
               <FormikAutosave

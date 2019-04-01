@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import debounce from "lodash/debounce"; // or whatevs
+import debounce from "lodash/debounce";
 import isEqual from "lodash/isEqual";
 
 class FormikAutosave extends Component {

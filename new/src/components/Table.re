@@ -2,10 +2,11 @@ type tableLayout = [ | `fixed | `auto];
 
 let component = ReasonReact.statelessComponent("Table");
 
-let make = (~className=?, ~layout: tableLayout=`auto, children) => {
+let make = (~className=?, ~layout: tableLayout=`auto, ~id=?, children) => {
   ...component,
   render: _self => {
     <table
+      ?id
       className={Cn.make([
         "w-full",
         switch (layout) {

@@ -94,14 +94,14 @@ const Custom = ({ cell }) => {
 };
 
 const columns = [
-  {
-    formatter: "responsiveCollapse",
-    width: 30,
-    minWidth: 30,
-    align: "center",
-    resizable: false,
-    headerSort: false,
-  },
+  // {
+  //   formatter: "responsiveCollapse",
+  //   width: 30,
+  //   minWidth: 30,
+  //   align: "center",
+  //   resizable: false,
+  //   headerSort: false,
+  // },
   {
     title: "SHS",
     field: "soHoSo",
@@ -397,11 +397,11 @@ const RecordManage = () => {
       _id: { $gte: null },
     },
     sort: [{ _id: "desc" }],
-  })
-  .map(mapDocToTable);
+  }).map(mapDocToTable);
 
   const showExportModal = state.exportState.type !== "HIDDEN";
   const closeExportModal = () => dispatch({ type: "EXPORT_HIDDEN" });
+
   return (
     <Box pad="medium">
       <Box margin={{ vertical: "large" }}>
@@ -424,9 +424,10 @@ const RecordManage = () => {
       <ReactTabulator
         options={{
           height: 500,
-          responsiveLayout: "collapse",
+          // responsiveLayout: "collapse",
           placeholder: "Chưa có dữ liệu",
-          tooltip: true,
+          persistentSort: true,
+          persistentFilter: true,
         }}
         data={docs}
         columns={columns}

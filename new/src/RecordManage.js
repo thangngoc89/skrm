@@ -4,10 +4,11 @@ import db from "./db";
 import { navigate } from "@reach/router";
 import { validate } from "./export_excel/validate";
 import * as Notify from "./Notify";
-import "react-tabulator/lib/styles.css"; // required styles
-import "react-tabulator/lib/css/tabulator.min.css"; // theme
+import "react-tabulator/lib/styles.css";
+import "react-tabulator/lib/css/tabulator.min.css";
 import { ReactTabulator, reactFormatter } from "react-tabulator";
 import Spinner from "./Spinner";
+import { useFind } from "react-pouchdb";
 
 const Custom = ({ cell }) => {
   const id = cell._cell.value;
@@ -182,23 +183,6 @@ const toStatus = complete => {
   }
 };
 
-// const getDataForSave = () => {
-//   db.allDocs({ include_docs: true }).then(docs => {
-//     const processedData = docs.rows.map(r => r.doc);
-//     const blob = new Blob([JSON.stringify(processedData)], {
-//       type: "application/json",
-//     });
-//     saveAs(blob, "data.hmong");
-//   });
-// };
-// db.allDocs({ include_docs: true })
-//   .then(docs => {
-//     const data = docs.rows.map(r => r.doc);
-//     return validate(data[1]);
-//   })
-//   .then(console.log)
-//   .catch(console.error);
-
 const initialState = { data: [], exportState: { type: "HIDDEN" } };
 
 function reducer(state, action) {
@@ -319,6 +303,27 @@ const ExportModal = ({ type, payload, close, onExport }) => {
       return null;
   }
 };
+
+const mapDocToTable = doc => {
+  const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
+
+  const pdt = toStatus(phieuDieuTra.complete);
+  const bch = toStatus(bangCauHoi.complete);
+  const co = toStatus(childOIDP.complete);
+
+  return {
+    id: doc._id,
+    hoVaTen: phieuDieuTra.hoVaTen,
+    ngayKham: phieuDieuTra.ngayKham,
+    nguoiKham: phieuDieuTra.nguoiKham,
+    soHoSo: phieuDieuTra.soHoSo,
+    phieuDieuTra: pdt,
+    bangCauHoi: bch,
+    childOIDP: co,
+    done: pdt && bch && co,
+  };
+};
+
 const RecordManage = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
@@ -387,66 +392,13 @@ const RecordManage = () => {
     }
   };
 
-  useEffect(() => {
-    let canceled = false;
-    const changes = db
-      .changes({
-        since: "now",
-        live: true,
-      })
-      .on("change", change => {
-        if (change.deleted) {
-          dispatch({
-            type: "DATA_ROW_DELETE",
-            payload: change.id,
-          });
-        }
-      })
-      .on("complete", function(info) {
-        canceled = true;
-      })
-      .on("error", function(err) {
-        console.log(err);
-      });
-    return () => {
-      if (!canceled) {
-        canceled = true;
-        changes.cancel();
-      }
-    };
-  }, []);
-
-  const loadData = () => {
-    db.allDocs({ include_docs: true, descending: true })
-      .then(docs => {
-        const processedDoc = docs.rows.map(row => {
-          const doc = row.doc;
-
-          const { phieuDieuTra = {}, bangCauHoi = {}, childOIDP = {} } = doc;
-
-          const pdt = toStatus(phieuDieuTra.complete);
-          const bch = toStatus(bangCauHoi.complete);
-          const co = toStatus(childOIDP.complete);
-
-          return {
-            id: row.id,
-            hoVaTen: phieuDieuTra.hoVaTen,
-            ngayKham: phieuDieuTra.ngayKham,
-            nguoiKham: phieuDieuTra.nguoiKham,
-            soHoSo: phieuDieuTra.soHoSo,
-            phieuDieuTra: pdt,
-            bangCauHoi: bch,
-            childOIDP: co,
-            done: pdt && bch && co,
-          };
-        });
-
-        dispatch({ type: "DATA_UPDATE", payload: processedDoc });
-      })
-      .catch(console.error);
-  };
-
-  useEffect(loadData, []);
+  const docs = useFind({
+    selector: {
+      _id: { $gte: null },
+    },
+    sort: [{ _id: "desc" }],
+  })
+  .map(mapDocToTable);
 
   const showExportModal = state.exportState.type !== "HIDDEN";
   const closeExportModal = () => dispatch({ type: "EXPORT_HIDDEN" });
@@ -468,7 +420,6 @@ const RecordManage = () => {
         margin={{ bottom: "small" }}
       >
         <Button primary label="Download Excel" onClick={handleInitExport} />
-        <Button label="Reload data" onClick={loadData} />
       </Box>
       <ReactTabulator
         options={{
@@ -477,7 +428,7 @@ const RecordManage = () => {
           placeholder: "Chưa có dữ liệu",
           tooltip: true,
         }}
-        data={state.data}
+        data={docs}
         columns={columns}
         layout={"fitColumns"}
       />

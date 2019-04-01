@@ -19,6 +19,8 @@ const demo = () => {
     .catch(console.log);
 };
 
+window.db = db;
+
 window.demo = demo;
 
 export default db;

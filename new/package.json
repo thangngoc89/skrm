@@ -22,7 +22,7 @@
     "react": "^16.8.1",
     "react-app-rewired": "^1.6.2",
     "react-dom": "^16.8.1",
-    "react-pouchdb": "^1.0.0-alpha.1",
+    "react-pouchdb": "^1.0.0",
     "react-scripts": "2.1.1",
     "react-tabulator": "^0.9.1",
     "reason-react": "^0.6.0",

@@ -34,7 +34,6 @@ export default class FormikNotify extends Component {
   );
 
   render() {
-    console.log(this.props);
     return null;
   }
 }

@@ -122,7 +122,7 @@ const ControlledCheckBox = ({
         } else {
           const idx = arrayValue.indexOf(value);
           setFieldValue(name, [
-            ...arrayValue.slice(0, idx - 1),
+            ...arrayValue.slice(0, idx),
             ...arrayValue.slice(idx + 1),
           ]);
         }

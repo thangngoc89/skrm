@@ -416,7 +416,7 @@ const RecordManage = () => {
     };
   }, []);
 
-  useEffect(() => {
+  const loadData = () => {
     db.allDocs({ include_docs: true, descending: true })
       .then(docs => {
         const processedDoc = docs.rows.map(row => {
@@ -444,7 +444,9 @@ const RecordManage = () => {
         dispatch({ type: "DATA_UPDATE", payload: processedDoc });
       })
       .catch(console.error);
-  }, []);
+  };
+
+  useEffect(loadData, []);
 
   const showExportModal = state.exportState.type !== "HIDDEN";
   const closeExportModal = () => dispatch({ type: "EXPORT_HIDDEN" });
@@ -466,6 +468,7 @@ const RecordManage = () => {
         margin={{ bottom: "small" }}
       >
         <Button primary label="Download Excel" onClick={handleInitExport} />
+        <Button label="Reload data" onClick={loadData} />
       </Box>
       <ReactTabulator
         options={{

@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import PhieuDieuTra from "./exam_form/PhieuDieuTra_Main";
 import BangCauHoi from "./questions/Render_question_form";
 import ChildOIDP from "./forms/Form_ChildOIDP";
-
+import promiseRetry from "promise-retry";
 import db from "./db";
 import { Box, Select } from "grommet";
-
+import * as Notify from "./Notify";
 const tabPhieuDieuTra = "phieuDieuTra";
 const tabBangCauHoi = "bangCauHoi";
 const tabChildOIDP = "childOIDP";
@@ -47,14 +47,21 @@ class RecordInput extends Component {
 
       doc[tabName] = tabValue;
 
-      return db
-        .put(doc)
-        .then(status => {
+      return promiseRetry((retry, number) => {
+        return db.put(doc).catch(response => {
+          if (response.status === 409) {
+            retry();
+          } else {
+            return response;
+          }
+        });
+      })
+        .then(response => {
           this.setState(
             {
               recordValue: {
                 ...doc,
-                _rev: status.rev,
+                _rev: response.rev,
               },
             },
             () => {
@@ -64,7 +71,10 @@ class RecordInput extends Component {
             }
           );
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+          Notify.error("Có lỗi xảy ra khi lưu", "Vui lòng thử lại");
+          console.log(err);
+        });
     };
   };
 

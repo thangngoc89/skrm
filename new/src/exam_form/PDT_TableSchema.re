@@ -1,5 +1,35 @@
 open PDT_Types.Table;
-let optionsTinhTrang = [
+
+module YupSchema: {let make: table => Yup.schema;} = {
+  let getAllDataCell: table => array((cellLabel, array(string))) =
+    table => {
+      let reduceRow = row => {
+        row->Belt.List.reduce([||], acc =>
+          fun
+          | Data(cellLabel, options) =>
+            Belt.Array.concat([|(cellLabel, options)|], acc)
+          | _ => acc
+        );
+      };
+      table->Belt.List.reduce([||], (acc, row) =>
+        Belt.Array.concat(reduceRow(row), acc)
+      );
+    };
+
+  let make = table => {
+    let allDataCell = table->getAllDataCell;
+    let buildObj = Js.Dict.empty();
+    open Yup;
+
+    allDataCell->Belt.Array.forEach(((key, options)) =>
+      buildObj->Js.Dict.set(key, string()->oneOf(options)->required)
+    );
+
+    dict(buildObj)->required;
+  };
+};
+
+let optionsTinhTrang = [|
   "0",
   "1",
   "2",
@@ -16,9 +46,9 @@ let optionsTinhTrang = [
   "D",
   "E",
   "F",
-];
+|];
 
-let optionsNhuCau = ["0", "1", "2", "3", "4", "5", "6", "F", "P"];
+let optionsNhuCau = [|"0", "1", "2", "3", "4", "5", "6", "F", "P"|];
 
 let makeLabel = (~heading, ~left) => {
   {j|$(heading)_$(left)|j};
@@ -109,6 +139,9 @@ module Tinh_trang_ham_tren = {
 
   [@genType]
   let table = makeTable(~colsMain, ~colsSub, ~heading, ~disabledList, ());
+
+  [@genType]
+  let schema = YupSchema.make(table);
 };
 
 module Tinh_trang_ham_duoi = {
@@ -167,10 +200,12 @@ module Tinh_trang_ham_duoi = {
       ~disabledList,
       (),
     );
+  [@genType]
+  let schema = YupSchema.make(table);
 };
 
 module OHIS = {
-  let options = ["0", "1", "2", "3", "X"];
+  let options = [|"0", "1", "2", "3", "X"|];
   [@genType]
   let table = [
     [Static("16N"), Static("11N"), Static("26N")],
@@ -186,10 +221,12 @@ module OHIS = {
     ],
     [Static("46(T)"), Static("31N"), Static("36(T)")],
   ];
+  [@genType]
+  let schema = YupSchema.make(table);
 };
 
 module MocChenChuc = {
-  let options = ["0", "1"];
+  let options = [|"0", "1"|];
   [@genType]
   let table = [
     [
@@ -203,10 +240,12 @@ module MocChenChuc = {
       Data("mcc36", options),
     ],
   ];
+  [@genType]
+  let schema = YupSchema.make(table);
 };
 
 module MIH = {
-  let options = ["0", "1", "2", "3", "4", "5"];
+  let options = [|"0", "1", "2", "3", "4", "5"|];
   [@genType]
   let table = [
     [
@@ -242,10 +281,12 @@ module MIH = {
       Static("36"),
     ],
   ];
+  [@genType]
+  let schema = YupSchema.make(table);
 };
 
 module CPI = {
-  let options = ["0", "1", "9", "X"];
+  let options = [|"0", "1", "9", "X"|];
   [@genType]
   let table = [
     [
@@ -345,4 +386,6 @@ module CPI = {
       Empty,
     ],
   ];
+  [@genType]
+  let schema = YupSchema.make(table);
 };

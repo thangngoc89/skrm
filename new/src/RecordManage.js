@@ -254,7 +254,11 @@ const ExportModal = ({ type, payload, close, onExport }) => {
           <Text>2. Những hồ sơ sau đây chưa được hoàn thành:</Text>
           <ul>
             {payload.hasError.map(row => {
-              return <li key={row.doc._id}>{row.doc.phieuDieuTra.soHoSo}</li>;
+              return (
+                <li key={row.doc._id}>
+                  {row.doc.phieuDieuTra && row.doc.phieuDieuTra.soHoSo}
+                </li>
+              );
             })}
           </ul>
           <Text>Vui lòng hoàn tất các bộ hồ sơ trước khi xuất dữ liệu</Text>

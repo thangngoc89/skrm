@@ -4,12 +4,24 @@ import * as PDT_TableSchemaBS from './PDT_TableSchema.bs';
 
 export const Tinh_trang_ham_tren_table = PDT_TableSchemaBS.Tinh_trang_ham_tren[4];
 
+export const Tinh_trang_ham_tren_schema = PDT_TableSchemaBS.Tinh_trang_ham_tren[5];
+
 export const Tinh_trang_ham_duoi_table = PDT_TableSchemaBS.Tinh_trang_ham_duoi[4];
+
+export const Tinh_trang_ham_duoi_schema = PDT_TableSchemaBS.Tinh_trang_ham_duoi[5];
 
 export const OHIS_table = PDT_TableSchemaBS.OHIS[1];
 
+export const OHIS_schema = PDT_TableSchemaBS.OHIS[2];
+
 export const MocChenChuc_table = PDT_TableSchemaBS.MocChenChuc[1];
+
+export const MocChenChuc_schema = PDT_TableSchemaBS.MocChenChuc[2];
 
 export const MIH_table = PDT_TableSchemaBS.MIH[1];
 
+export const MIH_schema = PDT_TableSchemaBS.MIH[2];
+
 export const CPI_table = PDT_TableSchemaBS.CPI[1];
+
+export const CPI_schema = PDT_TableSchemaBS.CPI[2];

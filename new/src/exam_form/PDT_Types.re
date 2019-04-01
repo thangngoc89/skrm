@@ -1,5 +1,5 @@
 module Table = {
-  type options = list(string);
+  type options = array(string);
   type cellLabel = string;
 
   type cell =

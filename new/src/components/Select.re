@@ -9,7 +9,7 @@ type pair = {
 };
 
 let listToPair = options =>
-  options->Belt.List.map(o => {label: o, value: o})->Belt.List.toArray;
+  options->Belt.Array.map(o => {label: o, value: o});
 
 let component = ReasonReact.statelessComponent("Select");
 

@@ -13,10 +13,15 @@ import {
   CPI_table,
   MocChenChuc_table,
   MIH_table,
+  Tinh_trang_ham_tren_schema,
+  Tinh_trang_ham_duoi_schema,
+  OHIS_schema,
+  CPI_schema,
+  MocChenChuc_schema,
+  MIH_schema,
 } from "./PDT_TableSchema.gen";
 import { PDT_TableRender } from "./PDT_TableRender.gen";
 
-import * as entitySchema from "./PhieuDieuTra_validate";
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
@@ -91,31 +96,40 @@ const schema = {
   diaChi: { label: "Địa chỉ", type: "string", suggest: true },
   ttncHamTren: {
     label: "Hàm trên",
-    type: "tinhTrangNhuCauHamTren",
+    type: "table",
+    table: Tinh_trang_ham_tren_table,
+    validate: Tinh_trang_ham_tren_schema,
     default: {},
   },
   ttncHamDuoi: {
     label: "Hàm dưới",
-    type: "tinhTrangNhuCauHamDuoi",
+    type: "table",
+    table: Tinh_trang_ham_duoi_table,
+    validate: Tinh_trang_ham_duoi_schema,
     default: {},
   },
   pi: {
     label: "PI",
-    type: "ohis",
+    type: "table",
+    showLabel: true,
     default: {},
-    validate: entitySchema.ohis,
+    table: OHIS_table,
+    validate: OHIS_schema,
   },
   ci: {
     label: "CI",
-    type: "ohis",
+    type: "table",
+    showLabel: true,
     default: {},
-    validate: entitySchema.ohis,
+    table: OHIS_table,
+    validate: OHIS_schema,
   },
   cpi: {
     label: "CPI",
-    type: "cpi",
+    type: "table",
     default: {},
-    validate: entitySchema.cpi,
+    table: CPI_table,
+    validate: CPI_schema,
   },
   canPhu: {
     label: "Độ cắn phủ",
@@ -167,15 +181,17 @@ const schema = {
   },
   mocChenChuc: {
     label: "Mọc chen chúc",
-    type: "mocChenChuc",
+    type: "table",
     default: {},
-    validate: entitySchema.mocChenChuc,
+    table: MocChenChuc_table,
+    validate: MocChenChuc_schema,
   },
   mih: {
     label: "MIH",
-    type: "mih",
+    type: "table",
     default: {},
-    validate: entitySchema.mih,
+    table: MIH_table,
+    validate: MIH_schema,
   },
 };
 
@@ -214,8 +230,11 @@ const layout = [
     items: [
       [{ id: "canPhu" }, { id: "canChia" }],
       [{ id: "canNguocRangTruoc" }, { id: "canNguocRangSau" }, { id: "canHo" }],
-      [{ id: "mocChenChuc" }],
     ],
+  },
+  {
+    title: "Mọc chen chúc",
+    items: [[{ id: "mocChenChuc" }]],
   },
   {
     title: "Phân loại Angle",
@@ -296,44 +315,16 @@ function RenderRow({ row, setFieldValue }) {
                           />
                         </FormField>
                       );
-                    case "tinhTrangNhuCauHamTren":
+                    case "table":
                       return (
                         <Box className="my-2 lg:my-0">
+                          {schemaMetadata.showLabel && (
+                            <Heading level={3} size="small">
+                              {label}
+                            </Heading>
+                          )}
                           <PDT_TableRender
-                            table={Tinh_trang_ham_tren_table}
-                            value={field.value}
-                            onCellChange={(cellLabel, value) => {
-                              setFieldValue(field.name, {
-                                ...field.value,
-                                [cellLabel]: value,
-                              });
-                            }}
-                          />
-                        </Box>
-                      );
-                    case "tinhTrangNhuCauHamDuoi":
-                      return (
-                        <Box className="my-2 lg:my-0">
-                          <PDT_TableRender
-                            table={Tinh_trang_ham_duoi_table}
-                            value={field.value}
-                            onCellChange={(cellLabel, value) => {
-                              setFieldValue(field.name, {
-                                ...field.value,
-                                [cellLabel]: value,
-                              });
-                            }}
-                          />
-                        </Box>
-                      );
-                    case "ohis":
-                      return (
-                        <Box className="my-2 lg:my-0">
-                          <Heading level={3} size="small">
-                            {label}
-                          </Heading>
-                          <PDT_TableRender
-                            table={OHIS_table}
+                            table={schemaMetadata.table}
                             value={field.value}
                             onCellChange={(cellLabel, value) => {
                               setFieldValue(field.name, {
@@ -345,59 +336,13 @@ function RenderRow({ row, setFieldValue }) {
                           />
                         </Box>
                       );
-                    case "cpi":
-                      return (
-                        <Box className="my-2 lg:my-0">
-                          <PDT_TableRender
-                            table={CPI_table}
-                            value={field.value}
-                            onCellChange={(cellLabel, value) => {
-                              setFieldValue(field.name, {
-                                ...field.value,
-                                [cellLabel]: value,
-                              });
-                            }}
-                            error={error}
-                          />
-                        </Box>
-                      );
-                    case "mih":
-                      return (
-                        <Box className="my-2 lg:my-0">
-                          <PDT_TableRender
-                            table={MIH_table}
-                            value={field.value}
-                            onCellChange={(cellLabel, value) => {
-                              setFieldValue(field.name, {
-                                ...field.value,
-                                [cellLabel]: value,
-                              });
-                            }}
-                            error={error}
-                          />
-                        </Box>
-                      );
-                    case "mocChenChuc":
-                      return (
-                        <Box className="my-2 lg:my-0">
-                          <Heading level={3} size="small">
-                            {label}
-                          </Heading>
-                          <PDT_TableRender
-                            table={MocChenChuc_table}
-                            value={field.value}
-                            onCellChange={(cellLabel, value) => {
-                              setFieldValue(field.name, {
-                                ...field.value,
-                                [cellLabel]: value,
-                              });
-                            }}
-                            error={error}
-                          />
-                        </Box>
-                      );
+
                     default:
-                      return "Unknown type " + type;
+                      return (
+                        <span className="text-status-critical">
+                          {"Unknown type " + type}
+                        </span>
+                      );
                   }
                 }}
               />
@@ -473,8 +418,7 @@ const getValidationSchema = schema => {
     }
     return acc;
   }, {});
-  const yupSchema = yup.object().shape(objectShape);
-  return yupSchema;
+  return yup.object(objectShape);
 };
 
 export const blankInitialValues = () => getInitialValues(schema);

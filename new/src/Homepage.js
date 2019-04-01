@@ -24,7 +24,7 @@ export default function Homepage() {
       </Box>
 
       <Heading level={3}>Chọn chức năng</Heading>
-      <Box gap="large" direction="row" margin={{ vertical: "medium" }}>
+      <Box gap="large" direction="row-responsive" margin={{ vertical: "medium" }}>
         <PrimaryButton
           primary
           color="accent-1"

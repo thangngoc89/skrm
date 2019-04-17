@@ -1,10 +1,10 @@
-export { default as RadioButton } from "./RadioButton.gen";
-export { default as TextInput } from "./TextInput.gen";
-export { default as CheckBox } from "./Checkbox.gen";
-export { default as Box } from "./Box.gen";
-export { default as Select } from "./Select.gen";
-export { default as FormField } from "./FormField.gen";
+export { make as RadioButton } from "./RadioButton.gen";
+export { make as TextInput } from "./TextInput.bs";
+export { make as CheckBox } from "./Checkbox.gen";
+export { make as Box } from "./Box.gen";
+export { make as Select } from "./Select.gen";
+export { make as FormField } from "./FormField.gen";
 export { default as RadioGroup } from "./RadioGroup";
 export { default as SelectGroup } from "./SelectGroup";
-export { default as DottedLabel } from "./DottedLabel.gen";
+export { make as DottedLabel } from "./DottedLabel.gen";
 export { Heading, Button, Text } from "grommet";

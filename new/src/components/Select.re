@@ -1,6 +1,7 @@
+[@bs.config {jsx: 3}];
 let s: Js.t('a) = [%raw {|require("./Select.module.css")|}];
 
-open React;
+open ReactHelpers;
 
 [@genType]
 type pair = {
@@ -11,12 +12,12 @@ type pair = {
 let listToPair = options =>
   options->Belt.Array.map(o => {label: o, value: o});
 
-let component = ReasonReact.statelessComponent("Select");
-
 [@genType]
+[@react.component]
 let make =
     (
       ~options: array(pair),
+      ~id=?,
       ~name,
       ~value,
       ~onChange,
@@ -24,32 +25,29 @@ let make =
       ~block=false,
       ~className=?,
       ~hasError=false,
-      _children,
     ) => {
-  ...component,
-  render: _self => {
-    <div
+  <div
+    className={Cn.make([
+      s##container,
+      Cn.ifTrue(s##selectBlockError, hasError),
+    ])}>
+    <select
+      ?id
+      name
       className={Cn.make([
-        s##container,
-        Cn.ifTrue(s##selectBlockError, hasError),
-      ])}>
-      <select
-        name
-        className={Cn.make([
-          s##select,
-          Cn.unpack(className),
-          Cn.ifTrue(s##selectBlock, block),
-        ])}
-        onChange={event => event->ReactEvent.Form.target##value->onChange}
-        ?onBlur
-        value>
-        <option> "--"->str </option>
-        {options
-         ->Belt.Array.map(({value: optionValue, label}) =>
-             <option key=optionValue value=optionValue> label->str </option>
-           )
-         ->ReasonReact.array}
-      </select>
-    </div>;
-  },
+        s##select,
+        Cn.unpack(className),
+        Cn.ifTrue(s##selectBlock, block),
+      ])}
+      onChange={event => event->ReactEvent.Form.target##value->onChange}
+      ?onBlur
+      value>
+      <option> "--"->str </option>
+      {options
+       ->Belt.Array.map(({value: optionValue, label}) =>
+           <option key=optionValue value=optionValue> label->str </option>
+         )
+       ->React.array}
+    </select>
+  </div>;
 };

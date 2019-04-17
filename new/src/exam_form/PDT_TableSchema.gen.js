@@ -2,17 +2,29 @@
 
 import * as PDT_TableSchemaBS from './PDT_TableSchema.bs';
 
-export const Tinh_trang_ham_tren_table = PDT_TableSchemaBS.Tinh_trang_ham_tren[4];
+export const Tinh_trang_ham_tren_table = PDT_TableSchemaBS.Tinh_trang_ham_tren[2];
 
-export const Tinh_trang_ham_tren_schema = PDT_TableSchemaBS.Tinh_trang_ham_tren[5];
+export const Tinh_trang_ham_tren_schema = PDT_TableSchemaBS.Tinh_trang_ham_tren[3];
 
-export const Tinh_trang_ham_duoi_table = PDT_TableSchemaBS.Tinh_trang_ham_duoi[4];
+export const Tinh_trang_ham_tren_maugiao_table = PDT_TableSchemaBS.Tinh_trang_ham_tren_maugiao[2];
 
-export const Tinh_trang_ham_duoi_schema = PDT_TableSchemaBS.Tinh_trang_ham_duoi[5];
+export const Tinh_trang_ham_tren_maugiao_schema = PDT_TableSchemaBS.Tinh_trang_ham_tren_maugiao[3];
+
+export const Tinh_trang_ham_duoi_table = PDT_TableSchemaBS.Tinh_trang_ham_duoi[2];
+
+export const Tinh_trang_ham_duoi_schema = PDT_TableSchemaBS.Tinh_trang_ham_duoi[3];
+
+export const Tinh_trang_ham_duoi_maugiao_table = PDT_TableSchemaBS.Tinh_trang_ham_duoi_maugiao[2];
+
+export const Tinh_trang_ham_duoi_maugiao_schema = PDT_TableSchemaBS.Tinh_trang_ham_duoi_maugiao[3];
 
 export const OHIS_table = PDT_TableSchemaBS.OHIS[1];
 
 export const OHIS_schema = PDT_TableSchemaBS.OHIS[2];
+
+export const OHIS_Maugiao_table = PDT_TableSchemaBS.OHIS_Maugiao[1];
+
+export const OHIS_Maugiao_schema = PDT_TableSchemaBS.OHIS_Maugiao[2];
 
 export const MocChenChuc_table = PDT_TableSchemaBS.MocChenChuc[1];
 

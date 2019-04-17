@@ -29,72 +29,117 @@ module YupSchema: {let make: table => Yup.schema;} = {
   };
 };
 
-let optionsTinhTrang = [|
-  "0",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6",
-  "7",
-  "8",
-  "9",
-  "A",
-  "B",
-  "C",
-  "D",
-  "E",
-  "F",
-|];
+module TinhTrangNhuCau = {
+  let optionsTinhTrang = [|
+    "0",
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "A",
+    "B",
+    "C",
+    "D",
+    "E",
+    "F",
+  |];
 
-let optionsNhuCau = [|"0", "1", "2", "3", "4", "5", "6", "F", "P"|];
+  let optionsNhuCau = [|"0", "1", "2", "3", "4", "5", "6", "F", "P"|];
 
-let makeLabel = (~heading, ~left) => {
-  {j|$(heading)_$(left)|j};
-};
+  let makeLabel = (~heading, ~left) => {
+    {j|$(heading)_$(left)|j};
+  };
+  let generatePrimaryToothName =
+    fun
+    | "15" => Some("55")
+    | "14" => Some("54")
+    | "13" => Some("53")
+    | "12" => Some("52")
+    | "11" => Some("51")
+    | "25" => Some("65")
+    | "24" => Some("64")
+    | "23" => Some("63")
+    | "22" => Some("62")
+    | "21" => Some("61")
+    | "35" => Some("75")
+    | "34" => Some("74")
+    | "33" => Some("73")
+    | "32" => Some("72")
+    | "31" => Some("71")
+    | "85" => Some("85")
+    | "84" => Some("84")
+    | "83" => Some("83")
+    | "82" => Some("82")
+    | "81" => Some("81")
+    | _ => None;
+  let teethWithDisabledSurfaces = [|
+    "13",
+    "12",
+    "11",
+    "23",
+    "22",
+    "21",
+    "33",
+    "32",
+    "31",
+    "43",
+    "42",
+    "41",
+  |];
 
-let makeTable =
-    (~colsMain, ~colsSub, ~reverse=false, ~disabledList=[], ~heading, ()) => {
-  let tableHeading =
-    Belt.List.concatMany([|
-      [Empty],
-      heading->Belt.List.map(h => Static(h)),
-      [Empty],
-    |]);
+  let disabledSurface = "Nhai";
+  let isDisabledTooth = tooth =>
+    teethWithDisabledSurfaces->Js.Array.indexOf(tooth, _) !== (-1);
 
-  let rows =
-    colsMain
-    ->Belt.List.reduceWithIndex(
-        [],
-        (acc, currentLeft, index) => {
-          let main = [Static(currentLeft)];
-          let sub = [
-            colsSub->Belt.List.get(index)->Belt.Option.getWithDefault(Empty),
-          ];
-          let data =
-            heading->Belt.List.map(h => {
-              let label = makeLabel(~heading=h, ~left=currentLeft);
-              switch (Belt.List.getBy(disabledList, l => l == label)) {
-              | None =>
-                Data(label, h == "NC" ? optionsNhuCau : optionsTinhTrang)
-              | Some(_) => Disabled
+  let make = (~teeth, ~surfaces as heading, ~reverse=false, ()) => {
+    let tableHeading =
+      Belt.List.concatMany([|
+        [Empty],
+        heading->Belt.List.map(h => Static(h)),
+        [Empty],
+      |]);
+    let rows =
+      teeth
+      ->Belt.List.reduce(
+          [],
+          (acc, currentTooth) => {
+            let main = [Static(currentTooth)];
+            let sub =
+              switch (generatePrimaryToothName(currentTooth)) {
+              | None => Empty
+              | Some(tooth) => Static(tooth)
               };
-            });
-          let toConcat =
-            !reverse ? [|main, data, sub|] : [|sub, data, main|];
-          let newRow = Belt.List.concatMany(toConcat);
-          [newRow, ...acc];
-        },
-      )
-    ->Belt.List.reverse;
-  [tableHeading, ...rows];
+            let data =
+              heading->Belt.List.map(surface => {
+                let label = makeLabel(~heading=surface, ~left=currentTooth);
+                switch (surface, isDisabledTooth(currentTooth)) {
+                | ("Nhai", true) => Disabled
+                | _ =>
+                  Data(
+                    label,
+                    surface == "NC" ? optionsNhuCau : optionsTinhTrang,
+                  )
+                };
+              });
+            let toConcat =
+              !reverse ? [|main, data, [sub]|] : [|[sub], data, main|];
+            let newRow = Belt.List.concatMany(toConcat);
+            [newRow, ...acc];
+          },
+        )
+      ->Belt.List.reverse;
+    [tableHeading, ...rows];
+  };
 };
 
 module Tinh_trang_ham_tren = {
-  let heading = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
-
-  let colsMain = [
+  let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
+  let teeth = [
     "17",
     "16",
     "15",
@@ -111,43 +156,38 @@ module Tinh_trang_ham_tren = {
     "27",
   ];
 
-  let colsSub = [
-    Empty,
-    Empty,
-    Static("55"),
-    Static("54"),
-    Static("53"),
-    Static("52"),
-    Static("51"),
-    Static("61"),
-    Static("62"),
-    Static("63"),
-    Static("64"),
-    Static("65"),
-    Empty,
-    Empty,
-  ];
+  [@genType]
+  let table = TinhTrangNhuCau.make(~teeth, ~surfaces, ());
+  [@genType]
+  let schema = YupSchema.make(table);
+};
 
-  let disabledList = [
-    makeLabel(~heading="Nhai", ~left="13"),
-    makeLabel(~heading="Nhai", ~left="12"),
-    makeLabel(~heading="Nhai", ~left="11"),
-    makeLabel(~heading="Nhai", ~left="21"),
-    makeLabel(~heading="Nhai", ~left="22"),
-    makeLabel(~heading="Nhai", ~left="23"),
+module Tinh_trang_ham_tren_maugiao = {
+  let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
+  let teeth = [
+    "16",
+    "15",
+    "14",
+    "13",
+    "12",
+    "11",
+    "21",
+    "22",
+    "23",
+    "24",
+    "25",
+    "26",
   ];
 
   [@genType]
-  let table = makeTable(~colsMain, ~colsSub, ~heading, ~disabledList, ());
-
+  let table = TinhTrangNhuCau.make(~teeth, ~surfaces, ());
   [@genType]
   let schema = YupSchema.make(table);
 };
 
 module Tinh_trang_ham_duoi = {
-  let heading = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
-
-  let colsMain = [
+  let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+  let teeth = [
     "37",
     "36",
     "35",
@@ -164,42 +204,30 @@ module Tinh_trang_ham_duoi = {
     "47",
   ];
 
-  let colsSub = [
-    Empty,
-    Empty,
-    Static("75"),
-    Static("74"),
-    Static("73"),
-    Static("72"),
-    Static("71"),
-    Static("81"),
-    Static("82"),
-    Static("83"),
-    Static("84"),
-    Static("85"),
-    Empty,
-    Empty,
-  ];
-
-  let disabledList = [
-    makeLabel(~heading="Nhai", ~left="33"),
-    makeLabel(~heading="Nhai", ~left="32"),
-    makeLabel(~heading="Nhai", ~left="31"),
-    makeLabel(~heading="Nhai", ~left="41"),
-    makeLabel(~heading="Nhai", ~left="42"),
-    makeLabel(~heading="Nhai", ~left="43"),
+  [@genType]
+  let table = TinhTrangNhuCau.make(~teeth, ~surfaces, ~reverse=true, ());
+  [@genType]
+  let schema = YupSchema.make(table);
+};
+module Tinh_trang_ham_duoi_maugiao = {
+  let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+  let teeth = [
+    "36",
+    "35",
+    "34",
+    "33",
+    "32",
+    "31",
+    "41",
+    "42",
+    "43",
+    "44",
+    "45",
+    "46",
   ];
 
   [@genType]
-  let table =
-    makeTable(
-      ~colsMain,
-      ~colsSub,
-      ~heading,
-      ~reverse=true,
-      ~disabledList,
-      (),
-    );
+  let table = TinhTrangNhuCau.make(~teeth, ~surfaces, ~reverse=true, ());
   [@genType]
   let schema = YupSchema.make(table);
 };
@@ -220,6 +248,27 @@ module OHIS = {
       Data("ohis36N", options),
     ],
     [Static("46(T)"), Static("31N"), Static("36(T)")],
+  ];
+  [@genType]
+  let schema = YupSchema.make(table);
+};
+
+module OHIS_Maugiao = {
+  let options = [|"0", "1", "2", "3", "X"|];
+  [@genType]
+  let table = [
+    [Static("55N"), Static("51N"), Static("65N")],
+    [
+      Data("ohis55N", options),
+      Data("ohis51N", options),
+      Data("ohis65N", options),
+    ],
+    [
+      Data("ohis85T", options),
+      Data("ohis71N", options),
+      Data("ohis75T", options),
+    ],
+    [Static("85(T)"), Static("71N"), Static("75(T)")],
   ];
   [@genType]
   let schema = YupSchema.make(table);

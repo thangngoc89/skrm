@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React from "react";
 import { Box } from "grommet";
-import CheckBox from "./Checkbox.gen";
+import { CheckBox } from ".";
 
 const SelectGroup = ({
   options,

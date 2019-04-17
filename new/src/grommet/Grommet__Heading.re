@@ -6,9 +6,7 @@ type alignSelf = [
   | [@genType.as "stretch"] `as_stretch
 ];
 
-[@genType.import "grommet"]
-[@genType.as "Heading"]
-[@bs.module "./Grommet__Heading.gen"]
+[@genType.import "grommet"] [@genType.as "Heading"]
 external make:
   (
     ~a11yTitle: string=?,

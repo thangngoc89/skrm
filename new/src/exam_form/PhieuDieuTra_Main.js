@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, FastField } from "formik";
 import { Box, Heading, Button, Select } from "../components";
-import { Text, Box as GBox, TextInput, FormField } from "grommet";
+import { Text, TextInput, FormField } from "grommet";
 import AutosuggestTextInput from "../components/AutosuggestTextInput";
 
 import { format } from "date-fns";
@@ -20,22 +20,12 @@ import {
   MocChenChuc_schema,
   MIH_schema,
 } from "./PDT_TableSchema.gen";
-import { PDT_TableRender } from "./PDT_TableRender.gen";
+import { make as PDT_TableRender } from "./PDT_TableRender.gen";
 
 import * as yup from "yup";
 import MountPortal from "../MountPortal";
 import FormikAutosave from "../FormikAutosave";
 import FormikNotify from "../FormikNotify";
-
-yup.setLocale({
-  mixed: {
-    required: "${path} chưa được điền",
-  },
-  number: {
-    min: "${path} phải có giá trị tối thiểu là ${min}",
-    max: "${path} phải có giá trị tối thiểu là ${max}",
-  },
-});
 
 const selectOneBinaryValue = [
   { label: "0 - Không", value: "0" },
@@ -519,15 +509,13 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
 const PhieuDieuTra = ({ initialValues, onSave }) => {
   return (
     <div>
-      <Box direction="row" alignContent="center" justifyContent="center">
-        <GBox align="center">
-          <Heading level={1} textAlign="center">
-            Phiếu điều tra sức khỏe răng miệng
-          </Heading>
-          <Text size="large" color="dark-1">
-            (dành cho trẻ dưới 15 tuổi)
-          </Text>
-        </GBox>
+      <Box direction="column" alignItems="center">
+        <Heading level={1} textAlign="center">
+          Phiếu điều tra sức khỏe răng miệng
+        </Heading>
+        <Text size="large" color="dark-1">
+          (dành cho trẻ dưới 15 tuổi)
+        </Text>
       </Box>
       <PhieuDieuTraForm initialValues={initialValues} onSave={onSave} />
     </div>

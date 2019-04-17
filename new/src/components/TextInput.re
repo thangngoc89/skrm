@@ -1,8 +1,7 @@
+[@bs.config {jsx: 3}];
 let s: Js.t('a) = [%bs.raw {| require("./TextInput.module.css")|}];
 
-let component = ReasonReact.statelessComponent("TextInput");
-
-[@genType]
+[@react.component]
 let make =
     (
       ~value,
@@ -16,20 +15,17 @@ let make =
     ) =>
   [@genType.as "type"]
   (
-    (~type_=?, _children) => {
-      ...component,
-      render: _self => {
-        <input
-          value
-          onChange
-          ?onFocus
-          ?onBlur
-          ?placeholder
-          ?name
-          ?id
-          ?type_
-          className={Cn.make([s##input, Cn.unpack(className)])}
-        />;
-      },
+    (~type_=?) => {
+      <input
+        value
+        onChange
+        ?onFocus
+        ?onBlur
+        ?placeholder
+        ?name
+        ?id
+        ?type_
+        className={Cn.make([s##input, Cn.unpack(className)])}
+      />;
     }
   );

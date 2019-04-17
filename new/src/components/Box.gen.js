@@ -6,14 +6,4 @@ const $$toRE2332818 = {"row": 5693978, "column": -963948842, "row-responsive": 3
 
 import * as BoxBS from './Box.bs';
 
-import * as Curry from 'bs-platform/lib/es6/curry.js';
-
-import * as ReasonReact from 'reason-react/src/ReasonReact.js';
-
-export const Box = ReasonReact.wrapReasonForJs(
-  BoxBS.component,
-  (function _(jsProps) {
-     return Curry._7(BoxBS.make, $$toRE2332818[jsProps.direction], $$toRE522168171[jsProps.alignContent], $$toRE522168171[jsProps.justifyContent], $$toRE522168171[jsProps.alignItems], jsProps.className, jsProps.id, jsProps.children);
-  }));
-
-export default Box;
+export const make = function _(Arg1) { const result = BoxBS.make({alignContent:(Arg1.alignContent == null ? undefined : $$toRE522168171[Arg1.alignContent]), alignItems:(Arg1.alignItems == null ? undefined : $$toRE522168171[Arg1.alignItems]), children:Arg1.children, className:Arg1.className, direction:(Arg1.direction == null ? undefined : $$toRE2332818[Arg1.direction]), id:Arg1.id, justifyContent:(Arg1.justifyContent == null ? undefined : $$toRE522168171[Arg1.justifyContent])}); return result };

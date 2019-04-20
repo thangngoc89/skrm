@@ -5,3 +5,6 @@ module Text = Grommet__Text;
 module RadioButton = Grommet__RadioButton;
 module CheckBox = Grommet__CheckBox;
 module Markdown = Grommet__Markdown;
+module Button = Grommet__Button;
+module Layer = Grommet__Layer;
+module Icons = Grommet__Icons;

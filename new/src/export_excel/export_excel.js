@@ -2,7 +2,11 @@ import XLSX from "xlsx";
 import headers from "./treem_headers.json";
 import treemExporter from "./treem_exporter";
 
-export const createWorkbook = data => {
+export const createWorkbook = (
+  data,
+  filename = "voser",
+  formatter = treemExporter
+) => {
   const formattedData = treemExporter(data);
 
   var wb = XLSX.utils.book_new();
@@ -14,5 +18,5 @@ export const createWorkbook = data => {
     origin: "A2",
   });
 
-  XLSX.writeFile(wb, "du-lieu-thuc-dia.xlsx", { compression: true });
+  XLSX.writeFile(wb, filename + ".xlsx", { compression: true });
 };

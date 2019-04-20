@@ -3,15 +3,14 @@ import { Router } from "@reach/router";
 import { Box, Grommet } from "grommet";
 import { PouchDB } from "react-pouchdb";
 import { AppHeader } from "./AppHeader";
-import Spinner from "./Spinner";
+import Spinner from "./Spinner.bs";
 import ButterToast, { POS_BOTTOM, POS_RIGHT } from "butter-toast";
 
-const RecordList = lazy(() => import("./RecordManage"));
 const RecordNew = lazy(() => import("./RecordNew"));
 const RecordEdit = lazy(() => import("./RecordEdit"));
 const Homepage = lazy(() => import("./Homepage"));
-// const PDT_Maugiao = lazy(() => import("./exam_form/PDT_Maugiao"));
-const PDT_Maugiao = lazy(() => import("./RecordNewMaugiao"));
+const RecordNewMaugiao = lazy(() => import("./RecordNewMaugiao"));
+const RecordManage = lazy(() => import("./RecordManage/RecordManage.bs"));
 
 const App = () => {
   return (
@@ -23,9 +22,9 @@ const App = () => {
             <Router style={{ height: "100%", overflow: "auto" }}>
               <Homepage path="/" />
               <RecordNew path="/new" />
-              <RecordList path="/manage" />
+              <RecordManage path="/manage" />
               <RecordEdit path="/record/:recordId" />
-              <PDT_Maugiao path="/new/maugiao" />
+              <RecordNewMaugiao path="/new/maugiao" />
             </Router>
           </Suspense>
         </Box>

@@ -1,15 +1,17 @@
 [@react.component] [@bs.module "grommet"]
 external make:
   (
-    ~level: int,
     ~size: string=?,
     ~align: string=?,
     ~color: string=?,
     ~margin: string=?,
     ~margin__custom: Js.t('margin)=?,
+    ~className: string=?,
+    ~weight: string=?,
+    ~weight__number: int=?,
     ~children: React.element
   ) =>
   React.element =
-  "Heading";
+  "Text";
 
 let make = make;

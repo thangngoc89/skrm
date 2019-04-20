@@ -1,97 +1,14 @@
 import React, { useEffect, useReducer } from "react";
 import { Box, Heading, Text, Button, Layer } from "grommet";
 import db from "./db";
-import { navigate } from "@reach/router";
 import { validate } from "./export_excel/validate";
 import * as Notify from "./Notify";
 import "react-tabulator/lib/styles.css";
 import "react-tabulator/lib/css/tabulator.min.css";
 import { ReactTabulator, reactFormatter } from "react-tabulator";
-import Spinner from "./Spinner";
+import Spinner from "./Spinner.bs";
 import { useFind } from "react-pouchdb";
-
-const Custom = ({ cell }) => {
-  const id = cell._cell.value;
-  const link = "/record/" + id;
-  const [show, setShow] = React.useState(false);
-
-  const close = () => setShow(false);
-  const open = () => setShow(true);
-
-  return (
-    <>
-      <a
-        href={link}
-        className="text-brand no-underline font-bold"
-        onClick={event => {
-          event.preventDefault();
-          navigate("/record/" + id);
-        }}
-      >
-        Sửa
-      </a>
-      <span className="mx-2"> - </span>
-      <button className="text-status-critical font-bold" onClick={open}>
-        Xóa
-      </button>
-
-      {show && (
-        <Layer position="center" modal onClickOutside={close} onEsc={close}>
-          <Box pad="medium" gap="small" width="medium">
-            <Heading level={3} margin="none">
-              Xác nhận xóa hồ sơ
-            </Heading>
-            <Text>
-              Bạn có muốn xóa hồ sơ{" "}
-              <strong>{cell._cell.row.data.soHoSo || "________"}</strong>?
-              <br />- Họ và tên:{" "}
-              <strong>{cell._cell.row.data.hoVaTen || "________"}</strong>
-              <br />- Người khám:{" "}
-              <strong>{cell._cell.row.data.nguoiKham || "________"}</strong>
-            </Text>
-            <Box
-              as="footer"
-              gap="small"
-              direction="row"
-              align="center"
-              justify="end"
-              pad={{ top: "medium", bottom: "small" }}
-            >
-              <Button label="Thoát" onClick={close} color="dark-3" />
-              <Button
-                label={
-                  <Text color="white">
-                    <strong>Xóa</strong>
-                  </Text>
-                }
-                onClick={() =>
-                  db
-                    .get(id)
-                    .then(function(doc) {
-                      return db.remove(doc);
-                    })
-                    .then(() => {
-                      Notify.success("Xóa hồ sơ thành công");
-                      close();
-                    })
-                    .catch(error => {
-                      console.error(error);
-                      Notify.error(
-                        "Xóa hồ sơ không thành công",
-                        "Vui lòng thử lại sau"
-                      );
-                    })
-                }
-                primary
-                color="status-critical"
-              />
-            </Box>
-          </Box>
-        </Layer>
-      )}
-    </>
-  );
-};
+import { Custom } from "./RecordManage/Actions";
 
 const columns = [
   // {
@@ -245,7 +162,7 @@ const ExportModal = ({ type, payload, close, onExport }) => {
               );
             })}
           </ul>
-          <Text>Vui lòng hoàn tất các bộ hồ sơ trước khi xuất dữ liệu</Text>
+          <Text >Vui lòng hoàn tất các bộ hồ sơ trước khi xuất dữ liệu</Text>
           <Box
             as="footer"
             gap="small"
@@ -387,7 +304,7 @@ const RecordManage = () => {
       console.error(error);
       Notify.error(
         "Có lỗi xảy ra khi tạo file Excel",
-        "Lỗi này thường do bạn xuất các bộ hồ sơ chưa hoàn tất. Vui lòng hoàn thành các bộ hồ sơ trước khi xuất"
+        "Lỗi này thường do xuất các bộ hồ sơ chưa hoàn tất. Vui lòng hoàn thành các bộ hồ sơ trước khi xuất"
       );
     }
   };

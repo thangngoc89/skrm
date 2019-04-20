@@ -24,3 +24,6 @@ window.db = db;
 window.demo = demo;
 
 export default db;
+
+export const TIEUHOC = 0;
+export const MAUGIAO = 1;

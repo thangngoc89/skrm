@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { useDB } from "react-pouchdb";
 import RecordInput from "./RecordInput";
+import RecordInputMaugiao from "./RecordInputMaugiao";
+import { TIEUHOC, MAUGIAO } from "./db";
 
 let doc;
 
@@ -27,7 +29,13 @@ const RecordEdit = ({ recordId }) => {
   if (!doc) {
     return "Không tìm thấy hồ sơ với id " + recordId;
   } else {
-    return <RecordInput key={recordId} value={doc} />;
+    if (!doc.kind || doc.kind === TIEUHOC) {
+      return <RecordInput key={recordId} value={doc} />;
+    } else if (doc.kind === MAUGIAO) {
+      return <RecordInputMaugiao key={recordId} value={doc} />;
+    } else {
+      return "Không tìm thấy hồ sơ với id " + recordId;
+    }
   }
 };
 

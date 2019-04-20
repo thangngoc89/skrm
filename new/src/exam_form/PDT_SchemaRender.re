@@ -1,26 +1,17 @@
 [@bs.config {jsx: 3}];
 open ReactHelpers;
 
+external toString: Js.Json.t => string = "%identity";
+
 let getErrorString = error => {
-  error->Belt.Option.flatMap(json =>
-    switch (json->Js.Json.classify) {
-    | JSONString(string) => Some(string)
-    | _ => None
-    }
-  );
+  error->Belt.Option.map(toString);
 };
 
-external jsonToStringDict: Js.Dict.t(Js.Json.t) => Js.Dict.t(string) =
-  "%identity";
+external toStringDict: Js.Json.t => Js.Dict.t(string) = "%identity";
 
 let getErrorObject = error => {
   error
-  ->Belt.Option.flatMap(json =>
-      switch (json->Js.Json.classify) {
-      | JSONObject(dict) => Some(jsonToStringDict(dict))
-      | _ => None
-      }
-    )
+  ->Belt.Option.map(toStringDict)
   ->Belt.Option.getWithDefault(Js.Dict.empty());
 };
 
@@ -44,9 +35,19 @@ module TextInputWithType = {
     </FormField>;
   };
 };
+
 module RenderRow = {
+  let setTableCellValue:
+    (Js.Dict.t(string), string, string) => Js.Dict.t(string) = [%raw
+    {|
+        function (fieldValue, cellLabel, value) {
+          return Object.assign({}, fieldValue, { [cellLabel]: value})
+        }
+      |}
+  ];
+
   [@react.component]
-  let make = (~row, ~setFieldValue) => {
+  let make = (~row, ~setFieldValue, ~setFieldTouched) => {
     <Box direction=`row_responsive>
       {row
        ->Belt.Array.map(((node, size)) => {
@@ -112,10 +113,14 @@ module RenderRow = {
                        id={field##name}
                        table
                        value=fieldValue
-                       onCellChange={(. cellLabel, value) => {
-                         fieldValue->Js.Dict.set(cellLabel, value);
-                         setFieldValue(. field##name, field##value);
-                       }}
+                       onCellChange={(. cellLabel, value) =>
+                         setFieldValue(.
+                           field##name,
+                           setTableCellValue(fieldValue, cellLabel, value),
+                         )
+                       }
+                       // Too slow
+                       //  onCellBlur={_ => setFieldTouched(. field##name, true)}
                        error={getErrorObject(error)}
                      />
                    </div>;
@@ -134,6 +139,7 @@ let make =
     (
       ~layout: PDT_Schema.Layout.t,
       ~setFieldValue: (. PDT_Schema.Node.nodeId, 'a) => unit,
+      ~setFieldTouched: (. PDT_Schema.Node.nodeId, bool) => unit,
     ) => {
   <Box direction=`column>
     {{layout->Belt.Array.map(({title, items: groupItems}) =>
@@ -141,7 +147,12 @@ let make =
           <Heading level=3> title->str </Heading>
           {groupItems
            ->Belt.Array.mapWithIndex((i, row) =>
-               <RenderRow key={i->string_of_int} row setFieldValue />
+               <RenderRow
+                 key={i->string_of_int}
+                 row
+                 setFieldValue
+                 setFieldTouched
+               />
              )
            ->React.array}
         </Box>

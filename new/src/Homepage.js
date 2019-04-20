@@ -24,18 +24,39 @@ export default function Homepage() {
       </Box>
 
       <Heading level={2}>Chọn chức năng</Heading>
-      <Box gap="large" direction="row-responsive" margin={{ vertical: "medium" }}>
+      <Box
+        gap="large"
+        direction="row-responsive"
+        margin={{ vertical: "medium" }}
+      >
         <PrimaryButton
           primary
           color="accent-1"
           href="/new"
-          label="Thêm hồ sơ"
+          label="Thêm tiểu học"
           icon={<AddCircle />}
           onClick={event => {
             event.preventDefault();
             navigate("/new");
           }}
         />
+        <PrimaryButton
+          primary
+          color="accent-1"
+          href="/new/maugiao"
+          label="Thêm mẫu giáo"
+          icon={<AddCircle />}
+          onClick={event => {
+            event.preventDefault();
+            navigate("/new/maugiao");
+          }}
+        />
+      </Box>
+      <Box
+        gap="large"
+        direction="row-responsive"
+        margin={{ vertical: "medium" }}
+      >
         <PrimaryButton
           primary
           color="accent-1"

@@ -28,12 +28,17 @@ const PDT_MaugiaoForm = ({ initialValues = maugiao_initialValues, onSave }) => (
       handleSubmit,
       isSubmitting,
       setFieldValue,
+      setFieldTouched,
       isValidating,
       errors,
     }) => {
       return (
         <Form>
-          <SchemaRender layout={maugiao_layout} setFieldValue={setFieldValue} />
+          <SchemaRender
+            layout={maugiao_layout}
+            setFieldValue={setFieldValue}
+            setFieldTouched={setFieldTouched}
+          />
           <FormikNotify
             isValidating={isValidating}
             errors={errors}
@@ -41,7 +46,7 @@ const PDT_MaugiaoForm = ({ initialValues = maugiao_initialValues, onSave }) => (
           />
           <MountPortal id="footerAction">
             <Box justifyContent="end" direction="row" alignItems="center">
-              {/* <FormikAutosave
+              <FormikAutosave
                 values={values}
                 render={({ type }) => {
                   switch (type) {
@@ -56,7 +61,7 @@ const PDT_MaugiaoForm = ({ initialValues = maugiao_initialValues, onSave }) => (
                   }
                 }}
                 onSave={value => onSave(value, true)}
-              /> */}
+              />
               <Button
                 primary
                 label="Kiểm tra"
@@ -69,6 +74,7 @@ const PDT_MaugiaoForm = ({ initialValues = maugiao_initialValues, onSave }) => (
                 margin={{ left: "small" }}
               />
             </Box>
+            {values.hoVaTen && <strong>{values.hoVaTen}</strong>}
           </MountPortal>
         </Form>
       );

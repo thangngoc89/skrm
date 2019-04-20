@@ -22,7 +22,8 @@
     "re-classnames",
     "re-formality",
     "bs-webapi",
-    "bs-epitath"
+    "bs-epitath",
+    "reason-react-update"
   ],
   "refmt": 3,
   "gentypeconfig": {

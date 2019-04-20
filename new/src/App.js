@@ -10,7 +10,8 @@ const RecordList = lazy(() => import("./RecordManage"));
 const RecordNew = lazy(() => import("./RecordNew"));
 const RecordEdit = lazy(() => import("./RecordEdit"));
 const Homepage = lazy(() => import("./Homepage"));
-const PDT_Maugiao = lazy(() => import("./exam_form/PDT_Maugiao"));
+// const PDT_Maugiao = lazy(() => import("./exam_form/PDT_Maugiao"));
+const PDT_Maugiao = lazy(() => import("./RecordNewMaugiao"));
 
 const App = () => {
   return (
@@ -24,7 +25,7 @@ const App = () => {
               <RecordNew path="/new" />
               <RecordList path="/manage" />
               <RecordEdit path="/record/:recordId" />
-              <PDT_Maugiao path="/maugiao" />
+              <PDT_Maugiao path="/new/maugiao" />
             </Router>
           </Suspense>
         </Box>

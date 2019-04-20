@@ -3,6 +3,19 @@ import React from "react";
 import { Anchor, Box, Menu, ResponsiveContext, Text } from "grommet";
 import { navigate } from "@reach/router";
 
+const RouterAnchor = props => {
+  const { href, ...rest } = props;
+  return (
+    <Anchor
+      href={href}
+      onClick={e => {
+        e.preventDefault();
+        navigate(href);
+      }}
+      {...rest}
+    />
+  );
+};
 export const AppHeader = ({ appName }) => (
   <Box
     flex={false}
@@ -20,16 +33,7 @@ export const AppHeader = ({ appName }) => (
       align="center"
       gap="small"
     >
-      <Anchor
-        pad="none"
-        label={appName}
-        href="/"
-        onClick={e => {
-          e.preventDefault();
-          navigate("/");
-        }}
-        margin="small"
-      />
+      <RouterAnchor pad="none" label={appName} href="/" margin="small" />
     </Box>
 
     <ResponsiveContext.Consumer>
@@ -39,7 +43,11 @@ export const AppHeader = ({ appName }) => (
             dropAlign={{ right: "right", top: "top" }}
             label="Menu"
             items={[
-              { label: "Thêm hồ sơ", onClick: () => navigate("/new") },
+              { label: "Thêm tiểu học", onClick: () => navigate("/new") },
+              {
+                label: "Thêm mẫu giáo",
+                onClick: () => navigate("/new/maugiao"),
+              },
               { label: "Quản lí", onClick: () => navigate("/manage") },
             ]}
           />
@@ -51,24 +59,13 @@ export const AppHeader = ({ appName }) => (
             align="center"
             pad={{ horizontal: "small" }}
           >
-            <Anchor
-              label="Thêm hồ sơ"
-              href="/new"
-              onClick={e => {
-                e.preventDefault();
-                navigate("/new");
-              }}
+            <RouterAnchor label="Thêm tiểu học" href="/new" margin="small" />
+            <RouterAnchor
+              label="Thêm mẫu giáo"
+              href="/new/maugiao"
               margin="small"
             />
-            <Anchor
-              label="Quản lí"
-              href="/manage"
-              onClick={e => {
-                e.preventDefault();
-                navigate("/manage");
-              }}
-              margin="small"
-            />
+            <RouterAnchor label="Quản lí" href="/manage" margin="small" />
           </Box>
         )
       }

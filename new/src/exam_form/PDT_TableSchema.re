@@ -71,11 +71,11 @@ module TinhTrangNhuCau = {
     | "33" => Some("73")
     | "32" => Some("72")
     | "31" => Some("71")
-    | "85" => Some("85")
-    | "84" => Some("84")
-    | "83" => Some("83")
-    | "82" => Some("82")
-    | "81" => Some("81")
+    | "45" => Some("85")
+    | "44" => Some("84")
+    | "43" => Some("83")
+    | "42" => Some("82")
+    | "41" => Some("81")
     | _ => None;
   let teethWithDisabledSurfaces = [|
     "13",

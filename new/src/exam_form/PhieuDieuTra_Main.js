@@ -307,6 +307,7 @@ function RenderRow({ row, setFieldValue }) {
                           error={isFieldTouched ? error : undefined}
                         >
                           <Select
+                            id={field.name}
                             options={schemaMetadata.typeData}
                             name={field.name}
                             value={field.value}

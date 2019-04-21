@@ -138,7 +138,8 @@ module TinhTrangNhuCau = {
 };
 
 module Tinh_trang_ham_tren = {
-  let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
+  // let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
+  let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
   let teeth = [
     "17",
     "16",
@@ -163,7 +164,8 @@ module Tinh_trang_ham_tren = {
 };
 
 module Tinh_trang_ham_tren_maugiao = {
-  let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
+  // let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
+  let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
   let teeth = [
     "16",
     "15",
@@ -186,7 +188,8 @@ module Tinh_trang_ham_tren_maugiao = {
 };
 
 module Tinh_trang_ham_duoi = {
-  let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+  // let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+  let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
   let teeth = [
     "37",
     "36",
@@ -210,7 +213,8 @@ module Tinh_trang_ham_duoi = {
   let schema = YupSchema.make(table);
 };
 module Tinh_trang_ham_duoi_maugiao = {
-  let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+  // let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
+  let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
   let teeth = [
     "36",
     "35",

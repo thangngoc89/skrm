@@ -1,70 +1,12 @@
-import XLSX from "xlsx";
-import { decode } from "punycode";
-
-const encode_col = XLSX.utils.encode_col;
-const decode_col = XLSX.utils.decode_col;
-
-const toNumber = num => {
-  const parsed = parseInt(num, 10);
-  /* TODO: validation error */
-  if (isNaN(parsed)) {
-    return "";
-  }
-  return parsed;
-};
-
-const toNumberWithDefault = (num, def) => {
-  const parsed = toNumber(num);
-  return parsed === "" ? def : parsed;
-};
-
-
-const getNhuCauValue = (source = {}, col, row) => {
-  const value = source[`${col}_${row}`];
-  /* TODO: Show validation error instead */
-  if (typeof value === "undefined") {
-    return "";
-  }
-  switch (value) {
-    case "A":
-      return 10;
-      break;
-    case "B":
-      return 11;
-      break;
-    case "C":
-      return 12;
-      break;
-    case "D":
-      return 13;
-      break;
-    case "E":
-      return 14;
-      break;
-    case "F":
-      return 16;
-      break;
-    case "P":
-      return "P";
-    case "F":
-      return "F";
-    default:
-      return toNumber(value);
-      break;
-  }
-};
-
-const withDefault = (value, def, cb) => {
-  if (typeof value !== "undefined") {
-    if (cb) {
-      return cb(value);
-    } else {
-      return value;
-    }
-  } else {
-    return def;
-  }
-};
+import {
+  encode_col,
+  decode_col,
+  toNumber,
+  toNumberWithDefault,
+  getOhis,
+  getNhuCauValue,
+  withDefault,
+} from "./exporter_common";
 
 const dataToSheet = data =>
   data
@@ -235,20 +177,20 @@ const dataToSheet = data =>
 
         // PI
         const pi = rowKhamData.pi || {};
-        row.GK = toNumber(pi.ohis16N);
-        row.GL = toNumber(pi.ohis11N);
-        row.GM = toNumber(pi.ohis26N);
-        row.GN = toNumber(pi.ohis46T);
-        row.GO = toNumber(pi.ohis31N);
-        row.GP = toNumber(pi.ohis36N);
+        row.GK = getOhis(pi.ohis16N);
+        row.GL = getOhis(pi.ohis11N);
+        row.GM = getOhis(pi.ohis26N);
+        row.GN = getOhis(pi.ohis46T);
+        row.GO = getOhis(pi.ohis31N);
+        row.GP = getOhis(pi.ohis36N);
         // CI
         const ci = rowKhamData.ci || {};
-        row.GQ = toNumber(ci.ohis16N);
-        row.GR = toNumber(ci.ohis11N);
-        row.GS = toNumber(ci.ohis26N);
-        row.GT = toNumber(ci.ohis46T);
-        row.GU = toNumber(ci.ohis31N);
-        row.GV = toNumber(ci.ohis36N);
+        row.GQ = getOhis(ci.ohis16N);
+        row.GR = getOhis(ci.ohis11N);
+        row.GS = getOhis(ci.ohis26N);
+        row.GT = getOhis(ci.ohis46T);
+        row.GU = getOhis(ci.ohis31N);
+        row.GV = getOhis(ci.ohis36N);
 
         // CPI (blank)
         const cpiRow = [

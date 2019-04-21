@@ -430,7 +430,7 @@ const PhieuDieuTraForm = ({ initialValues = blankInitialValues(), onSave }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      onSave(values, values.draft).then(() => setSubmitting(false));
+      onSave(values, false).then(() => setSubmitting(false));
     }}
     validationSchema={validationSchema}
     validateOnBlur={true}

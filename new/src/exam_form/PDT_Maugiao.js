@@ -17,7 +17,7 @@ const PDT_MaugiaoForm = ({ initialValues = maugiao_initialValues, onSave }) => (
   <Formik
     initialValues={initialValues}
     onSubmit={(values, { setSubmitting }) => {
-      onSave(values, values.draft).then(() => setSubmitting(false));
+      onSave(values, false).then(() => setSubmitting(false));
     }}
     validationSchema={maugiao_yupSchema}
     validateOnBlur={true}

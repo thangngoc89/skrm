@@ -209,18 +209,6 @@ module DataProcessing = {
       };
     };
 };
-module type RenderTable = {
-  type doc;
-  type mappedDoc;
-  let mapper: doc => mappedDoc;
-  type kindSelector;
-  let kindSelector: kindSelector;
-  let columns: array(ReactTabulator.column);
-  /* Getter */
-  let keepInComplete: mappedDoc => bool;
-  let getSoHoSo: mappedDoc => string;
-  let getId: mappedDoc => string;
-};
 
 module ExportModal = {
   open ReactHelpers;
@@ -258,11 +246,26 @@ module ExportModal = {
     </G.Layer>;
   };
 };
+
+module type RenderTable = {
+  let kind: int;
+  type doc;
+  type mappedDoc;
+  let mapper: doc => mappedDoc;
+  type kindSelector;
+  let kindSelector: kindSelector;
+  let columns: array(ReactTabulator.column);
+  /* Getter */
+  let keepInComplete: mappedDoc => bool;
+  let getSoHoSo: mappedDoc => string;
+  let getId: mappedDoc => string;
+};
 module RenderTable = (T: RenderTable) => {
   open ReactHelpers;
 
   [@bs.module "./handleExport.js"]
-  external handleExport: (~data: 'a, ~fileName: string) => Js.Promise.t(unit) =
+  external handleExport:
+    (~data: 'a, ~fileName: string, ~kind: int) => Js.Promise.t(unit) =
     "handleExport";
 
   [@react.component]
@@ -299,14 +302,21 @@ module RenderTable = (T: RenderTable) => {
              let fileName =
                Prompt.makeWithDefaultMessage(
                  {j|Tên file excel:|j},
-                 "voser-"
+                 "voser__"
+                 ++ (
+                   switch (T.kind) {
+                   | 0 => "tieuhoc__"
+                   | 1 => "maugiao__"
+                   | _ => ""
+                   }
+                 )
                  ++ DateFns.format(Js.Date.make(), "HH-mm__DD-MM-YYYY"),
                );
 
              switch (fileName) {
              | None => ()
              | Some(fileName) =>
-               handleExport(~data=docs, ~fileName)
+               handleExport(~data=docs, ~fileName, ~kind=T.kind)
                |> Js.Promise.then_(_ =>
                     handleCloseModal()->Js.Promise.resolve
                   )
@@ -383,6 +393,7 @@ module RenderTable = (T: RenderTable) => {
 
 module RenderMaugiao =
   RenderTable({
+    let kind = 1;
     type doc = DataProcessing.maugiaoRecord;
     type mappedDoc = DataProcessing.maugiaoTable;
     let mapper = DataProcessing.mapMaugiao;
@@ -397,6 +408,7 @@ module RenderMaugiao =
 
 module RenderTieuhoc =
   RenderTable({
+    let kind = 0;
     type doc = DataProcessing.tieuhocRecord;
     type mappedDoc = DataProcessing.tieuhocTable;
     let mapper = DataProcessing.mapTieuhoc;

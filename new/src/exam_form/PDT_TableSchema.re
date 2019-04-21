@@ -259,14 +259,14 @@ module OHIS_Maugiao = {
   let table = [
     [Static("55N"), Static("51N"), Static("65N")],
     [
-      Data("ohis55N", options),
-      Data("ohis51N", options),
-      Data("ohis65N", options),
+      Data("ohis1", options),
+      Data("ohis2", options),
+      Data("ohis3", options),
     ],
     [
-      Data("ohis85T", options),
-      Data("ohis71N", options),
-      Data("ohis75T", options),
+      Data("ohis6", options),
+      Data("ohis5", options),
+      Data("ohis4", options),
     ],
     [Static("85(T)"), Static("71N"), Static("75(T)")],
   ];

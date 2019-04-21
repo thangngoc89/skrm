@@ -1,9 +1,9 @@
 import * as Notify from "../Notify";
 
-export const handleExport = async (data, filename) => {
+export const handleExport = async (data, filename, kind) => {
   try {
     const { createWorkbook } = await import("../export_excel/export_excel");
-    createWorkbook(data, filename);
+    createWorkbook(data, filename, kind);
   } catch (error) {
     console.error(error);
     Notify.error(

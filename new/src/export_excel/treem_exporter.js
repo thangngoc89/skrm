@@ -4,6 +4,7 @@ import {
   toNumber,
   toNumberWithDefault,
   getOhis,
+  getCpi,
   getNhuCauValue,
   withDefault,
 } from "./exporter_common";
@@ -225,9 +226,10 @@ const dataToSheet = data =>
         ];
         const cpi = rowKhamData.cpi || {};
         for (let i = decode_col("GW"); i <= decode_col("HX"); i++) {
-          row[encode_col(i)] = toNumberWithDefault(
+          row[encode_col(i)] = withDefault(
             cpi["cpi" + cpiRow[i - decode_col("GW")]],
-            9
+            9,
+            cpi => getCpi(cpi)
           );
         }
         // Flour

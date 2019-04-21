@@ -34,43 +34,51 @@ export const getOhis = value => {
   }
 };
 
+export const getCpi = value => {
+  switch (value) {
+    case "0":
+      return 0;
+    case "1":
+      return 1;
+    case "9":
+      return 9;
+    case "X":
+      return "X";
+    default:
+      return null;
+  }
+};
+
 export const getNhuCauValue = (source = {}, col, row) => {
   const value = source[`${col}_${row}`];
   /* TODO: Show validation error instead */
-  if (typeof value === "undefined") {
+  if (value == null) {
     return "";
   }
   switch (value) {
     case "A":
       return 10;
-      break;
     case "B":
       return 11;
-      break;
     case "C":
       return 12;
-      break;
     case "D":
       return 13;
-      break;
     case "E":
       return 14;
-      break;
     case "F":
       return 16;
-      break;
     case "P":
       return "P";
     case "F":
       return "F";
     default:
       return toNumber(value);
-      break;
   }
 };
 
 export const withDefault = (value, def, cb) => {
-  if (typeof value !== "undefined") {
+  if (value == null) {
     if (cb) {
       return cb(value);
     } else {

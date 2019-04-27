@@ -137,33 +137,137 @@ module BuiltinNodes = {
       (),
     );
 
+  let makeTable = (~id, ~label, ~showLabel, ~schema) => {
+    makeNode(
+      ~id,
+      ~label,
+      ~data=Table(None, schema, showLabel),
+      ~validate=CustomValidate(PDT_TableSchema.YupSchema.make(schema)),
+      (),
+    );
+  };
   /* Tables */
   let ttncHamTren_maugiao =
-    makeNode(
+    makeTable(
       ~id="ttncHamTren",
       ~label={j|Hàm trên|j},
-      ~data=
-        Table(None, PDT_TableSchema.Tinh_trang_ham_tren_maugiao.table, true),
-      ~validate=
-        CustomValidate(PDT_TableSchema.Tinh_trang_ham_tren_maugiao.schema),
-      (),
+      ~schema=PDT_TableSchema.Tinh_trang_ham_tren_maugiao.table,
+      ~showLabel=false,
     );
   let ttncHamDuoi_maugiao =
-    makeNode(
+    makeTable(
       ~id="ttncHamDuoi",
       ~label={j|Hàm dưới|j},
-      ~data=
-        Table(None, PDT_TableSchema.Tinh_trang_ham_duoi_maugiao.table, true),
-      ~validate=
-        CustomValidate(PDT_TableSchema.Tinh_trang_ham_duoi_maugiao.schema),
-      (),
+      ~schema=PDT_TableSchema.Tinh_trang_ham_duoi_maugiao.table,
+      ~showLabel=false,
     );
   let pi_maugiao =
-    makeNode(
+    makeTable(
       ~id="pi",
       ~label="PI",
-      ~data=Table(None, PDT_TableSchema.OHIS_Maugiao.table, true),
-      ~validate=CustomValidate(PDT_TableSchema.OHIS_Maugiao.schema),
+      ~schema=PDT_TableSchema.OHIS_Maugiao.table,
+      ~showLabel=true,
+    );
+  /* Tables Tieuhoc */
+  let ttncHamTren_tieuhoc =
+    makeTable(
+      ~id="ttncHamTren",
+      ~label={j|Hàm trên|j},
+      ~schema=PDT_TableSchema.Tinh_trang_ham_tren.table,
+      ~showLabel=false,
+    );
+  let ttncHamDuoi_tieuhoc =
+    makeTable(
+      ~id="ttncHamDuoi",
+      ~label={j|Hàm dưới|j},
+      ~schema=PDT_TableSchema.Tinh_trang_ham_duoi.table,
+      ~showLabel=false,
+    );
+  let pi_tieuhoc =
+    makeTable(
+      ~id="pi",
+      ~label="PI",
+      ~schema=PDT_TableSchema.OHIS.table,
+      ~showLabel=true,
+    );
+  let ci_tieuhoc =
+    makeTable(
+      ~id="ci",
+      ~label="CI",
+      ~schema=PDT_TableSchema.OHIS.table,
+      ~showLabel=true,
+    );
+  let cpi =
+    makeTable(
+      ~id="cpi",
+      ~label="CPI",
+      ~schema=PDT_TableSchema.CPI.table,
+      ~showLabel=false,
+    );
+  let canPhu: Node.t =
+    makeNode(
+      ~id="canPhu",
+      ~label={j|Độ cắn phủ|j},
+      ~data=Integer(None),
+      (),
+    );
+  let canChia: Node.t =
+    makeNode(
+      ~id="canChia",
+      ~label={j|Độ cắn chìa|j},
+      ~data=Integer(None),
+      (),
+    );
+
+  let selectOneBinaryValue = [|
+    {label: {j|0 - Không|j}, value: "0"},
+    {label: {j|1 - Có|j}, value: "1"},
+  |];
+
+  let canNguocRangTruoc: Node.t =
+    makeNode(
+      ~id="canNguocRangTruoc",
+      ~label={j|Cắn ngược răng trước|j},
+      ~data=SelectOne(None, selectOneBinaryValue),
+      (),
+    );
+  let canNguocRangSau: Node.t =
+    makeNode(
+      ~id="canNguocRangSau",
+      ~label={j|Cắn ngược răng răng sau|j},
+      ~data=SelectOne(None, selectOneBinaryValue),
+      (),
+    );
+  let canHo: Node.t =
+    makeNode(
+      ~id="canHo",
+      ~label={j|Cắn hở|j},
+      ~data=SelectOne(None, selectOneBinaryValue),
+      (),
+    );
+  let fluorMaSo: Node.t =
+    makeNode(
+      ~id="fluorMaSo",
+      ~label={j|Mã số|j},
+      ~data=
+        SelectOne(
+          None,
+          [|
+            {label: "0", value: "0"},
+            {label: "1", value: "1"},
+            {label: "2", value: "2"},
+            {label: "3", value: "3"},
+            {label: "4", value: "4"},
+            {label: "5", value: "5"},
+          |],
+        ),
+      (),
+    );
+  let fluorSoRang: Node.t =
+    makeNode(
+      ~id="fluorSoRang",
+      ~label={j|Số răng|j},
+      ~data=Integer(None),
       (),
     );
 };
@@ -300,3 +404,49 @@ let maugiao_layout = Maugiao.layout;
 let maugiao_ids = Maugiao.ids;
 let maugiao_initialValues = Maugiao.initialValues;
 let maugiao_yupSchema = Maugiao.yupSchema;
+
+module Tieuhoc = {
+  module N = BuiltinNodes;
+  let i = Layout.makeItem;
+
+  let layout: Layout.t = [|
+    {
+      title: {j|Hành chính|j},
+      items: [|
+        [|i(N.ngayKham), i(N.soHoSo), i(N.nguoiKham)|],
+        [|i(N.hoVaTen)|],
+        [|i(N.tuoi), i(N.danToc), i(N.gioiTinh)|],
+        [|i(N.lop), i(~size=2, N.truong)|],
+        [|i(N.diaChi)|],
+      |],
+    },
+    {
+      title: {j|Tình trạng và nhu cầu|j},
+      items: [|[|i(N.ttncHamTren_tieuhoc), i(N.ttncHamDuoi_tieuhoc)|]|],
+    },
+    {
+      title: {j|Tình trạng vệ sinh răng miệng|j},
+      items: [|[|i(N.pi_tieuhoc), i(N.ci_tieuhoc)|]|],
+    },
+    {
+      title: {j|Tình trạng răng nhiễm Fluor|j},
+      items: [|[|i(N.fluorMaSo), i(N.fluorSoRang)|]|],
+    },
+    {
+      title: {j|Chỉ số CPI - Chỉ số chảu máu nướu|j},
+      items: [|[|i(N.cpi)|]|],
+    },
+    {
+      title: {j|Tình trạng khớp cắn|j},
+      items: [|
+        [|i(N.canPhu), i(N.canChia)|],
+        [|i(N.canNguocRangTruoc), i(N.canNguocRangSau), i(N.canHo)|],
+      |],
+    },
+  |];
+
+  let nodes = Layout.getNodes(layout);
+  let ids = Layout.getIds(nodes);
+  let initialValues = Form.makeInitialValues(nodes);
+  let yupSchema = Form.makeYupSchema(nodes);
+};

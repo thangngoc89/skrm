@@ -1,6 +1,4 @@
-[@genType.import "grommet"]
-[@genType.as "TextInput"]
-[@bs.module "./Grommet__TextInput.gen"]
+[@genType.import "grommet"] [@genType.as "TextInput"] [@react.component]
 external make:
   (
     ~dropAlign: Js.t('a)=?,
@@ -20,14 +18,7 @@ external make:
     ~suggestions: string=?,
     ~value: string=?
   ) =>
-  [@genType.as "type"] (
-    (~typ: string=?, 'a) =>
-    ReasonReact.component(
-      ReasonReact.stateless,
-      ReasonReact.noRetainedProps,
-      ReasonReact.actionless,
-    )
-  ) =
+  [@genType.as "type"] ((~typ: string=?, 'a) => React.element) =
   "";
 
 let make = make;

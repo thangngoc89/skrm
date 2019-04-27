@@ -221,10 +221,10 @@ module ExportModal = {
       onEsc=handleCloseModal>
       <G.Box fill=true style={ReactDOMRe.Style.make(~minWidth="378px", ())}>
         <G.Box
-          direction="row"
+          direction=`row
           align="center"
           as_="header"
-          elevation="small"
+          elevation=`small
           justify="between"
           style={ReactDOMRe.Style.make(~minHeight="48px", ())}
           pad="xsmall">
@@ -237,7 +237,7 @@ module ExportModal = {
           border__custom={"side": "top"}
           pad="xsmall"
           justify="end"
-          direction="row"
+          direction=`row
           align="center"
           style={ReactDOMRe.Style.make(~minHeight="48px", ())}>
           footer

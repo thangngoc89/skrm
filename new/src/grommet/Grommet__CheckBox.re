@@ -1,6 +1,4 @@
-[@genType.import "grommet"]
-[@genType.as "CheckBox"]
-[@bs.module "./Grommet__CheckBox.gen"]
+[@genType.import "grommet"] [@genType.as "CheckBox"] [@react.component]
 external make:
   (
     ~checked: bool,
@@ -12,13 +10,9 @@ external make:
     ~onChange: ReactEvent.Form.t => unit=?,
     ~reverse: bool=?,
     ~toggle: bool=?,
-    'a
+    ~children: React.element
   ) =>
-  ReasonReact.component(
-    ReasonReact.stateless,
-    ReasonReact.noRetainedProps,
-    ReasonReact.actionless,
-  ) =
+  React.element =
   "";
 
 let make = make;

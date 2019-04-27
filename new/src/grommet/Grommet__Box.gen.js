@@ -2,8 +2,21 @@
 
 import {Box as makeNotChecked} from 'grommet';
 
+const $$toJS2332818 = {"5693978": "row", "-963948842": "column", "329567801": "row-responsive"};
+
+const $$toJS526271346 = {"-129112121": "xxsmall", "-96584369": "xsmall", "-9768761": "small", "-20425611": "medium", "-272944197": "large", "-359759805": "xlarge", "-1010505329": "full", "-989320781": "1/2", "802877217": "1/3", "-1012272581": "2/3", "619062391": "1/4", "951396241": "2/4", "772622207": "3/4", "-1065951377": "auto"};
+
+const $$toJS583067886 = {"-922086728": "none", "-96584369": "xsmall", "-9768761": "small", "-20425611": "medium", "-272944197": "large", "-359759805": "xlarge"};
+
+const $$toJS729756834 = {"-96584369": "xsmall", "-9768761": "small", "-20425611": "medium", "-272944197": "large", "-359759805": "xlarge"};
+
+const $$toJS806027553 = {"-634105323": "start", "326386882": "center", "1053490894": "end", "-826986888": "stretch"};
+
 // In case of type error, check the type of 'make' in 'Grommet__Box.re' and 'grommet'.
 export const makeTypeChecked = makeNotChecked;
 
 // Export 'make' early to allow circular import from the '.bs.js' file.
-export const make = makeTypeChecked;
+export const make = function grommet(Arg1) {
+  const result = makeTypeChecked({a11yTitle:Arg1.a11yTitle, align:Arg1.align, alignContent:Arg1.alignContent, alignSelf:(Arg1.alignSelf == null ? Arg1.alignSelf : $$toJS806027553[Arg1.alignSelf]), animation:Arg1.animation, background:Arg1.background, basis:(Arg1.basis == null ? Arg1.basis : $$toJS526271346[Arg1.basis]), border:Arg1.border, border__custom:Arg1.border__custom, direction:(Arg1.direction == null ? Arg1.direction : $$toJS2332818[Arg1.direction]), elevation:(Arg1.elevation == null ? Arg1.elevation : $$toJS583067886[Arg1.elevation]), fill:Arg1.fill, flex:Arg1.flex, gap:(Arg1.gap == null ? Arg1.gap : $$toJS729756834[Arg1.gap]), gridArea:Arg1.gridArea, height:Arg1.height, justify:Arg1.justify, margin:(Arg1.margin == null ? Arg1.margin : $$toJS729756834[Arg1.margin]), overflow:Arg1.overflow, pad:Arg1.pad, responsive:Arg1.responsive, round:Arg1.round, width:Arg1.width, wrap:Arg1.wrap, style:Arg1.style, children:Arg1.children, as_:Arg1.as_});
+  return result
+};

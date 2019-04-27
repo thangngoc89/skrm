@@ -9,6 +9,7 @@ external make:
     ~messages: Js.t('messages)=?,
     ~name: string=?,
     ~onChange: ReactEvent.Form.t => unit=?,
+    ~onBlur: ReactEvent.Focus.t => unit =?,
     ~onSelect: ReactEvent.Form.t => unit=?,
     ~onSuggestionsClose: ReactEvent.Form.t => unit=?,
     ~onSuggestionsOpen: ReactEvent.Form.t => unit=?,
@@ -18,7 +19,7 @@ external make:
     ~suggestions: string=?,
     ~value: string=?
   ) =>
-  [@genType.as "type"] ((~typ: string=?, 'a) => React.element) =
+  [@genType.as "type"] ((~type_: string=?, 'a) => React.element) =
   "";
 
 let make = make;

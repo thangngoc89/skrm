@@ -16,22 +16,52 @@ let getErrorObject = error => {
 };
 
 module TextInputWithType = {
+  open Grommet;
   [@react.component]
-  let make = (~label, ~field, ~type_, ~error, ~touched) => {
+  let make = (~label, ~field, ~type_, ~error, ~touched, ~suggest) => {
     <FormField
-      label
+      label={label->str}
       htmlFor={
         field##name;
       }
       error=?{touched ? getErrorString(error) : None}>
-      <TextInput
-        type_
-        name={field##name}
-        id={field##name}
-        value={field##value}
-        onChange={field##onChange}
-        onBlur={field##onBlur}
-      />
+      {suggest
+         ? <AutosuggestTextInput
+             type_
+             name={
+               field##name;
+             }
+             id={
+               field##name;
+             }
+             value={
+               field##value;
+             }
+             onChange={
+               field##onChange;
+             }
+             onBlur={
+               field##onBlur;
+             }
+           />
+         : <TextInput
+             type_
+             name={
+               field##name;
+             }
+             id={
+               field##name;
+             }
+             value={
+               field##value;
+             }
+             onChange={
+               field##onChange;
+             }
+             onBlur={
+               field##onBlur;
+             }
+           />}
     </FormField>;
   };
 };
@@ -77,9 +107,23 @@ module RenderRow = {
 
                  switch (data) {
                  | Date(_) =>
-                   <TextInputWithType type_="date" field label error touched />
+                   <TextInputWithType
+                     type_="date"
+                     field
+                     label
+                     error
+                     touched
+                     suggest
+                   />
                  | String(_) =>
-                   <TextInputWithType type_="text" field label error touched />
+                   <TextInputWithType
+                     type_="text"
+                     field
+                     label
+                     error
+                     touched
+                     suggest
+                   />
                  | Integer(_) =>
                    <TextInputWithType
                      type_="number"
@@ -87,6 +131,7 @@ module RenderRow = {
                      label
                      error
                      touched
+                     suggest
                    />
                  | SelectOne(_, options) =>
                    <FormField

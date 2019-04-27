@@ -1,19 +1,13 @@
-[@genType.import "grommet"]
-[@genType.as "FormField"]
-[@bs.module "./Grommet__FormField.gen"]
+[@genType.import "grommet"] [@genType.as "FormField"] [@react.component]
 external make:
   (
-    ~error: ReasonReact.reactElement=?,
-    ~help: ReasonReact.reactElement=?,
+    ~error: string=?,
+    ~help: React.element=?,
     ~htmlFor: string=?,
-    ~label: ReasonReact.reactElement=?,
-    'a
+    ~label: React.element=?,
+    ~children: React.element
   ) =>
-  ReasonReact.component(
-    ReasonReact.stateless,
-    ReasonReact.noRetainedProps,
-    ReasonReact.actionless,
-  ) =
+  React.element =
   "";
 
 let make = make;

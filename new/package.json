@@ -48,7 +48,7 @@
   "devDependencies": {
     "bs-platform": "^5.0.3",
     "esm": "^3.2.22",
-    "gentype": "^2.22.0",
+    "gentype": "^2.23.0",
     "prettier": "^1.16.0",
     "react-app-rewire-hot-loader": "^1.0.3",
     "react-app-rewire-postcss": "^3.0.2",

@@ -41,7 +41,7 @@ type gap = [ | `xsmall | `small | `medium | `large | `xlarge];
 [@genType]
 type margin = [ | `xsmall | `small | `medium | `large | `xlarge];
 
-[@react.component] [@genType.import "grommet"] [@genType.as "Box"]
+[@react.component] [@bs.module "grommet"]
 external make:
   (
     ~a11yTitle: string=?,
@@ -53,8 +53,8 @@ external make:
     ~basis: basis=?,
     ~border: string=?,
     ~border__custom: Js.t('a)=?,
-    ~direction: direction=?,
-    ~elevation: elevation=?,
+    ~direction: string=?,
+    ~elevation: string=?,
     ~fill: bool=?,
     ~flex: bool=?,
     ~gap: gap=?,
@@ -69,9 +69,10 @@ external make:
     ~width: string=?,
     ~wrap: bool=?,
     ~style: ReactDOMRe.Style.t=?,
-    ~children: React.element
+    ~children: React.element,
+    ~as_: string=?,
   ) =>
-  [@genType.as "as"] ((~as_: string=?) => React.element) =
-  "";
+  React.element =
+  "Box";
 
 let make = make;

@@ -133,7 +133,7 @@ module TinhTrangNhuCau = {
           },
         )
       ->Belt.List.reverse;
-    [tableHeading, ...rows];
+    Belt.List.concatMany([|[tableHeading, ...rows], [tableHeading]|]);
   };
 };
 

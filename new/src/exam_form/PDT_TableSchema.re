@@ -167,7 +167,6 @@ module Tinh_trang_ham_tren_maugiao = {
   // let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
   let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
   let teeth = [
-    "16",
     "15",
     "14",
     "13",
@@ -178,7 +177,6 @@ module Tinh_trang_ham_tren_maugiao = {
     "23",
     "24",
     "25",
-    "26",
   ];
 
   [@genType]
@@ -216,7 +214,6 @@ module Tinh_trang_ham_duoi_maugiao = {
   // let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
   let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
   let teeth = [
-    "36",
     "35",
     "34",
     "33",
@@ -227,7 +224,6 @@ module Tinh_trang_ham_duoi_maugiao = {
     "43",
     "44",
     "45",
-    "46",
   ];
 
   [@genType]

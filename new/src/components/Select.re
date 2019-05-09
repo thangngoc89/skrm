@@ -12,6 +12,11 @@ type pair = {
 let listToPair = options =>
   options->Belt.Array.map(o => {label: o, value: o});
 
+type keyValue = {
+  kv_key: string,
+  kv_value: string,
+};
+
 [@genType]
 [@react.component]
 let make =
@@ -26,6 +31,24 @@ let make =
       ~className=?,
       ~hasError=false,
     ) => {
+  let computed =
+    React.useMemo1(
+      () =>
+        options
+        |> Js.Array.reduce(
+             (acc, {value}) => {
+               Js.Array.push({kv_value: value, kv_key: value}, acc) |> ignore;
+               Js.Array.push(
+                 {kv_value: value, kv_key: value |> Js.String.toLowerCase},
+                 acc,
+               )
+               |> ignore;
+               acc;
+             },
+             [||],
+           ),
+      [|options|],
+    );
   <div
     className={Cn.make([
       s##container,
@@ -41,6 +64,19 @@ let make =
       ])}
       onChange={event => event->ReactEvent.Form.target##value->onChange}
       ?onBlur
+      onKeyUp={event => {
+        let key = event |> ReactEvent.Keyboard.key;
+        let altKey = event |> ReactEvent.Keyboard.altKey;
+        if (!altKey || key == "Space") {
+          event |> ReactEvent.Keyboard.preventDefault;
+          let optKey =
+            computed |> Js.Array.find(({kv_key}) => key == kv_key);
+          switch (optKey) {
+          | None => ()
+          | Some({kv_value}) => onChange(Obj.magic(kv_value))
+          };
+        };
+      }}
       value>
       <option> "--"->str </option>
       {options

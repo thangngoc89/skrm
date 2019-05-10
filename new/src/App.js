@@ -5,6 +5,7 @@ import { PouchDB } from "react-pouchdb";
 import { AppHeader } from "./AppHeader";
 import Spinner from "./Spinner.bs";
 import ButterToast, { POS_BOTTOM, POS_RIGHT } from "butter-toast";
+import { make as StopWatch } from "./utility/StopWatch.bs";
 
 const RecordNew = lazy(() => import("./RecordNew"));
 const RecordEdit = lazy(() => import("./RecordEdit"));
@@ -25,6 +26,7 @@ const App = () => {
               <RecordManage path="/manage" />
               <RecordEdit path="/record/:recordId" />
               <RecordNewMaugiao path="/new/maugiao" />
+              <StopWatch path="/stopwatch" />
             </Router>
           </Suspense>
         </Box>

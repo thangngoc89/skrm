@@ -1,0 +1,30 @@
+.btn {
+  @apply .p-4 .text-light-1 .font-bold .text-2xl;
+}
+
+.btnRounded {
+  border-radius: 50%;
+  height: 100px;
+  width: 100px;
+}
+
+@media (min-width: 576px) {
+  .btnRounded {
+    height: 150px;
+    width: 150px;
+  }
+}
+
+@media(min-width: 900px) {
+  .btnRounded {
+    height: 250px;
+    width: 250px;
+  }
+}
+.btn:disabled {
+  @apply .bg-status-disabled;
+}
+
+.resetContainer {
+  min-height: 150px;
+}

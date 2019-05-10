@@ -70,6 +70,24 @@ export default function Homepage() {
           }}
         />
       </Box>
+      <Box
+        gap="large"
+        direction="row-responsive"
+        margin={{ vertical: "medium" }}
+      >
+        <PrimaryButton
+          primary
+          color="accent-3"
+          href="/stopwatch"
+          label="Stopwatch"
+          icon={<Database />}
+          size="large"
+          onClick={event => {
+            event.preventDefault();
+            navigate("/stopwatch");
+          }}
+        />
+      </Box>
     </Box>
   );
 }

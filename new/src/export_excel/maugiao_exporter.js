@@ -13,6 +13,7 @@ const dataToSheet = data =>
     .map(rowData => {
       try {
         const rowKhamData = rowData.phieuDieuTra;
+        console.log(rowData);
         if (typeof rowKhamData === "undefined") {
           return null;
         }

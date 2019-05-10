@@ -78,7 +78,7 @@ export const getNhuCauValue = (source = {}, col, row) => {
 };
 
 export const withDefault = (value, def, cb) => {
-  if (value == null) {
+  if (value != null) {
     if (cb) {
       return cb(value);
     } else {

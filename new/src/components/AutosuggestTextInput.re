@@ -7,9 +7,10 @@ external make:
     ~value: string=?,
     ~onChange: ReactEvent.Form.t => unit=?,
     ~onBlur: ReactEvent.Focus.t => unit=?,
-    ~id: string=?
+    ~id: string=?,
+    ~_type: string=?
   ) =>
-  [@genType.as "type"] ((~type_: string=?, 'a) => React.element) =
+  React.element =
   "";
 
 let make = make;

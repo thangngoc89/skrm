@@ -16,9 +16,9 @@ let getErrorObject = error => {
 };
 
 module TextInputWithType = {
-  open Grommet;
+  open! Grommet;
   [@react.component]
-  let make = (~label, ~field, ~type_, ~error, ~touched, ~suggest) => {
+  let make = (~label, ~field, ~_type, ~error, ~touched, ~suggest) => {
     <FormField
       label={label->str}
       htmlFor={
@@ -27,7 +27,7 @@ module TextInputWithType = {
       error=?{touched ? getErrorString(error) : None}>
       {suggest
          ? <AutosuggestTextInput
-             type_
+             _type
              name={
                field##name;
              }
@@ -45,7 +45,7 @@ module TextInputWithType = {
              }
            />
          : <TextInput
-             type_
+             _type
              name={
                field##name;
              }
@@ -108,7 +108,7 @@ module RenderRow = {
                  switch (data) {
                  | Date(_) =>
                    <TextInputWithType
-                     type_="date"
+                     _type="date"
                      field
                      label
                      error
@@ -117,7 +117,7 @@ module RenderRow = {
                    />
                  | String(_) =>
                    <TextInputWithType
-                     type_="text"
+                     _type="text"
                      field
                      label
                      error
@@ -126,7 +126,7 @@ module RenderRow = {
                    />
                  | Integer(_) =>
                    <TextInputWithType
-                     type_="number"
+                     _type="number"
                      field
                      label
                      error

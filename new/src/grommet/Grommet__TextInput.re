@@ -1,4 +1,4 @@
-[@genType.import "grommet"] [@genType.as "TextInput"] [@react.component]
+[@bs.module "grommet"] [@react.component]
 external make:
   (
     ~dropAlign: Js.t('a)=?,
@@ -9,7 +9,7 @@ external make:
     ~messages: Js.t('messages)=?,
     ~name: string=?,
     ~onChange: ReactEvent.Form.t => unit=?,
-    ~onBlur: ReactEvent.Focus.t => unit =?,
+    ~onBlur: ReactEvent.Focus.t => unit=?,
     ~onSelect: ReactEvent.Form.t => unit=?,
     ~onSuggestionsClose: ReactEvent.Form.t => unit=?,
     ~onSuggestionsOpen: ReactEvent.Form.t => unit=?,
@@ -17,9 +17,10 @@ external make:
     ~plain: bool=?,
     ~size: string=?,
     ~suggestions: string=?,
-    ~value: string=?
+    ~value: string=?,
+    ~_type: string=?
   ) =>
-  [@genType.as "type"] ((~type_: string=?, 'a) => React.element) =
-  "";
+  React.element =
+  "TextInput";
 
 let make = make;

@@ -165,7 +165,7 @@ module RenderRow = {
                          )
                        }
                        // Too slow
-                       //  onCellBlur={_ => setFieldTouched(. field##name, true)}
+                       onCellBlur={_ => setFieldTouched(. field##name, true)}
                        error={getErrorObject(error)}
                      />
                    </div>;

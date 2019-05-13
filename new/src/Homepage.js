@@ -1,7 +1,7 @@
 import React from "react";
 import { Box, Button, Heading } from "grommet";
 import { navigate } from "@reach/router";
-import { Database, AddCircle } from "grommet-icons";
+import { Database, AddCircle, Clock } from "grommet-icons";
 import styled from "styled-components";
 
 const PrimaryButton = styled(Button)`
@@ -80,7 +80,7 @@ export default function Homepage() {
           color="accent-3"
           href="/stopwatch"
           label="Stopwatch"
-          icon={<Database />}
+          icon={<Clock />}
           size="large"
           onClick={event => {
             event.preventDefault();

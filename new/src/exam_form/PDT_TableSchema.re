@@ -4,6 +4,12 @@ module YupSchema: {let make: table => Yup.schema;} = {
   let getAllDataCell: table => array((cellLabel, array(string))) =
     table => {
       let reduceRow = row => {
+        let row = {
+          switch (row) {
+          | Row(row)
+          | RowReverse(row) => row
+          };
+        };
         row->Belt.List.reduce([||], acc =>
           fun
           | Data(cellLabel, options) =>
@@ -102,7 +108,8 @@ module TinhTrangNhuCau = {
         [Empty],
         heading->Belt.List.map(h => Static(h)),
         [Empty],
-      |]);
+      |])
+      ->Row;
     let rows =
       teeth
       ->Belt.List.reduce(
@@ -128,11 +135,12 @@ module TinhTrangNhuCau = {
               });
             let toConcat =
               !reverse ? [|main, data, [sub]|] : [|[sub], data, main|];
-            let newRow = Belt.List.concatMany(toConcat);
+            let newRow = Belt.List.concatMany(toConcat)->Row;
             [newRow, ...acc];
           },
         )
       ->Belt.List.reverse;
+
     Belt.List.concatMany([|[tableHeading, ...rows], [tableHeading]|]);
   };
 };
@@ -166,18 +174,7 @@ module Tinh_trang_ham_tren = {
 module Tinh_trang_ham_tren_maugiao = {
   // let surfaces = ["NC", "TT", "Nhai", "N", "T", "G", "X"];
   let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
-  let teeth = [
-    "15",
-    "14",
-    "13",
-    "12",
-    "11",
-    "21",
-    "22",
-    "23",
-    "24",
-    "25",
-  ];
+  let teeth = ["15", "14", "13", "12", "11", "21", "22", "23", "24", "25"];
 
   [@genType]
   let table = TinhTrangNhuCau.make(~teeth, ~surfaces, ());
@@ -213,18 +210,7 @@ module Tinh_trang_ham_duoi = {
 module Tinh_trang_ham_duoi_maugiao = {
   // let surfaces = ["X", "G", "T", "N", "Nhai", "TT", "NC"];
   let surfaces = ["Nhai", "N", "T", "G", "X", "TT", "NC"];
-  let teeth = [
-    "35",
-    "34",
-    "33",
-    "32",
-    "31",
-    "41",
-    "42",
-    "43",
-    "44",
-    "45",
-  ];
+  let teeth = ["35", "34", "33", "32", "31", "41", "42", "43", "44", "45"];
 
   [@genType]
   let table = TinhTrangNhuCau.make(~teeth, ~surfaces, ~reverse=true, ());
@@ -236,18 +222,18 @@ module OHIS = {
   let options = [|"0", "1", "2", "3", "X"|];
   [@genType]
   let table = [
-    [Static("16N"), Static("11N"), Static("26N")],
-    [
+    Row([Static("16N"), Static("11N"), Static("26N")]),
+    Row([
       Data("ohis16N", options),
       Data("ohis11N", options),
       Data("ohis26N", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Data("ohis46T", options),
       Data("ohis31N", options),
       Data("ohis36N", options),
-    ],
-    [Static("46(T)"), Static("31N"), Static("36(T)")],
+    ]),
+    RowReverse([Static("46(T)"), Static("31N"), Static("36(T)")]),
   ];
   [@genType]
   let schema = YupSchema.make(table);
@@ -257,18 +243,18 @@ module OHIS_Maugiao = {
   let options = [|"0", "1", "2", "3", "X"|];
   [@genType]
   let table = [
-    [Static("55N"), Static("51N"), Static("65N")],
-    [
+    Row([Static("55N"), Static("51N"), Static("65N")]),
+    Row([
       Data("ohis1", options),
       Data("ohis2", options),
       Data("ohis3", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Data("ohis6", options),
       Data("ohis5", options),
       Data("ohis4", options),
-    ],
-    [Static("85(T)"), Static("71N"), Static("75(T)")],
+    ]),
+    RowReverse([Static("85(T)"), Static("71N"), Static("75(T)")]),
   ];
   [@genType]
   let schema = YupSchema.make(table);
@@ -278,16 +264,16 @@ module MocChenChuc = {
   let options = [|"0", "1"|];
   [@genType]
   let table = [
-    [
+    Row([
       Data("mcc16", options),
       Data("mcc11", options),
       Data("mcc26", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Data("mcc46", options),
       Data("mcc31", options),
       Data("mcc36", options),
-    ],
+    ]),
   ];
   [@genType]
   let schema = YupSchema.make(table);
@@ -297,38 +283,38 @@ module MIH = {
   let options = [|"0", "1", "2", "3", "4", "5"|];
   [@genType]
   let table = [
-    [
+    Row([
       Static("16"),
       Static("12"),
       Static("11"),
       Static("21"),
       Static("22"),
       Static("26"),
-    ],
-    [
+    ]),
+    Row([
       Data("mih16", options),
       Data("mih12", options),
       Data("mih11", options),
       Data("mih21", options),
       Data("mih22", options),
       Data("mih26", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Data("mih46", options),
       Data("mih42", options),
       Data("mih41", options),
       Data("mih31", options),
       Data("mih32", options),
       Data("mih36", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Static("46"),
       Static("42"),
       Static("41"),
       Static("31"),
       Static("32"),
       Static("36"),
-    ],
+    ]),
   ];
   [@genType]
   let schema = YupSchema.make(table);
@@ -338,7 +324,7 @@ module CPI = {
   let options = [|"0", "1", "9", "X"|];
   [@genType]
   let table = [
-    [
+    Row([
       Empty,
       Empty,
       Static("55"),
@@ -353,8 +339,8 @@ module CPI = {
       Static("65"),
       Empty,
       Empty,
-    ],
-    [
+    ]),
+    Row([
       Static("17"),
       Static("16"),
       Static("15"),
@@ -369,8 +355,8 @@ module CPI = {
       Static("25"),
       Static("26"),
       Static("27"),
-    ],
-    [
+    ]),
+    Row([
       Data("cpi17", options),
       Data("cpi16", options),
       Data("cpi15", options),
@@ -385,8 +371,8 @@ module CPI = {
       Data("cpi25", options),
       Data("cpi26", options),
       Data("cpi27", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Data("cpi47", options),
       Data("cpi46", options),
       Data("cpi45", options),
@@ -401,8 +387,8 @@ module CPI = {
       Data("cpi35", options),
       Data("cpi36", options),
       Data("cpi37", options),
-    ],
-    [
+    ]),
+    RowReverse([
       Static("47"),
       Static("46"),
       Static("45"),
@@ -417,8 +403,8 @@ module CPI = {
       Static("35"),
       Static("36"),
       Static("37"),
-    ],
-    [
+    ]),
+    RowReverse([
       Empty,
       Empty,
       Static("85"),
@@ -433,7 +419,7 @@ module CPI = {
       Static("75"),
       Empty,
       Empty,
-    ],
+    ]),
   ];
   [@genType]
   let schema = YupSchema.make(table);

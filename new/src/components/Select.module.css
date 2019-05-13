@@ -1,6 +1,7 @@
 /* https://github.com/carloscabo/pure-css-select-style/ */
 
 .container {
+  width: 100%;
   background: #fff
     url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2211%22%20height%3D%2211%22%20viewBox%3D%220%200%2011%2011%22%3E%3Cpath%20d%3D%22M4.33%208.5L0%201L8.66%201z%22%20fill%3D%22%23666%22%2F%3E%3C%2Fsvg%3E")
     right 2px center no-repeat;

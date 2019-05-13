@@ -8,7 +8,9 @@ module Table = {
     | Empty
     | Disabled;
 
-  type row = list(cell);
+  type row =
+    | Row(list(cell))
+    | RowReverse(list(cell));
 
   type table = list(row);
 };

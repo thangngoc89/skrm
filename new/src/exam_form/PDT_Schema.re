@@ -270,6 +270,38 @@ module BuiltinNodes = {
       ~data=Integer(None),
       (),
     );
+  let mocChenChuc: Node.t =
+    makeTable(
+      ~id="mocChenChuc",
+      ~label={j|Mọc chen chúc|j},
+      ~schema=PDT_TableSchema.MocChenChuc.table,
+      ~showLabel=false,
+    );
+  let mih: Node.t =
+    makeTable(
+      ~id="mih",
+      ~label={j|MIH|j},
+      ~schema=PDT_TableSchema.MIH.table,
+      ~showLabel=false,
+    );
+  let angleData =
+    SelectOne(
+      None,
+      [|
+        {label: "1", value: "1"},
+        {label: "2", value: "2"},
+        {label: "3", value: "3"},
+        {label: "9", value: "9"},
+      |],
+    );
+  let angleR3P: Node.t =
+    makeNode(~id="angleR3P", ~label={j|R3P|j}, ~data=angleData, ());
+  let angleR3T: Node.t =
+    makeNode(~id="angleR3T", ~label={j|R3T|j}, ~data=angleData, ());
+  let angleR6P: Node.t =
+    makeNode(~id="angleR6P", ~label={j|R6P|j}, ~data=angleData, ());
+  let angleR6T: Node.t =
+    makeNode(~id="angleR6T", ~label={j|R6T|j}, ~data=angleData, ());
 };
 
 module Layout = {
@@ -443,6 +475,14 @@ module Tieuhoc = {
         [|i(N.canNguocRangTruoc), i(N.canNguocRangSau), i(N.canHo)|],
       |],
     },
+    {title: {j|Mọc chen chúc|j}, items: [|[|i(N.mocChenChuc)|]|]},
+    {
+      title: {j|Phân loại Angle|j},
+      items: [|
+        [|i(N.angleR3P), i(N.angleR3T), i(N.angleR6P), i(N.angleR6T)|],
+      |],
+    },
+    {title: {j|MIH|j}, items: [|[|i(N.mih)|]|]},
   |];
 
   let nodes = Layout.getNodes(layout);
@@ -450,3 +490,8 @@ module Tieuhoc = {
   let initialValues = Form.makeInitialValues(nodes);
   let yupSchema = Form.makeYupSchema(nodes);
 };
+
+let tieuhoc_layout = Tieuhoc.layout;
+let tieuhoc_ids = Tieuhoc.ids;
+let tieuhoc_initialValues = Tieuhoc.initialValues;
+let tieuhoc_yupSchema = Tieuhoc.yupSchema;

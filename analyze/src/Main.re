@@ -60,12 +60,6 @@ let list_crossTabsMR =
 Js.log("Theo mat rang");
 reportMaugiao(list_crossTabsMR);
 
-Js.log("=====================");
-Js.log("THCS");
-Js.log("=====================");
-
-let reportMaugiao = Analyze.make("/media/Data/sync/drive/research/du lieu/spss-thcs.xlsx");
-
 let list_crossTabsR =
   [|
     "17",
@@ -98,9 +92,6 @@ let list_crossTabsR =
     "41",
   |]
   ->Belt.Array.map(r => "ER" ++ r);
-
-Js.log("Theo tung rang");
-reportMaugiao(list_crossTabsR);
 
 let list_crossTabsMR =
   [|
@@ -135,5 +126,22 @@ let list_crossTabsMR =
   |]
   ->Belt.Array.map(r => "ER" ++ r);
 
+Js.log("=====================");
+Js.log("THCS");
+Js.log("=====================");
+let reportTHCS = Analyze.make("/media/Data/sync/drive/research/du lieu/spss-thcs.xlsx");
+Js.log("Theo tung rang");
+reportTHCS(list_crossTabsR);
 Js.log("Theo mat rang");
-reportMaugiao(list_crossTabsMR);
+reportTHCS(list_crossTabsMR);
+
+
+
+Js.log("=====================");
+Js.log("Tieu hoc");
+Js.log("=====================");
+let reportTieuhoc = Analyze.make({j|/media/Data/sync/drive/research/du lieu/spss-tiểu học.xlsx|j});
+Js.log("Theo tung rang");
+reportTieuhoc(list_crossTabsR);
+Js.log("Theo mat rang");
+reportTieuhoc(list_crossTabsMR);

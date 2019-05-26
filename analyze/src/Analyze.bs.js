@@ -11,203 +11,66 @@ var Caml_array = require("bs-platform/lib/js/caml_array.js");
 var Pervasives = require("bs-platform/lib/js/pervasives.js");
 var Caml_option = require("bs-platform/lib/js/caml_option.js");
 
-var rawData = DataJs;
-
-var length = rawData.length;
-
-var keys = Object.keys(Caml_array.caml_array_get(rawData, 0));
-
-function findMatchingPair(k) {
-  var commonPart = k.slice(1);
-  return Caml_option.undefined_to_opt(keys.find((function (v) {
-                    if (v.slice(1) === commonPart) {
-                      return v !== k;
-                    } else {
-                      return false;
-                    }
-                  })));
+function getData(prim) {
+  return DataJs(prim);
 }
 
-var cmp = Caml_obj.caml_compare;
-
-var Cmp = Belt_Id.MakeComparable(/* module */[/* cmp */cmp]);
-
-function incrValue(map, $staropt$star, key) {
-  var v = $staropt$star !== undefined ? $staropt$star : 1;
-  return Belt_Map.update(map, key, (function (param) {
-                if (param !== undefined) {
-                  return param + v | 0;
-                } else {
-                  return v;
-                }
-              }));
-}
-
-function crossTabs(eKey) {
-  var vKey = findMatchingPair(eKey);
-  if (vKey !== undefined) {
-    var vKey$1 = vKey;
-    var emptyMap = Belt_Map.make(Cmp);
-    return Belt_Array.reduce(rawData, emptyMap, (function (map, row) {
-                  var match = Js_dict.get(row, eKey);
-                  var match$1 = Js_dict.get(row, vKey$1);
-                  if (match !== undefined && match$1 !== undefined) {
-                    return incrValue(map, undefined, /* tuple */[
-                                match,
-                                match$1
-                              ]);
+function make(fileName) {
+  var rawData = DataJs(fileName);
+  var keys = Object.keys(Caml_array.caml_array_get(rawData, 0));
+  var findMatchingPair = function (k) {
+    var commonPart = k.slice(1);
+    return Caml_option.undefined_to_opt(keys.find((function (v) {
+                      if (v.slice(1) === commonPart) {
+                        return v !== k;
+                      } else {
+                        return false;
+                      }
+                    })));
+  };
+  var cmp = Caml_obj.caml_compare;
+  var Cmp = Belt_Id.MakeComparable(/* module */[/* cmp */cmp]);
+  var incrValue = function (map, $staropt$star, key) {
+    var v = $staropt$star !== undefined ? $staropt$star : 1;
+    return Belt_Map.update(map, key, (function (param) {
+                  if (param !== undefined) {
+                    return param + v | 0;
                   } else {
-                    return Pervasives.failwith("No eValue/vValue");
+                    return v;
                   }
                 }));
-  } else {
-    return Pervasives.failwith("no matching key");
-  }
+  };
+  var crossTabs = function (eKey) {
+    var vKey = findMatchingPair(eKey);
+    if (vKey !== undefined) {
+      var vKey$1 = vKey;
+      var emptyMap = Belt_Map.make(Cmp);
+      return Belt_Array.reduce(rawData, emptyMap, (function (map, row) {
+                    var match = Js_dict.get(row, eKey);
+                    var match$1 = Js_dict.get(row, vKey$1);
+                    if (match !== undefined && match$1 !== undefined) {
+                      return incrValue(map, undefined, /* tuple */[
+                                  match,
+                                  match$1
+                                ]);
+                    } else {
+                      return Pervasives.failwith("No eValue/vValue");
+                    }
+                  }));
+    } else {
+      return Pervasives.failwith("no matching key");
+    }
+  };
+  return (function (list) {
+      console.log(Belt_Map.toArray(Belt_Array.reduce(Belt_Array.map(list, crossTabs), Belt_Map.make(Cmp), (function (masterMap, currentMap) {
+                      return Belt_Map.reduce(currentMap, masterMap, (function (masterMap, key, value) {
+                                    return incrValue(masterMap, value, key);
+                                  }));
+                    }))));
+      return /* () */0;
+    });
 }
 
-var list_crossTabsR = Belt_Array.map(/* array */[
-      "55",
-      "54",
-      "53",
-      "52",
-      "51",
-      "65",
-      "64",
-      "63",
-      "62",
-      "61",
-      "75",
-      "74",
-      "73",
-      "72",
-      "71",
-      "85",
-      "84",
-      "83",
-      "82",
-      "81"
-    ], (function (r) {
-        return "ER" + r;
-      }));
-
-function sumCrossTabs(a) {
-  console.log(Belt_Map.toArray(Belt_Array.reduce(Belt_Array.map(a, crossTabs), Belt_Map.make(Cmp), (function (masterMap, currentMap) {
-                  return Belt_Map.reduce(currentMap, masterMap, (function (masterMap, key, value) {
-                                return incrValue(masterMap, value, key);
-                              }));
-                }))));
-  return /* () */0;
-}
-
-console.log("Rang");
-
-sumCrossTabs(list_crossTabsR);
-
-var list_crossTabsMR = Belt_Array.map(/* array */[
-      "55Ng",
-      "55T",
-      "55G",
-      "55X",
-      "55Nhai",
-      "54Ng",
-      "54T",
-      "54G",
-      "54X",
-      "54Nhai",
-      "53Ng",
-      "53T",
-      "53G",
-      "53X",
-      "52Ng",
-      "52T",
-      "52G",
-      "52X",
-      "51Ng",
-      "51T",
-      "51G",
-      "51X",
-      "65Ng",
-      "65T",
-      "65G",
-      "65X",
-      "65Nhai",
-      "64Ng",
-      "64T",
-      "64G",
-      "64X",
-      "64Nhai",
-      "63Ng",
-      "63T",
-      "63G",
-      "63X",
-      "62Ng",
-      "62T",
-      "62G",
-      "62X",
-      "61Ng",
-      "61T",
-      "61G",
-      "61X",
-      "75Ng",
-      "75T",
-      "75G",
-      "75X",
-      "75Nhai",
-      "74Ng",
-      "74T",
-      "74G",
-      "74X",
-      "74Nhai",
-      "73Ng",
-      "73T",
-      "73G",
-      "73X",
-      "72Ng",
-      "72T",
-      "72G",
-      "72X",
-      "71Ng",
-      "71T",
-      "71G",
-      "71X",
-      "85Ng",
-      "85T",
-      "85G",
-      "85X",
-      "85Nhai",
-      "84Ng",
-      "84T",
-      "84G",
-      "84X",
-      "84Nhai",
-      "83Ng",
-      "83T",
-      "83G",
-      "83X",
-      "82Ng",
-      "82T",
-      "82G",
-      "82X",
-      "81Ng",
-      "81T",
-      "81G",
-      "81X"
-    ], (function (r) {
-        return "ER" + r;
-      }));
-
-console.log("mat rang");
-
-sumCrossTabs(list_crossTabsMR);
-
-exports.rawData = rawData;
-exports.length = length;
-exports.keys = keys;
-exports.findMatchingPair = findMatchingPair;
-exports.Cmp = Cmp;
-exports.incrValue = incrValue;
-exports.crossTabs = crossTabs;
-exports.list_crossTabsR = list_crossTabsR;
-exports.sumCrossTabs = sumCrossTabs;
-exports.list_crossTabsMR = list_crossTabsMR;
-/* rawData Not a pure module */
+exports.getData = getData;
+exports.make = make;
+/* ./data.js Not a pure module */

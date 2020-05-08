@@ -1,0 +1,26 @@
+{
+  "name": "nextjs-blog",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@zeit/next-sass": "^1.0.1",
+    "bs-platform": "^7.3.2",
+    "gentype": "^3.22.0",
+    "next": "9.4.0",
+    "node-sass": "^4.14.1",
+    "react": "16.13.1",
+    "react-dom": "16.13.1",
+    "reason-react": "^0.8.0",
+    "uswds": "^2.7.0"
+  },
+  "devDependencies": {
+    "@types/node": "^13.13.5",
+    "@types/react": "^16.9.35",
+    "typescript": "^3.8.3"
+  }
+}

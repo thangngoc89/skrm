@@ -1,0 +1,8 @@
+{
+  "devDependencies": {
+    "ocaml": "4.6.x",
+    "@opam/ocaml-lsp-server": "ocaml/ocaml-lsp:ocaml-lsp-server.opam#360dd5",
+    "@opam/dune": "2.0.1",
+    "@esy-ocaml/reason": "*"
+  }
+}

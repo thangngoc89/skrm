@@ -3,67 +3,61 @@ export interface Pair {
   label: string
 }
 
-export interface BaseEntry {
+interface BaseEntry {
   type: string,
   id: string,
   label?: string,
   /* Default to yes */
   required?: boolean,
-  relavent?: string // /\${([^{]+)}/g (parseing template literal format)
+  relavent?: string
 }
 
-export interface BaseQuestion extends BaseEntry {   
-  question: string,
-}
-
-export interface Text extends BaseQuestion {
+export interface Text extends BaseEntry {
   type: "text",
-  params: string
 }
 
-export interface Note extends BaseQuestion {
+export interface Note extends BaseEntry {
   type: "note",
 }
 
-export interface Decimal extends BaseQuestion {
+export interface Decimal extends BaseEntry {
   type: "decimal",
-  params: string
 }
 
-export interface SelectOne extends BaseQuestion { 
+export interface SelectOne extends BaseEntry { 
   type: "select_one",
   params: Array<Pair>
 }
 
-export interface SelectOneMatrix extends BaseQuestion { 
+export interface SelectOneMatrix extends BaseEntry { 
   type: "select_one_matrix",
   params: Array<Pair>,
   subQuestions: Array<Pair>
 }
 
-export interface SelectMultiple extends BaseQuestion { 
+export interface SelectMultiple extends BaseEntry { 
   type: "select_multiple",
   params: Array<Pair>
 }
 
-export interface SelectMultipleMatrix extends BaseQuestion { 
+export interface SelectMultipleMatrix extends BaseEntry { 
   type: "select_multiple_matrix",
   params: Array<Pair>,
   subQuestions: Array<Pair>,
 }
 
 // Date in YYYY/MM/DD format
-export interface Date extends BaseQuestion { 
+export interface Date extends BaseEntry { 
   type: "date",
 }
 
 // Time in 24hrs HH:mm format
-export interface Time extends BaseQuestion {
+export interface Time extends BaseEntry {
   type: "time",
 }
 
 // Date time in 24hrs YYYY/MM/DD-HH:mm format
-export interface DateTime extends BaseQuestion {
+export interface DateTime extends BaseEntry {
   type: "date_time",
 }
 
@@ -84,13 +78,3 @@ export type FormEntry =
   | Time
   | DateTime
   | Group
-
-export const make = {
-  pair: (value: string, label: string): Pair => ({value, label}),
-  group: (child: Array<FormEntry>, id: string, label: string): Group => ({
-    type: "group",
-    params: child,
-    id,
-    label
-  })
-}

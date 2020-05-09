@@ -8,14 +8,15 @@ import FormControl from "@material-ui/core/FormControl";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import RadioGroup from "@material-ui/core/RadioGroup";
+import TextField from "@material-ui/core/TextField";
 import Radio from "@material-ui/core/Radio";
+import { Container } from "@material-ui/core";
 
 const testSchema: SheetSchema = [
   {
     type: "select_one",
     id: "co_kho_chiu",
-    label: "co_kho_chiu",
-    question:
+    label:
       "Trong 3 tháng qua các em có thấy khó chịu hay đau ở vùng răng miệng của mình hay không?",
     params: [
       { value: "0", label: "Không" },
@@ -29,18 +30,22 @@ const testSchema: SheetSchema = [
       {
         type: "select_multiple",
         id: "liet_ke",
-        label: "Liệt kê khó chịu",
-        question: "Liệt kê các khó chịu",
+        label: "Liệt kê các khó chịu",
         params: [
           { value: "1", label: "Đau răng, nhức răng" },
           { value: "99", label: "Những khó chịu khác (ghi rõ)" },
         ],
       },
       {
+        type: "text",
+        id: "kho_chiu_khac",
+        label: "Khó chịu khác",
+        relavent: "'99' in liet_ke",
+      },
+      {
         type: "select_one",
         id: "co_kho_chiu",
-        label: "co_kho_chiu",
-        question:
+        label:
           "Trong 3 tháng qua các em có thấy khó chịu hay đau ở vùng răng miệng của mình hay không?",
         params: [
           { value: "0", label: "Không" },
@@ -64,6 +69,7 @@ interface FormEntrySelectOneProps {
   value: string;
   handleChange: any;
 }
+
 const FormEntrySelectOne = ({
   schema,
   value,
@@ -71,7 +77,9 @@ const FormEntrySelectOne = ({
 }: FormEntrySelectOneProps) => {
   return (
     <FormControl component="fieldset">
-      <FormLabel component="legend">{schema.question}</FormLabel>
+      <FormLabel component="legend" required={true}>
+        {schema.label}
+      </FormLabel>
       <RadioGroup
         aria-label={schema.label || schema.id}
         name={schema.id}
@@ -80,6 +88,7 @@ const FormEntrySelectOne = ({
       >
         {schema.params.map((pair) => (
           <FormControlLabel
+            key={pair.value}
             value={pair.value}
             control={<Radio />}
             label={pair.label}
@@ -87,6 +96,27 @@ const FormEntrySelectOne = ({
         ))}
       </RadioGroup>
     </FormControl>
+  );
+};
+
+interface FormEntryTextProps {
+  schema: FormEntry.Text;
+  value: string;
+  handleChange: any;
+}
+
+const FormEntryText = ({
+  schema,
+  value,
+  handleChange,
+}: FormEntryTextProps) => {
+  return (
+    <TextField
+      name={schema.id}
+      value={value}
+      onChange={(e) => handleChange(e.target.value)}
+      variant="filled"
+    />
   );
 };
 
@@ -110,41 +140,34 @@ const formRenderSwitch = (
       );
     case "group":
       return <FormEntryGroup key={entrySchema.id} schema={entrySchema} />;
+    case "text":
+      return (
+        <FormEntryText
+          key={entrySchema.id}
+          schema={entrySchema}
+          value={value}
+          handleChange={handleChange}
+        />
+      );
+    default:
+      return <div>Unhandled</div>;
   }
 };
 
-interface values {
-  co_kho_chiu: string | null;
-  liet_ke: string | null;
-}
-
-function FormRender({ schema = testSchema }: FormRenderProps) {
+function RenderEntries({ schema = testSchema }: FormRenderProps) {
   const [values, setValues] = React.useState(() => ({
     co_kho_chiu: "",
     liet_ke: [],
   }));
   return (
     <>
-      {schema.map((entrySchema) =>
-        entrySchema.relavent ? (
-          <Relavent
-            key={entrySchema.id}
-            param={entrySchema.relavent}
-            context={values}
-          >
-            {formRenderSwitch(
-              entrySchema,
-              (values as any)[entrySchema.id],
-              (value: any) => {
-                setValues({
-                  ...values,
-                  [entrySchema.id]: value,
-                });
-              }
-            )}
-          </Relavent>
-        ) : (
-          formRenderSwitch(
+      {schema.map((entrySchema) => (
+        <Relavent
+          key={entrySchema.id}
+          param={entrySchema.relavent}
+          context={values}
+        >
+          {formRenderSwitch(
             entrySchema,
             (values as any)[entrySchema.id],
             (value: any) => {
@@ -153,11 +176,19 @@ function FormRender({ schema = testSchema }: FormRenderProps) {
                 [entrySchema.id]: value,
               });
             }
-          )
-        )
-      )}
+          )}
+        </Relavent>
+      ))}
     </>
   );
 }
+
+const FormRender = ({ schema = testSchema }: FormRenderProps) => {
+  return (
+    <Container>
+      <RenderEntries schema={schema} />
+    </Container>
+  );
+};
 
 export default FormRender;

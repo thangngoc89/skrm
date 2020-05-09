@@ -1,0 +1,26 @@
+{
+  "name": "voser",
+  "reason": {
+    "react-jsx": 3
+  },
+  "sources": [
+    {
+      "dir": "src",
+      "subdirs": true
+    }
+  ],
+  "package-specs": [
+    {
+      "module": "es6",
+      "in-source": true
+    }
+  ],
+  "suffix": ".bs.js",
+  "namespace": true,
+  "bs-dependencies": [
+    "reason-react",
+    "@jsiebern/bs-material-ui",
+    "@ahrefs/bs-atdgen-codec-runtime"
+  ],
+  "refmt": 3
+}

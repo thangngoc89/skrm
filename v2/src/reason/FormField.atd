@@ -1,0 +1,39 @@
+
+type pair = {
+  value: string;
+  label: string;
+}
+
+type metadata = {
+  id: string;
+  label: string;
+  ?required: bool option;
+  ?relavent: string option;
+}
+
+type text = { inherit metadata }
+type note = { inherit metadata }
+type integer = { inherit metadata }
+type select = { inherit metadata; params: pair list}
+type selectMatrix = { inherit metadata; params: pair list; subQuestion: pair list}
+type date = { inherit metadata }
+type time = { inherit metadata }
+type dateTime = { inherit metadata }
+
+(* Control group *)
+(* TODO: Add repeat *)
+type group = { inherit metadata; params: field list}
+
+type field = [
+  | Text of text
+  | Note of note
+  | Integer of integer
+  | SelectOne of select
+  | SelectOneMatrix of selectMatrix
+  | SelectMultiple of select
+  | SelectMultipleMatrix of selectMatrix
+  | Date of date
+  | Time of time
+  | DateTime of dateTime
+  | Group of group
+] <ocaml repr="classic">

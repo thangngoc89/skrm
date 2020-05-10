@@ -6,6 +6,7 @@
     "@ahrefs/bs-atdgen-codec-runtime": "^2.0.1",
     "@jsiebern/bs-material-ui": "^1.3.0",
     "@material-ui/core": "^4.9.13",
+    "@mui-treasury/styles": "^1.1.6",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
@@ -26,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "atdgen": "esy atdgen -bs src/reason/FormField.atd && esy atdgen -t src/reason/FormField.atd"
+    "atdgen": "esy atdgen -bs src/reason/Survey.atd && esy atdgen -t src/reason/Survey.atd"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -44,6 +45,7 @@
     ]
   },
   "devDependencies": {
+    "@jchavarri/bs-atdgen-generator": "^0.0.7",
     "@types/jexl": "^2.2.0"
   }
 }

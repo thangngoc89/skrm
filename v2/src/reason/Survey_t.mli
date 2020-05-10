@@ -1,4 +1,4 @@
-(* Auto-generated from "FormField.atd" *)
+(* Auto-generated from "Survey.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
 type date = {
@@ -83,6 +83,8 @@ and group = {
   relavent: string option;
   params: field list
 }
+
+type survey = { title: string; fields: field list }
 
 type metadata = {
   id: string;

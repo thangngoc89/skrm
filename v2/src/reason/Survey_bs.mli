@@ -1,37 +1,37 @@
-(* Auto-generated from "FormField.atd" *)
+(* Auto-generated from "Survey.atd" *)
               [@@@ocaml.warning "-27-32-35-39"]
 
-type date = FormField_t.date = {
+type date = Survey_t.date = {
   id: string;
   label: string;
   required: bool option;
   relavent: string option
 }
 
-type dateTime = FormField_t.dateTime = {
+type dateTime = Survey_t.dateTime = {
   id: string;
   label: string;
   required: bool option;
   relavent: string option
 }
 
-type integer = FormField_t.integer = {
+type integer = Survey_t.integer = {
   id: string;
   label: string;
   required: bool option;
   relavent: string option
 }
 
-type note = FormField_t.note = {
+type note = Survey_t.note = {
   id: string;
   label: string;
   required: bool option;
   relavent: string option
 }
 
-type pair = FormField_t.pair = { value: string; label: string }
+type pair = Survey_t.pair = { value: string; label: string }
 
-type select = FormField_t.select = {
+type select = Survey_t.select = {
   id: string;
   label: string;
   required: bool option;
@@ -39,7 +39,7 @@ type select = FormField_t.select = {
   params: pair list
 }
 
-type selectMatrix = FormField_t.selectMatrix = {
+type selectMatrix = Survey_t.selectMatrix = {
   id: string;
   label: string;
   required: bool option;
@@ -48,21 +48,21 @@ type selectMatrix = FormField_t.selectMatrix = {
   subQuestion: pair list
 }
 
-type text = FormField_t.text = {
+type text = Survey_t.text = {
   id: string;
   label: string;
   required: bool option;
   relavent: string option
 }
 
-type time = FormField_t.time = {
+type time = Survey_t.time = {
   id: string;
   label: string;
   required: bool option;
   relavent: string option
 }
 
-type field = FormField_t.field = 
+type field = Survey_t.field = 
     Text of text
   | Note of note
   | Integer of integer
@@ -76,7 +76,7 @@ type field = FormField_t.field =
   | Group of group
 
 
-and group = FormField_t.group = {
+and group = Survey_t.group = {
   id: string;
   label: string;
   required: bool option;
@@ -84,7 +84,9 @@ and group = FormField_t.group = {
   params: field list
 }
 
-type metadata = FormField_t.metadata = {
+type survey = Survey_t.survey = { title: string; fields: field list }
+
+type metadata = Survey_t.metadata = {
   id: string;
   label: string;
   required: bool option;
@@ -134,6 +136,10 @@ val write_field :  field Atdgen_codec_runtime.Encode.t
 val read_group :  group Atdgen_codec_runtime.Decode.t
 
 val write_group :  group Atdgen_codec_runtime.Encode.t
+
+val read_survey :  survey Atdgen_codec_runtime.Decode.t
+
+val write_survey :  survey Atdgen_codec_runtime.Encode.t
 
 val read_metadata :  metadata Atdgen_codec_runtime.Decode.t
 

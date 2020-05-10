@@ -37,3 +37,8 @@ type field = [
   | DateTime of dateTime
   | Group of group
 ] <ocaml repr="classic">
+
+type survey = {
+  title: string;
+  fields: field list;
+}

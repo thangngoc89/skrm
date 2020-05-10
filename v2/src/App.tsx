@@ -1,11 +1,9 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
-import FormRender from './formEngine/FormRender';
-
+import {make as FormEngine} from "./reason/FormEngine.bs"
 function App() {
   return (
-    <FormRender />
+    <FormEngine />
   );
 }
 

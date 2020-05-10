@@ -13,4 +13,6 @@ S /Users/mac/dev/voser/v2/node_modules/@ahrefs/bs-atdgen-codec-runtime/lib/ocaml
 B /Users/mac/dev/voser/v2/node_modules/@ahrefs/bs-atdgen-codec-runtime/lib/ocaml
 S src/reason
 B lib/bs/src/reason
+S src/reason/bindings
+B lib/bs/src/reason/bindings
 ####BSB GENERATED: NO EDIT}

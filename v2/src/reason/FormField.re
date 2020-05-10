@@ -4,15 +4,21 @@ open Helpers;
 module Text = {
   [@react.component]
   let make =
-      (~value=?, ~onChange=?, ~name=?, ~label=?, ~fullWidth=?, ~required=?) => {
+      (
+        ~field: Survey_bs.text,
+        ~value=?,
+        ~handleChange,
+        ~fullWidth=?,
+        ~required=?,
+      ) => {
     let inputBaseStyles = MuiTreasury.Styles.TextField.Bordered.useInputBase();
     let inputLabelStyles =
       MuiTreasury.Styles.TextField.Bordered.useInputLabel();
     <TextField
-      ?name
-      ?label
+      name={field.id}
+      label={s(field.label)}
       ?value
-      ?onChange
+      onChange={e => e->valueFromEvent->handleChange}
       ?fullWidth
       ?required
       _InputProps={"classes": inputBaseStyles, "disableUnderline": true}
@@ -36,9 +42,11 @@ module SelectOne = {
                value
                control={<Radio />}
                label={s(label)}
-               onChange={e => e->ReactEvent.Form.target##value->handleChange}
+               onChange={e => e->valueFromEvent->handleChange}
              />
-           })}
+           })
+         ->Belt.List.toArray
+         ->React.array}
       </RadioGroup>
     </FormControl>;
   };

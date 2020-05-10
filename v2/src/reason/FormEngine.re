@@ -4,14 +4,14 @@ open Survey_t;
 
 let fields = [
   Text({
-    id: "name",
-    label: "What's your name",
+    id: "text",
+    label: "This is a text field",
     required: None,
     relavent: None,
   }),
   SelectOne({
-    id: "yes_no_question",
-    label: "Yes or no?",
+    id: "select_one",
+    label: "Select one",
     required: None,
     relavent: None,
     params: [{value: "0", label: "No"}, {value: "1", label: "yes"}],
@@ -40,12 +40,11 @@ let make = () => {
     {fields
      ->Belt.List.map(field => {
          switch (field) {
-         | Text({id, label, required, relavent}) =>
+         | Text(field) =>
            <Field.Text
-             key=id
-             name=id
-             label={s(label)}
-             ?required
+             key={field.id}
+             handleChange={_ => ()}
+             field
              fullWidth=true
            />
          | SelectOne(field) =>

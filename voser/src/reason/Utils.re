@@ -12,3 +12,9 @@ module RR = {
     };
   }
 };
+
+module Arr = {
+  let has = (~needle, ~haystack) => {
+    Js.Array.indexOf(needle, haystack) != -1
+  }
+}

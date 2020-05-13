@@ -1,0 +1,7 @@
+/* Customize USWDS */
+.usa-form {
+  max-width: none;
+}
+.usa-checkbox {
+  margin-top: 0.5rem;
+}

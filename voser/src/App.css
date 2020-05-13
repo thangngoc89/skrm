@@ -1,5 +1,10 @@
 @import 'uswds/dist/css/uswds.css';
 
+/* Customize USWDS */
+.usa-form {
+  max-width: none;
+}
+
 .App {
   text-align: center;
 }

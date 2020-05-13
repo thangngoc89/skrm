@@ -1,0 +1,6 @@
+{
+  "ocaml.sandbox": {
+    "root": "/Users/mac/dev/voser/voser",
+    "kind": "esy"
+  }
+}

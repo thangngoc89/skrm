@@ -1,0 +1,60 @@
+[@unboxed]
+type t =
+  | Any('a): t;
+
+type case =
+  | String(string)
+  | Int(int)
+  | StringArray(array(string))
+  | Invalid(t);
+
+let string = (v: string) => Any(v);
+let int = (v: int) => Any(v);
+let stringArray = (v: array(string)) => Any(v);
+let invalid = (v: t) => Any(v);
+
+// let string = (v: string) => Any(v);
+// let boolean = (v: bool) => Any(v);
+// let int = (v: int) => Any(v);
+// let theme = (v: inputTemplateSelectorValue) => Any(v);
+// let quentn = (v: inputQuentnValue) => Any(v);
+// let klickTipp = (v: inputKlickTippValue) => Any(v);
+// let dolValue = (v: array(Js.Dict.t(t))) => Any(v);
+// let invalid = (v: t) => Any(v);
+
+// let classify = (Any(v): t): case =>
+//   if (Js.typeof(v) == "string") {
+//     String(Obj.magic(v): string);
+//   } else if (Js.typeof(v) == "boolean") {
+//     Boolean(Obj.magic(v): bool);
+//   } else if (Js.typeof(v) == "number") {
+//     Int(Obj.magic(v): int);
+//   } else if (Js.Array.isArray(v)) {
+//     DolValue(Obj.magic(v): array(Js.Dict.t(t)));
+//   } else if (Js.typeof(v) === "object"
+//              && v->Obj.magic->Js.Dict.get("theme")->Belt.Option.isSome) {
+//     Theme(Obj.magic(v): inputTemplateSelectorValue);
+//   } else if (Js.typeof(v) === "object"
+//              && v->Obj.magic->Js.Dict.get("senders")->Belt.Option.isSome) {
+//     Quentn(Obj.magic(v): inputQuentnValue);
+//   } else if (Js.typeof(v) === "object"
+//              && v->Obj.magic->Js.Dict.get("username")->Belt.Option.isSome) {
+//     KlickTipp(Obj.magic(v): inputKlickTippValue);
+//   } else {
+//     Invalid(Obj.magic(v): t);
+//   };
+
+// let write_t = (v: t) =>
+//   switch (v->classify) {
+//   | String(v) => Js.Json.string(v)
+//   | Boolean(v) => Js.Json.boolean(v)
+//   | Int(v) => Js.Json.number(v->float_of_int)
+//   | Theme(v) => v->Obj.magic
+//   | Quentn(v) => v->Obj.magic
+//   | KlickTipp(v) => v->Obj.magic
+//   | DolValue(v) => v->Obj.magic
+//   | Invalid(v) => v->Obj.magic
+//   };
+
+// external jsonToAny: Js.Json.t => t = "%identity";
+// let read_t = jsonToAny;

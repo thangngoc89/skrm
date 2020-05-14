@@ -1,0 +1,154 @@
+module StringMap = Belt.MutableMap.String;
+
+module Store = {
+  type valueStore = StringMap.t(WebinarDataTypeValues.t);
+  let globalValueStore: ref(valueStore) = ref(StringMap.make());
+  let globalErrorStore: ref(StringMap.t(ReactIntl.message)) =
+    ref(StringMap.make());
+  let getUnwrappedStore = () => {
+    (globalValueStore^)
+    ->Belt.MutableMap.String.toArray
+    ->Js.Dict.fromArray
+    ->anythingToJson;
+  };
+
+  let initStore = (dataTree: array(dataTypes)) => {
+    globalValueStore := StringMap.make();
+    globalErrorStore := StringMap.make();
+    populateStore(dataTree);
+  };
+
+  type subscription = WebinarDataTypeValues.t => unit;
+
+  let subscribers: ref(StringMap.t(array((string, subscription)))) =
+    ref(StringMap.make());
+  let subscribe = (name, subscription) => {
+    let id = Uuid.generate();
+
+    (subscribers^)
+    ->StringMap.set(
+        name,
+        (subscribers^)
+        ->StringMap.get(name)
+        ->Belt.Option.getWithDefault([||])
+        ->Belt.Array.concat([|(id, subscription)|]),
+      );
+
+    id;
+  };
+  let unsubscribe = (name, subId) =>
+    (subscribers^)
+    ->StringMap.set(
+        name,
+        (subscribers^)
+        ->StringMap.get(name)
+        ->Belt.Option.getWithDefault([||])
+        ->Belt.Array.keep(sub => sub->fst !== subId),
+      );
+
+  let read = name => {
+    switch ((globalValueStore^)->StringMap.get(name)) {
+    | None =>
+      Js.log(name);
+      Js.log(globalValueStore^);
+    | Some(_) => ()
+    };
+    (globalValueStore^)->StringMap.get(name)->Belt.Option.getUnsafe;
+  };
+
+  let notify = (~newValue=?, name) =>
+    (subscribers^)
+    ->StringMap.get(name)
+    ->Belt.Option.getWithDefault([||])
+    ->Belt.Array.forEach(sub =>
+        sub->snd(newValue->Belt.Option.getWithDefault(read(name)))
+      );
+
+  let write = (name, newValue) => {
+    (globalValueStore^)->StringMap.set(name, newValue);
+    notify(~newValue, name);
+  };
+  let writeNoSub = (name, newValue) =>
+    (globalValueStore^)->StringMap.set(name, newValue);
+  let readSafe = name =>
+    switch (name |> Js.String.split(".")) {
+    | [|name, selection|] =>
+      let value = (globalValueStore^)->StringMap.get(name);
+      // Some custom logic to access "selection"
+      value
+    | _ =>
+      (globalValueStore^)
+      ->StringMap.get(name)
+      ->Belt.Option.map(WebinarDataTypeValues.classify)
+    };
+};
+
+module type DataType = {type value;};
+
+module Make = (DataType: DataType) => {
+  external toValue: WebinarDataTypeValues.t => DataType.value = "%identity";
+
+  let useStoreValue =
+      (~validation: WebinarDataTypes_t.inputValidation=?, name) => {
+    let write = (name, value: WebinarDataTypeValues.t) => {
+      switch (validation) {
+      | Some(validation) =>
+        switch (value->App__ValidatorHelper.isValid(validation)) {
+        | Some(message) => Errors.setError(name, message)
+        | None => Errors.removeError(name)
+        };
+        Store.write(name, value);
+      | None => Store.write(name, value)
+      };
+      Errors.errorNotify();
+    };
+
+    let (state, send) =
+      React.useReducer((_, _) => Store.read(name), Store.read(name));
+    React.useEffect0(() => {
+      let subId = Store.subscribe(name, send);
+      Some(() => Store.unsubscribe(name, subId));
+    });
+
+    (
+      state->toValue,
+      write(name),
+      validation->Belt.Option.isSome ? Errors.getError(name) : None,
+    );
+  };
+};
+
+
+
+
+
+
+
+
+
+// USE IT IN PLACE:
+
+module WithValue =
+  SurveyEngine__DataTypeValue.Make({
+    type value = bool;
+  });
+
+[@react.component]
+let make = () => {
+    let (value, onChange, _error) = WithValue.useStoreValue(data.name);
+    let classes = Styles.useStyles();
+
+    MaterialUi.(
+    <Grid container=true justify=`Flex_End>
+      <Grid item=true className={classes.switchInput}>
+        <Switch
+          checked=value
+          color=`Primary
+          onChange={_event =>
+            onChange(WebinarDataTypeValues.boolean(!value))
+          }
+        />
+      </Grid>
+    </Grid>
+  );
+};

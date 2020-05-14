@@ -13,11 +13,11 @@ let make = () => {
   let (multiValue, setMultiValue) = React.useState(() => [|"1"|]);
   let (oneValue, setOneValue) = React.useState(() => "1");
 
-  <form className="usa-form">
+  <Form>
     <h1> {s("Form components showcases")} </h1>
     <h2> {s("Text Field")} </h2>
-    <TextField name="text" label="Normal" hint="A very helpful message" />
-    <TextField
+    <Textfield name="text" label="Normal" hint="A very helpful message" />
+    <Textfield
       name="text"
       label="Has error"
       hint="A very helpful message"
@@ -56,7 +56,7 @@ let make = () => {
       label="Choose a number"
       name="dropdown"
     />
-  </form>;
+  </Form>;
 };
 
 [@gentype]

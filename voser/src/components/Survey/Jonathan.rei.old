@@ -1,0 +1,46 @@
+type inputTemplateSelectorValue = {
+  theme: string,
+  colorset: string,
+  ctaSpots: Js.Dict.t(string),
+};
+
+type inputQuentnValue = {
+  api_url: string,
+  api_key: string,
+  senders: Js.Dict.t(string),
+  tags: Js.Dict.t(string),
+  valid: bool,
+};
+
+type inputKlickTippValue = {
+  username: string,
+  password: string,
+  api_key: string,
+  tags: Js.Dict.t(string),
+  valid: bool,
+};
+
+type t;
+type case =
+  | String(string)
+  | Boolean(bool)
+  | Int(int)
+  | Theme(inputTemplateSelectorValue)
+  | Quentn(inputQuentnValue)
+  | KlickTipp(inputKlickTippValue)
+  | DolValue(array(Js.Dict.t(t)))
+  | Invalid(t);
+
+let string: string => t;
+let boolean: bool => t;
+let int: int => t;
+let theme: inputTemplateSelectorValue => t;
+let quentn: inputQuentnValue => t;
+let klickTipp: inputKlickTippValue => t;
+let dolValue: array(Js.Dict.t(t)) => t;
+let invalid: t => t;
+
+let classify: t => case;
+
+let write_t: t => Js.Json.t;
+let read_t: Js.Json.t => t;

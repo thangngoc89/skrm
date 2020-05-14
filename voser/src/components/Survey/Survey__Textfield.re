@@ -3,7 +3,12 @@ open Survey__Internal;
 
 [@react.component]
 let make =
-    (~name, ~label, ~required=?, ~value=?, ~onChange=?, ~hint=?, ~error=?) => {
+    (~name, ~label, ~required=?, ~value=?, ~setValue=?, ~hint=?, ~error=?) => {
+  let onChange =
+    setValue->Belt.Option.map((setValue, e) => {
+      let value = e->Utils.RR.valueFromEvent;
+      setValue(value);
+    });
   <FormGroup ?error>
     <FormLabel name error label required />
     {switch (error) {

@@ -9,3 +9,9 @@
 .usa-label__selectOne {
   margin-bottom: 0.5rem;
 }
+
+.container {
+  min-height: 100vh;
+  padding: 0 0.5rem;
+  display: flex;
+}

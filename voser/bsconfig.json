@@ -7,6 +7,10 @@
     {
       "dir": "src",
       "subdirs": true
+    },
+    {
+      "dir": "pages",
+      "subdirs": true
     }
   ],
   "package-specs": [

@@ -12,6 +12,8 @@ let choices = [|
 let make = () => {
   let (multiValue, setMultiValue) = React.useState(() => [|"1"|]);
   let (oneValue, setOneValue) = React.useState(() => "1");
+  let (slider, setSlider) = React.useState(() => "20");
+
   <form className="usa-form">
     <h1> {s("Form components showcases")} </h1>
     <h2> {s("TextField")} </h2>
@@ -21,6 +23,15 @@ let make = () => {
       label="Has error"
       hint="A very helpful message"
       error="Oops!"
+    />
+    <h2> {s("Range Slider")} </h2>
+    <RangeSlider
+      min="0"
+      max="100"
+      step=10.
+      name="range_slider"
+      defaultValue="20"
+      label="Range Slider"
     />
     <h2> {s("Select Multiple")} </h2>
     <SelectMultiple
@@ -33,9 +44,7 @@ let make = () => {
     <h2> {s("Select One")} </h2>
     <SelectOne
       value=oneValue
-      setValue={newValue => {
-        setOneValue(_ => newValue)}
-        }
+      setValue={newValue => {setOneValue(_ => newValue)}}
       choices
       label="Choose a number"
       name="select_one"

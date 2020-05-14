@@ -1,6 +1,6 @@
 open Utils.RR;
 
-let toggleCheckbox = (~choiceValue, ~value) => {
+let%private toggleCheckbox = (~choiceValue, ~value) => {
   let idx = Js.Array.indexOf(choiceValue, value);
 
   if (idx == (-1)) {
@@ -27,10 +27,10 @@ let make =
     <div className="usa-checkbox">
       {choices
        ->Js.Array2.map(({Survey.value: choiceValue, label: choiceLabel}) => {
-           <React.Fragment key={choiceValue}>
+           <React.Fragment key=choiceValue>
              <input
                className="usa-checkbox__input"
-               id=choiceValue
+               id={j|$(name)__$(choiceValue)|j}
                type_="checkbox"
                name
                value=choiceValue
@@ -39,7 +39,9 @@ let make =
                }}
                checked={Utils.Arr.has(~needle=choiceValue, ~haystack=value)}
              />
-             <label className="usa-checkbox__label" htmlFor=choiceValue>
+             <label
+               className="usa-checkbox__label"
+               htmlFor={j|$(name)__$(choiceValue)|j}>
                {s(choiceLabel)}
              </label>
            </React.Fragment>

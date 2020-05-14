@@ -10,7 +10,8 @@ let choices = [|
 [@gentype]
 [@react.component]
 let make = () => {
-  let (value, setValue) = React.useState(() => [|"1"|]);
+  let (multiValue, setMultiValue) = React.useState(() => [|"1"|]);
+  let (oneValue, setOneValue) = React.useState(() => "1");
   <form className="usa-form">
     <h1> {s("Form components showcases")} </h1>
     <h2> {s("TextField")} </h2>
@@ -23,11 +24,21 @@ let make = () => {
     />
     <h2> {s("Select Multiple")} </h2>
     <SelectMultiple
-      value
-      setValue={newValue => setValue((_) => newValue)}
+      value=multiValue
+      setValue={newValue => setMultiValue(_ => newValue)}
+      choices
+      label="Choose several numbers"
+      name="select_multiple"
+    />
+    <h2> {s("Select One")} </h2>
+    <SelectOne
+      value=oneValue
+      setValue={newValue => {
+        setOneValue(_ => newValue)}
+        }
       choices
       label="Choose a number"
-      name="select_multiple"
+      name="select_one"
     />
   </form>;
 };

@@ -32,3 +32,4 @@ yarn-error.log*
 .merlin
 lib
 _esy
+.bsb.lock

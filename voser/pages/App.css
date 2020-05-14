@@ -2,6 +2,10 @@
 .usa-form {
   max-width: none;
 }
-.usa-checkbox {
+.usa-checkbox, .use-select {
   margin-top: 0.5rem;
+}
+
+.usa-label__selectOne {
+  margin-bottom: 0.5rem;
 }

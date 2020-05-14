@@ -12,11 +12,10 @@ let choices = [|
 let make = () => {
   let (multiValue, setMultiValue) = React.useState(() => [|"1"|]);
   let (oneValue, setOneValue) = React.useState(() => "1");
-  let (slider, setSlider) = React.useState(() => "20");
 
   <form className="usa-form">
     <h1> {s("Form components showcases")} </h1>
-    <h2> {s("TextField")} </h2>
+    <h2> {s("Text Field")} </h2>
     <TextField name="text" label="Normal" hint="A very helpful message" />
     <TextField
       name="text"
@@ -48,6 +47,14 @@ let make = () => {
       choices
       label="Choose a number"
       name="select_one"
+    />
+    <h2> {s("Dropdown")} </h2>
+    <Dropdown
+      value=oneValue
+      setValue={newValue => {setOneValue(_ => newValue)}}
+      choices
+      label="Choose a number"
+      name="dropdown"
     />
   </form>;
 };

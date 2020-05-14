@@ -10,7 +10,7 @@ let make =
       ~label: string,
     ) => {
   <fieldset className="usa-fieldset">
-    <legend className="usa-label"> {s(label)} </legend>
+    <legend className="usa-label usa-label__selectOne"> {s(label)} </legend>
     {choices
      ->Js.Array2.map(({Survey.value: choiceValue, label: choiceLabel}) => {
          <div className="usa-radio" key={choiceValue}>

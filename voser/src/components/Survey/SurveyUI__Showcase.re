@@ -1,5 +1,5 @@
 open Utils.RR;
-open SurveyBlocks;
+open SurveyUI;
 
 let choices = [|
   {Survey.value: "1", Survey.label: "One"},
@@ -7,7 +7,6 @@ let choices = [|
   {Survey.value: "3", Survey.label: "Three"},
 |];
 
-[@gentype]
 [@react.component]
 let make = () => {
   let (multiValue, setMultiValue) = React.useState(() => [|"1"|]);
@@ -58,6 +57,3 @@ let make = () => {
     />
   </Form>;
 };
-
-[@gentype]
-let default = make;

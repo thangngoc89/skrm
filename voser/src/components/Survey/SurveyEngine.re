@@ -1,5 +1,5 @@
 open Utils.RR;
-open SurveyEngine__Blocks;
+open SurveyEngine__UI;
 
 let choices = [|
   {Survey.value: "1", Survey.label: "One"},

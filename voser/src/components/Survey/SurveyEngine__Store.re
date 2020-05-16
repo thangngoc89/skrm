@@ -1,16 +1,20 @@
 module Types = SurveyEngine__Types;
-module StringMap = Belt.MutableMap.String;
 
 module Store = {
+  module StringMap = Belt.MutableMap.String;
   type valueStore = StringMap.t(Types.t);
   let valueStore: valueStore = StringMap.make();
 
-  type subscription = Types.t => unit;
+  // Callback for each subscriber
+  type subCallback = Types.t => unit;
+  // Subscriber metadata identifier
+  type sub = {
+    id: Id.t,
+    cb: subCallback,
+  };
+  let subscribers: StringMap.t(array(sub)) = StringMap.make();
 
-  let subscribers: StringMap.t(array((Id.t, subscription))) =
-    StringMap.make();
-
-  let subscribe = (name, subscription) => {
+  let subscribe = (name, cb) => {
     let id = Id.make();
 
     subscribers->StringMap.set(
@@ -18,7 +22,7 @@ module Store = {
       subscribers
       ->StringMap.get(name)
       ->Belt.Option.getWithDefault([||])
-      ->Belt.Array.concat([|(id, subscription)|]),
+      ->Belt.Array.concat([|{id, cb}|]),
     );
     id;
   };
@@ -29,25 +33,23 @@ module Store = {
       subscribers
       ->StringMap.get(name)
       ->Belt.Option.getWithDefault([||])
-      ->Belt.Array.keep(sub => fst(sub) != subId),
+      ->Belt.Array.keep(({id, cb: _}) => id != subId),
     );
 
   let read = name => {
-    switch (valueStore->StringMap.get(name)) {
-    | None =>
-      Js.log(name);
-      Js.log(valueStore);
-    | Some(_) => ()
-    };
-    valueStore->StringMap.get(name)->Belt.Option.getUnsafe;
+    valueStore->StringMap.get(name);
+  };
+
+  let readUnsafe = name => {
+    name->read->Belt.Option.getUnsafe;
   };
 
   let notify = (~newValue=?, name) =>
     subscribers
     ->StringMap.get(name)
     ->Belt.Option.getWithDefault([||])
-    ->Belt.Array.forEach(sub =>
-        sub->snd(newValue->Belt.Option.getWithDefault(read(name)))
+    ->Belt.Array.forEach(({id: _, cb}) =>
+        newValue->Belt.Option.getWithDefault(readUnsafe(name))->cb
       );
 
   let write = (name, newValue) => {
@@ -56,23 +58,26 @@ module Store = {
   };
 };
 
-module type DataType = {type value;};
+module type DataType = {
+  type value;
+  let fromValue: value => Types.t;
+};
 
 module Make = (DataType: DataType) => {
   external toValue: Types.t => DataType.value = "%identity";
 
   let useStoreValue = (~initialValue=?, name) => {
-    let write = (name, value: Types.t) => {
-      Store.write(name, value);
+    let write = (name, value) => {
+      Store.write(name, value->DataType.fromValue);
     };
 
     let (state, send) =
       React.useReducer(
-        (_, _) => Store.read(name),
+        (_, _) => Store.readUnsafe(name),
         {
           switch (initialValue) {
-          | None => Store.read(name)
-          | Some(value) => value
+          | None => Store.readUnsafe(name)
+          | Some(value) => DataType.fromValue(value)
           };
         },
       );

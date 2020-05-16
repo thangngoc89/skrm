@@ -1,5 +1,5 @@
 open Utils.RR;
-open Survey__Internal;
+open SurveyUI__Internal;
 
 [@react.component]
 let make =

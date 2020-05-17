@@ -1,17 +1,36 @@
 /* Customize USWDS */
 .usa-form {
   max-width: none;
+  width: 100%;
 }
 .usa-checkbox, .use-select {
   margin-top: 0.5rem;
+}
+.usa-label {
+  font-weight: 700;
 }
 
 .usa-label__selectOne {
   margin-bottom: 0.5rem;
 }
 
+/* Application specific css */
 .container {
   min-height: 100vh;
   padding: 0 0.5rem;
   display: flex;
 }
+
+.survey-field {
+  margin: 0.5rem 0;
+}
+.survey-field__note {
+  font-weight: 300;
+}
+/* This add margin to group */
+/* .survey-field__group > * {
+  margin-left: 1rem;
+}
+.survey-field__group > h2 {
+  margin-left: 0;
+} */

@@ -13,7 +13,6 @@ describe("TableTemplate > Parser", ({test}) => {
 
     expect.int(parsed->Belt.Array.length).toBe(4);
 
-    expect.value(parsed).toMatchSnapshot();
     expect.value(parsed).toEqual([|
       [|
         TableTemplate.CellString("16N"),

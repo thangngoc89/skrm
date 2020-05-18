@@ -89,7 +89,16 @@ module Parser = {
       };
       let rec parse' = tokens => {
         switch (tokens) {
-        | [] => context.result->Belt.List.reverse
+        | [] =>
+          switch (context.tag) {
+          | Variable =>
+            context.result = [
+              CellVariable(collectorGetThenClean()),
+              ...context.result,
+            ]
+          | _ => ()
+          };
+          context.result->Belt.List.reverse;
         | [current, ...tokens] =>
           switch (context.tag, current) {
           | (NoContext, SingleQuote) => context.tag = StringSingle
@@ -129,9 +138,8 @@ module Parser = {
     };
     parse(tokens)->Belt.List.toArray;
   };
-  let parse = (template) => {
+  let parse = template => {
     let rows = template->clean->splitTplToRows;
-    rows->Belt.Array.map(parseRow)
-
+    rows->Belt.Array.map(parseRow);
   };
 };

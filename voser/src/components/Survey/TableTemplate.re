@@ -8,23 +8,25 @@
  *   - Multiple cell type
  */
 
-type table = {
-  fields: array(cellField),
-  template: string,
-}
-and cell =
-  | CellString(string)
-  | CellVariable(string)
-  | CellEmpty(bool)
-and cellField = {
-  name: string,
-  fieldType: Survey.fieldType,
-};
-
-type row = array(cell);
-type parsedTable = array(row);
+// type table = {
+//   fields: array(cellField),
+//   template: string,
+// }
+// and cell =
+//   | CellString(string)
+//   | CellVariable(string)
+//   | CellEmpty(bool)
+// and cellField = {
+//   name: string,
+//   fieldType: Survey.fieldType,
+// };
 
 module Parser = {
+  type cell = 
+  | CellString(string)
+  | CellVariable(string)
+  | CellEmpty(bool);
+
   let clean = Js.String.trim;
 
   /** Split template to rows

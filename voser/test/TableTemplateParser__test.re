@@ -1,6 +1,7 @@
 open TestFramework;
 
-let parser = TableTemplate.Parser.parse;
+module P = TableTemplate.Parser;
+let parse = P.parse;
 
 describe("TableTemplate > Parser", ({test}) => {
   test("simple template", ({expect}) => {
@@ -9,30 +10,60 @@ describe("TableTemplate > Parser", ({test}) => {
        16N    11N   26N
        36T    31N   46T
       '36T'  '31N' '46T'|};
-    let parsed = parser(template);
+    let parsed = parse(template);
 
     expect.int(parsed->Belt.Array.length).toBe(4);
-
+    
     expect.value(parsed).toEqual([|
       [|
-        TableTemplate.CellString("16N"),
-        TableTemplate.CellString("11N"),
-        TableTemplate.CellString("26N"),
+        P.CellString("16N"),
+        P.CellString("11N"),
+        P.CellString("26N"),
       |],
       [|
-        TableTemplate.CellVariable("16N"),
-        TableTemplate.CellVariable("11N"),
-        TableTemplate.CellVariable("26N"),
+        P.CellVariable("16N"),
+        P.CellVariable("11N"),
+        P.CellVariable("26N"),
       |],
       [|
-        TableTemplate.CellVariable("36T"),
-        TableTemplate.CellVariable("31N"),
-        TableTemplate.CellVariable("46T"),
+        P.CellVariable("36T"),
+        P.CellVariable("31N"),
+        P.CellVariable("46T"),
       |],
       [|
-        TableTemplate.CellString("36T"),
-        TableTemplate.CellString("31N"),
-        TableTemplate.CellString("46T"),
+        P.CellString("36T"),
+        P.CellString("31N"),
+        P.CellString("46T"),
+      |],
+    |]);
+  });
+
+  test("single row template", ({expect}) => {
+    let template = {|'16N'  '11N' '26N'|};
+    let parsed = parse(template);
+
+    expect.int(parsed->Belt.Array.length).toBe(1);
+    
+    expect.value(parsed).toEqual([|
+      [|
+        P.CellString("16N"),
+        P.CellString("11N"),
+        P.CellString("26N"),
+      |],
+    |]);
+  })
+  test("handle mixing quotes", ({expect}) => {
+    let template = {|"a"  'b' "c'" 'd"'|};
+    let parsed = parse(template);
+
+    expect.int(parsed->Belt.Array.length).toBe(1);
+    
+    expect.value(parsed).toEqual([|
+      [|
+        P.CellString("a"),
+        P.CellString("b"),
+        P.CellString("c'"),
+        P.CellString("d\"")
       |],
     |]);
   })

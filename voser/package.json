@@ -1,5 +1,5 @@
 {
-  "name": "nextjs-blog",
+  "name": "voser",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -9,7 +9,6 @@
   },
   "dependencies": {
     "@zeit/next-sass": "^1.0.1",
-    "bs-platform": "^7.3.2",
     "gentype": "^3.22.0",
     "next": "9.4.0",
     "node-sass": "^4.14.1",
@@ -20,9 +19,12 @@
     "uswds": "^2.7.0"
   },
   "devDependencies": {
+    "bs-platform": "^7.3.2",
+    "@babel/preset-env": "^7.9.6",
     "@types/node": "^13.13.5",
     "@types/react": "^16.9.35",
-    "next-transpile-modules": "^3.3.0",
+    "jest": "^26.0.1",
+    "reason-test-framework": "^0.3.2",
     "typescript": "^3.8.3"
   }
 }

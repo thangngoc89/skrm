@@ -67,4 +67,36 @@ describe("TableTemplate > Parser", ({test}) => {
       |],
     |]);
   })
+
+  test("handle empty, with and without fill", ({expect}) => {
+    let template = {|"a"  . # d|};
+    let parsed = parse(template);
+
+    expect.int(parsed->Belt.Array.length).toBe(1);
+    
+    expect.value(parsed).toEqual([|
+      [|
+        P.CellString("a"),
+        P.CellWhite,
+        P.CellBlack,
+        P.CellVariable("d")
+      |],
+    |]);
+  })
+
+  test("handle any amounts of spaces between each column", ({expect}) => {
+    let template = {|"a"     .   #              d |};
+    let parsed = parse(template);
+
+    expect.int(parsed->Belt.Array.length).toBe(1);
+    
+    expect.value(parsed).toEqual([|
+      [|
+        P.CellString("a"),
+        P.CellWhite,
+        P.CellBlack,
+        P.CellVariable("d")
+      |],
+    |]);
+  })
 });

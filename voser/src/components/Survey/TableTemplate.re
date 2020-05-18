@@ -6,8 +6,18 @@
  *   - All rows must have equal columns
  *   - No cell spaning (both row and col)
  *   - Multiple cell type
+ * - Rules:
+ *   - String: inside double quotes or single quote
+ *   - Variables: [a..Z0..9]
+ *   - CellWhite: .
+ *   - CellBlack: #
+ *   - AT LEAST ONE whitespace between each columns
+ * - Examples:
+ *    '16N'  '11N' '26N'
+ *     16N     .    26N
+ *     36T     #   46T
+ *    '36T'  '31N' '46T'
  */
-
 // type table = {
 //   fields: array(cellField),
 //   template: string,
@@ -22,10 +32,11 @@
 // };
 
 module Parser = {
-  type cell = 
-  | CellString(string)
-  | CellVariable(string)
-  | CellEmpty(bool);
+  type cell =
+    | CellString(string)
+    | CellVariable(string)
+    | CellWhite
+    | CellBlack;
 
   let clean = Js.String.trim;
 
@@ -54,6 +65,7 @@ module Parser = {
     | Whitespace;
   type parseTag =
     | NoContext
+    | EmptyCell
     | Variable
     | StringSingle
     | StringDouble;
@@ -107,6 +119,12 @@ module Parser = {
           | (NoContext, SingleQuote) => context.tag = StringSingle
           | (NoContext, DoubleQuote) => context.tag = StringDouble
           | (NoContext, Whitespace) => ()
+          | (NoContext, Char(".")) =>
+            context.tag = EmptyCell;
+            context.result = [CellWhite, ...context.result];
+          | (NoContext, Char("#")) =>
+            context.tag = EmptyCell;
+            context.result = [CellBlack, ...context.result];
           | (NoContext, Char(c)) =>
             context.tag = Variable;
             collectorAdd(c);
@@ -133,6 +151,11 @@ module Parser = {
               CellString(collectorGetThenClean()),
               ...context.result,
             ];
+          // Dot and sharp should stand alone
+          // Right after Dot or Sharp should be a whitespace
+          | (EmptyCell, Whitespace) => context.tag = NoContext
+          | (EmptyCell, _) =>
+            raise(InvalidVariable("Variable name can't start with . or #"))
           };
           parse'(tokens);
         };

@@ -90,6 +90,7 @@ module Parser = {
       let rec parse' = tokens => {
         switch (tokens) {
         | [] =>
+          // This handle when variable at the end of line
           switch (context.tag) {
           | Variable =>
             context.result = [

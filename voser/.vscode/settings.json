@@ -10,6 +10,6 @@
     "**/CVS": true,
     "**/.DS_Store": true,
     "lib/bs/**": true,
-    "src/**/**.bs.js": true
+    // "src/**/**.bs.js": true
   }
 }

@@ -196,9 +196,9 @@ module Parser = {
       type_: string,
       value: string,
     };
-    [@bs.module]
-    external lexer: string => array(rawToken) = "./TableTemplateLexer.js";
-
+    
+    [@bs.module "./TableTemplateLexer.js"]
+    external lexer: string => array(rawToken) = "default";
     let makeToken = (rawToken, tag) => {
       {
         tag,
@@ -287,5 +287,10 @@ module Parser = {
         table;
       };
     loop(0);
+  };
+
+  /* Clean up result, add errors */
+  let parse = template => {
+    template->parse->Belt.Array.keep(row => Js.Array2.length(row) != 0);
   };
 };

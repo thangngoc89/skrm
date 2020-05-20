@@ -3729,6 +3729,11 @@ gaze@^1.0.0:
   dependencies:
     globule "^1.0.0"
 
+gelex@^0.0.7:
+  version "0.0.7"
+  resolved "https://registry.yarnpkg.com/gelex/-/gelex-0.0.7.tgz#3ad1124f3e752bd553874ea81d4fed665ce60b64"
+  integrity sha512-WW8MOYb6kCepS3GdtKfQCYR6z1w0YJEEE4Bj75l2GK5yRl1F+NtR/n7NBjozuSYw2gP+EvE0XQGSRhVC/lSNSQ==
+
 gensync@^1.0.0-beta.1:
   version "1.0.0-beta.1"
   resolved "https://registry.yarnpkg.com/gensync/-/gensync-1.0.0-beta.1.tgz#58f4361ff987e5ff6e1e7a210827aa371eaac269"

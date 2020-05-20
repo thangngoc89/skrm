@@ -3,8 +3,8 @@ open TestFramework;
 module P = TableTemplate.Parser;
 let parse = P.parse;
 
-describe("TableTemplate > Parser", ({test}) => {
-  test("simple template", ({expect}) => {
+describe("TableTemplate > Parser > Valid templates", ({test}) => {
+  test("complete template", ({expect}) => {
     let template = {|
       '16N'  '11N' '26N'
        16N    11N   26N
@@ -99,4 +99,16 @@ describe("TableTemplate > Parser", ({test}) => {
       |],
     |]);
   })
+});
+
+describe("TableTemplate > Parser > Invalid templates", ({test}) => {
+  test("complete template", ({expect}) => {
+    let template = {|'a'a|};
+    let parsed = parse(template);
+
+    Js.log(parsed);
+    expect.int(parsed->Belt.Array.length).toBe(0);
+    
+    
+  });
 });

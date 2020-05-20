@@ -13,9 +13,12 @@ def.defineText("string", `'`, `'`);
 
 const lexing = (template) => {
   const lexer = def.lexer(template);
+  let result = [];
   let token;
-  while ((token = lexer.next())) {}
-  return token;
+  while ((token = lexer.next())) {
+    result.push(token)
+  }
+  return result;
 };
 
 export default lexing;

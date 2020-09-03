@@ -4,6 +4,7 @@
   "private": true,
   "homepage": "https://voser.khoa.xyz",
   "dependencies": {
+    "node": "^10.0.0",
     "@reach/router": "^1.2.1",
     "bs-epitath": "^0.1.0",
     "bs-webapi": "^0.13.2",

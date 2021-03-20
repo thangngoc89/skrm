@@ -9,7 +9,6 @@ interface DataPickerProps {
 }
 
 export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional }) => {
-  console.log(name);
   return (
     <Field name={name}>
       {({ field, form: { touched, errors, setFieldValue, setTouched } }: FieldProps) => {
@@ -25,7 +24,7 @@ export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional })
               id={field.id}
               name={field.name}
               // error={hasError}
-              onChange={(value) => {
+              onChange={(value: any) => {
                 setFieldValue(field.name, value);
               }}
               onBlur={(_) => {

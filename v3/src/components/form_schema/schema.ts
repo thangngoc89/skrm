@@ -28,7 +28,12 @@ type field =
     }
   | {
       type: "note";
-      content: string;
+      caption: string;
+    }
+  | {
+      type: "group";
+      caption: string;
+      content: Array<field>;
     };
 
 type form = {

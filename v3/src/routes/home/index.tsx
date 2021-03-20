@@ -1,12 +1,17 @@
 import { FunctionalComponent, h } from "preact";
 import style from "./style.css";
 import { Fieldset, Checkbox } from "@trussworks/react-uswds";
+import { FormRenderer } from "../../components/form/form_render";
 
 const Home: FunctionalComponent = () => {
   return (
     <div class={style.home}>
-      <h1>Home</h1>
-      <p>This is the Home component.</p>
+      <div class={style.intro}>
+        <h1>VOSER - Quản lí dữ liệu khám Sức Khoẻ Răng Miệng</h1>
+        <h2>Bộ môn Nha Khoa Công Cộng - Đại học Y Dược TP.HCM</h2>
+      </div>
+
+      <FormRenderer />
       <Fieldset legend="Historical figures 1" legendSrOnly>
         <Checkbox
           id="truth"

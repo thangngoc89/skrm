@@ -1,5 +1,18 @@
 .home {
-	padding: 56px 20px;
-	min-height: 100%;
-	width: 100%;
+  padding: 56px 20px;
+  min-height: 100%;
+  width: 100%;
+}
+
+.intro {
+  text-align: center;
+	margin: 3em 0;
+}
+
+.intro h1 {
+  margin-bottom: 0;
+}
+.intro h2 {
+  margin-top: 0;
+	font-weight: 400;
 }

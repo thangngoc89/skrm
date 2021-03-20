@@ -13,12 +13,14 @@ type Field =
       name: string;
       label?: string;
       choices: Array<Pair>;
+      display?: "dropdown" | "radio";
     }
   | {
       type: "select_one_ref";
       name: string;
       label?: string;
       list: string;
+      display?: "dropdown" | "radio";
     }
   | {
       type: "matrix_select_one";
@@ -61,16 +63,12 @@ type Field =
       fields: Array<Field>;
     };
 
-type List = {
-  name: string;
-  choices: Array<Pair>;
-};
-
+type List = { [key: string]: Array<Pair> };
 type Form = {
   name: string;
   survey: Array<Field>;
-  list?: Array<List>;
+  lists?: List;
   label: string;
   labelSecondary?: string;
 };
-export { Field, Form, List };
+export { Pair, Field, Form, List };

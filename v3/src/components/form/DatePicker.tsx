@@ -1,5 +1,11 @@
 import { h, FunctionComponent } from "preact";
-import { DatePicker as ThemeDatePicker, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
+import {
+  DatePicker as ThemeDatePicker,
+  TextInput as ThemeTextInput,
+  FormGroup,
+  Label,
+  ErrorMessage,
+} from "@trussworks/react-uswds";
 import { Field, FieldProps } from "formik";
 
 interface DataPickerProps {
@@ -20,9 +26,14 @@ export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional })
               {label}
             </Label>
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
-            <ThemeDatePicker
+            <ThemeTextInput {...field} id={field.name} disabled error={hasError} />
+
+            {/* <ThemeDatePicker
               id={field.id}
               name={field.name}
+              // disabled
+              value={field.value}
+              defaultValue={field.value}
               // error={hasError}
               onChange={(value: any) => {
                 setFieldValue(field.name, value);
@@ -30,7 +41,7 @@ export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional })
               onBlur={(_) => {
                 setTouched({ [field.name]: true });
               }}
-            />
+            /> */}
           </FormGroup>
         );
       }}

@@ -1,7 +1,7 @@
 import { h, FunctionComponent } from "preact";
 import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from "formik";
 import style from "./FormRender.css";
-import { TextInput, Group, Button } from "./FormComponents";
+import { TextInput, Group, Button, DatePicker } from "./FormComponents";
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 
 interface FormRenderer {
@@ -16,6 +16,8 @@ const renderField = (field: FieldSchema) => {
           {field.fields.map(renderField)}
         </Group>
       );
+    case "date":
+      return <DatePicker name={field.name} label={field.label || ""} optional={field.optional} />;
     case "text":
       return <TextInput name={field.name} label={field.label || ""} optional={field.optional} />;
     case "integer":
@@ -27,7 +29,7 @@ const renderField = (field: FieldSchema) => {
 export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
   return (
     <Formik
-      initialValues={{}}
+      initialValues={{ ngay_kham: "2021-03-20" }}
       onSubmit={(values, actions) => {
         console.log({ values, actions });
         alert(JSON.stringify(values, null, 2));

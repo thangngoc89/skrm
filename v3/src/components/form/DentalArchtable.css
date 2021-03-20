@@ -1,0 +1,8 @@
+.tbody td {
+  padding: 0;
+}
+
+.tbody td select {
+  margin-top: 0;
+  border: 0;
+}

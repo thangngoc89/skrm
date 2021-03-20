@@ -3,6 +3,7 @@ import { Table } from "@trussworks/react-uswds";
 import { Field, FieldProps, useFormikContext } from "formik";
 import { SelectOneDropdown } from "./FormComponents";
 import { List } from "../form_schema/schema";
+import style from "./DentalArchTable.css";
 
 interface Props {
   name: string;
@@ -11,8 +12,8 @@ interface Props {
 }
 
 export const DentalArchTable: React.FC<Props> = ({ name, lists, label }) => {
-  const context = useFormikContext();
-  console.log(context);
+  // const context = useFormikContext();
+  // console.log(context);
   return (
     <Table bordered fullWidth caption={label}>
       <thead>
@@ -20,9 +21,15 @@ export const DentalArchTable: React.FC<Props> = ({ name, lists, label }) => {
           <td></td>
           <th scope="col">Nhai</th>
           <th scope="col">N</th>
+          <th scope="col">T</th>
+          <th scope="col">G</th>
+          <th scope="col">X</th>
+          <th scope="col">TT</th>
+          <th scope="col">NC</th>
+          <td></td>
         </tr>
       </thead>
-      <tbody>
+      <tbody className={style.tbody}>
         <tr>
           <th scope="row">17</th>
           <td>
@@ -31,6 +38,22 @@ export const DentalArchTable: React.FC<Props> = ({ name, lists, label }) => {
           <td>
             <SelectOneDropdown name="17_N" choices={lists.tinhtrang}></SelectOneDropdown>
           </td>
+          <td>
+            <SelectOneDropdown name="17_T" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="17_G" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="17_X" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="17_TT" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="17_NC" choices={lists.nhucau}></SelectOneDropdown>
+          </td>
+          <td></td>
         </tr>
         <tr>
           <th scope="row">16</th>

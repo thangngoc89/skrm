@@ -59,7 +59,7 @@ const fields: Array<field> = [
     type: "select_one",
     label:
       "Có bao giờ cháu ngại cười vì mặc cảm răng của mình không đẹp không?",
-    content: [
+    choices: [
       { name: "1", label: "Rất thường xuyên" },
       { name: "2", label: "Thường xuyên" },
       { name: "3", label: "Thỉnh thoảng" },
@@ -70,7 +70,7 @@ const fields: Array<field> = [
     name: "b8",
     type: "select_one",
     label: "Cháu có cảm thấy hài lòng với hàm răng của mình không?",
-    content: [
+    choices: [
       { name: "1", label: "Rất hài lòng" },
       { name: "2", label: "Hài lòng" },
       { name: "3", label: "Trung bình" },
@@ -91,9 +91,9 @@ const fields: Array<field> = [
   {
     name: "b10",
     type: "matrix_select_one",
-    question:
+    label:
       "Nếu bây giờ cháu phải đến khám ở một phòng nha, thì cháu nghĩ nha sĩ sẽ nói với cháu điều gì? Nha sĩ sẽ nói với cháu rằng (đọc từng câu một):",
-    values: [
+    choices: [
       { name: "1", label: "Có" },
       { name: "0", label: "Không" },
       { name: "9", label: "Không biết" },
@@ -110,7 +110,7 @@ const fields: Array<field> = [
   {
     name: "b11",
     type: "select_one",
-    question: "Trong 12 tháng vừa qua, cháu đã đi nha sĩ khám răng mấy lần?",
+    label: "Trong 12 tháng vừa qua, cháu đã đi nha sĩ khám răng mấy lần?",
     choices: [
       { name: "1", label: "1 lần" },
       { name: "2", label: "2 lần" },
@@ -142,7 +142,7 @@ const fields: Array<field> = [
     type: "select_many",
     label:
       "Cháu hãy ráng nhớ xem nha sĩ đã làm gì cho cháu trong lần khám đó? Nha sĩ/ Y sĩ đã làm...",
-    content: [
+    choices: [
       { name: "1", label: "Trám răng" },
       { name: "2", label: "Cạo vôi răng" },
       { name: "3", label: "Nhổ răng" },
@@ -189,7 +189,7 @@ const fields: Array<field> = [
     type: "select_many",
     label:
       "Cháu sử dụng vật dụng nào dưới đây để đánh răng? (đọc tên từng vật dụng)",
-    content: [
+    choices: [
       { name: "1", label: "Bàn chải" },
       { name: "2", label: "Tăm tre" },
       { name: "3", label: "Tăm nhựa" },
@@ -207,7 +207,7 @@ const fields: Array<field> = [
   {
     name: "b17",
     type: "select_one",
-    question: "Cháu có sử dụng kem đánh răng để chải răng không?",
+    label: "Cháu có sử dụng kem đánh răng để chải răng không?",
     choices: [
       { name: "1", label: "Có" },
       { name: "2", label: "Không" },
@@ -216,7 +216,7 @@ const fields: Array<field> = [
   {
     name: "b18",
     type: "select_one",
-    question: "Cháu có dùng kem đánh răng có Fluor không?",
+    label: "Cháu có dùng kem đánh răng có Fluor không?",
     choices: [
       { name: "1", label: "Có" },
       { name: "2", label: "Không" },
@@ -269,8 +269,8 @@ const fields: Array<field> = [
   {
     name: "b21",
     type: "select_one",
-    question: "Cháu vui lòng cho biết nghề nghiệp của cha mình?",
-    label: [
+    label: "Cháu vui lòng cho biết nghề nghiệp của cha mình?",
+    choices: [
       { name: "1", label: "Nông dân" },
       { name: "2", label: "Lao động tay chân" },
       { name: "3", label: "Nhân viên hành chánh" },

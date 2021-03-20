@@ -1,0 +1,18 @@
+.main {
+  padding: 56px 20px;
+  min-height: 100%;
+  width: 100%;
+}
+
+.main > .intro {
+  text-align: center;
+  margin: 3em 0;
+}
+
+.main > .intro h1 {
+  margin-bottom: 0;
+}
+.main > .intro h2 {
+  margin-top: 0;
+  font-weight: 400;
+}

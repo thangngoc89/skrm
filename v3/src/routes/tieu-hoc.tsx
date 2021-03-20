@@ -1,13 +1,9 @@
 import { FunctionalComponent, h } from "preact";
 import style from "./tieu-hoc.css";
-import { FormRenderer } from "../components/form/form_render";
-import {
-  ButtonGroup,
-  Button,
-  GridContainer,
-  Grid,
-} from "@trussworks/react-uswds";
-import { Link } from "preact-router/match";
+import { FormRenderer } from "../components/form/FormRender";
+import { ButtonGroup, Button, GridContainer, Grid } from "@trussworks/react-uswds";
+// import { Link } from "preact-router/match";
+import { form as tieu_hoc_form } from "../components/form_schema/tieu_hoc_form";
 
 const Tieuhoc: FunctionalComponent = () => {
   return (
@@ -30,13 +26,7 @@ const Tieuhoc: FunctionalComponent = () => {
           </Button>
         </div>
       </div>
-      <div className={style.main}>
-        <div className={style.intro}>
-          <h1>Phiếu điều tra sức khỏe răng miệng</h1>
-          <h2>(dành cho trẻ dưới 15 tuổi)</h2>
-        </div>
-        <FormRenderer />
-      </div>
+      <FormRenderer form={tieu_hoc_form} />
     </div>
   );
 };

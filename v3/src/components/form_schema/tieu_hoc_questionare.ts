@@ -1,6 +1,6 @@
-import { field, form } from "./schema";
+import { Field, Form } from "./schema";
 
-const fields: Array<field> = [
+const fields: Array<Field> = [
   {
     name: "b2",
     type: "select_one",
@@ -339,10 +339,9 @@ const fields: Array<field> = [
   },
 ];
 
-const form: form = {
+const form: Form = {
   name: "tieu_hoc_questionare",
-  label: "Phiếu điều tra sức khỏe răng miệng",
-  labelSecondary: "(dành cho trẻ dưới 15 tuổi)",
+  label: "Phỏng vấn kiến thức và thói quen chăm sóc sức khỏe răng miệng",
   survey: fields,
 };
 

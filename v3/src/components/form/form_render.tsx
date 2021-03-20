@@ -8,7 +8,7 @@ import {
   FieldProps,
 } from "formik";
 
-import { TextInput, Group } from "./FormComponents";
+import { TextInput, Group, Button } from "./FormComponents";
 
 export const FormRenderer: React.FC<{}> = () => {
   const initialValues = { firstName: "", lastName: "" };
@@ -26,7 +26,7 @@ export const FormRenderer: React.FC<{}> = () => {
           <TextInput name="firstName" label="First name" />
           <TextInput name="lastName" label="Last name" />
 
-          <button type="submit">Submit</button>
+          <Button type="submit">Submit</Button>
         </Group>
       </Form>
     </Formik>

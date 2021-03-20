@@ -1,8 +1,26 @@
 import { FunctionalComponent, h } from "preact";
 import style from "./style.css";
-import { Fieldset, Checkbox } from "@trussworks/react-uswds";
 import { FormRenderer } from "../../components/form/form_render";
+import { SideNav } from "@trussworks/react-uswds";
+import { Link } from "preact-router/match";
 
+const navItems = [
+  <Link activeClassName="usa-current" href="/" key="home">
+    Home
+  </Link>,
+  <Link activeClassName="usa-current" href="/new/mau-giao" key="mau-giao">
+    Thêm hồ sơ Mẫu giáo
+  </Link>,
+  <Link activeClassName="usa-current" href="/new/tieu-hoc" key="tieu-hoc">
+    Thêm hồ sơ Trẻ em dưới 15 tuổi
+  </Link>,
+  <Link activeClassName="usa-current" href="/new/nguoi-lon" key="nguoi-lon">
+    Thêm hồ sơ Người lớn
+  </Link>,
+  <Link activeClassName="usa-current" href="/quan-li" key="quan-li">
+    Quản lí hồ sơ
+  </Link>,
+];
 const Home: FunctionalComponent = () => {
   return (
     <div class={style.home}>
@@ -11,34 +29,9 @@ const Home: FunctionalComponent = () => {
         <h2>Bộ môn Nha Khoa Công Cộng - Đại học Y Dược TP.HCM</h2>
       </div>
 
+      <h1>Khám hồ sơ mới cho</h1>
+      <SideNav items={navItems} />
       <FormRenderer />
-      <Fieldset legend="Historical figures 1" legendSrOnly>
-        <Checkbox
-          id="truth"
-          name="historical-figures-1"
-          value="truth"
-          defaultChecked
-          label="Sojourner Truth"
-        />
-        <Checkbox
-          id="douglass"
-          name="historical-figures-1"
-          value="douglass"
-          label="Frederick Douglass"
-        />
-        <Checkbox
-          id="washington"
-          name="historical-figures-1"
-          value="washington"
-          label="Booker T. Washington"
-        />
-        <Checkbox
-          id="carver"
-          name="historical-figures-1"
-          label="George Washington Carver"
-          disabled
-        />
-      </Fieldset>
     </div>
   );
 };

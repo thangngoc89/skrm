@@ -5,20 +5,13 @@ import { Field, FieldProps } from "formik";
 import { Pair } from "../form_schema/schema";
 
 interface SelectOneDropdownProps {
-  type?: string;
   name: string;
-  label: string;
+  label?: string;
   optional?: boolean;
   choices: Array<Pair>;
 }
 
-export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({
-  type = "text",
-  label,
-  name,
-  optional,
-  choices,
-}) => {
+export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, name, optional, choices }) => {
   let choiceValues: Array<string> = useMemo(() => choices.map(({ name }) => name), [choices]);
 
   return (
@@ -27,9 +20,11 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({
         const hasError = Boolean(touched[field.name] && errors[field.name]);
         return (
           <FormGroup error={hasError}>
-            <Label htmlFor={name} error={hasError} hint={optional === true ? " (tuỳ chọn)" : ""}>
-              {label}
-            </Label>
+            {label && (
+              <Label htmlFor={name} error={hasError} hint={optional ? " (tuỳ chọn)" : ""}>
+                {label}
+              </Label>
+            )}
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
             <Dropdown
               {...field}

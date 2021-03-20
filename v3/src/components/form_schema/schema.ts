@@ -56,6 +56,7 @@ type Field =
     }
   | {
       type: "dental_arch_table";
+      name: string;
       label?: string;
       headers: Array<string>;
       rowHeaders: Array<string>;

@@ -61,6 +61,7 @@ const hanhChinh: Array<Field> = [
 const tinhTrangNhuCau: Array<Field> = [
   {
     type: "dental_arch_table",
+    name: "ham_tren",
     label: "Hàm trên",
     headers: ["", "Nhai", "N", "T", "G", "X", "TT", "NC", ""],
     rowHeaders: ["17", "16", "15", "14", "13", "12", "11", "21", "22", "23", "24", "25", "26", "27"],
@@ -181,6 +182,7 @@ const tinhTrangNhuCau: Array<Field> = [
   },
   {
     type: "dental_arch_table",
+    name: "ham_duoi",
     label: "Hàm dưới",
     headers: ["", "Nhai", "N", "T", "G", "X", "TT", "NC", ""],
     rowHeaders: ["37", "36", "35", "34", "33", "32", "31", "41", "42", "43", "44", "45", "46", "47"],

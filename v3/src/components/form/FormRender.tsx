@@ -1,7 +1,7 @@
 import { h, FunctionComponent } from "preact";
 import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from "formik";
 import style from "./FormRender.css";
-import { TextInput, Group, Button, DatePicker, SelectOneDropdown } from "./FormComponents";
+import { TextInput, Group, Button, DatePicker, SelectOneDropdown, DentalArchTable } from "./FormComponents";
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
 interface FormRenderer {
@@ -15,7 +15,7 @@ const renderField = (field: FieldSchema, lists: List) => {
         <Group name={field.label} key={field.name}>
           {field.fields.map((field) => renderField(field, lists))}
         </Group>
-    );
+      );
     case "date":
       return <DatePicker name={field.name} label={field.label || ""} optional={field.optional} />;
     case "text":
@@ -26,6 +26,8 @@ const renderField = (field: FieldSchema, lists: List) => {
       return <SelectOneDropdown name={field.name} label={field.label || ""} choices={field.choices} />;
     case "select_one_ref":
       return <SelectOneDropdown name={field.name} label={field.label || ""} choices={lists[field.list]} />;
+    case "dental_arch_table":
+      return <DentalArchTable name={field.name} lists={lists} label={field.label} />;
     default:
       return null;
   }

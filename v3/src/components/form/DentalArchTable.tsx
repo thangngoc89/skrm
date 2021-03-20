@@ -1,31 +1,56 @@
 import { h, FunctionComponent } from "preact";
-import { TextInput as ThemeTextInput, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
+import { Table } from "@trussworks/react-uswds";
 import { Field, FieldProps, useFormikContext } from "formik";
+import { SelectOneDropdown } from "./FormComponents";
+import { List } from "../form_schema/schema";
 
-interface TextInputProps {
-  type?: string;
+interface Props {
   name: string;
-  label: string;
-  optional?: boolean;
+  lists: List;
+  label?: string;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name, optional }) => {
+export const DentalArchTable: React.FC<Props> = ({ name, lists, label }) => {
   const context = useFormikContext();
   console.log(context);
   return (
-    <Field name={name}>
-      {({ field, form: { touched, errors } }: FieldProps) => {
-        const hasError = Boolean(touched[field.name] && errors[field.name]);
-        return (
-          <FormGroup error={hasError}>
-            <Label htmlFor={name} error={hasError} hint={optional === true ? " (tuỳ chọn)" : ""}>
-              {label}
-            </Label>
-            {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
-            <ThemeTextInput {...field} id={field.name} type={type} error={hasError} />
-          </FormGroup>
-        );
-      }}
-    </Field>
+    <Table bordered fullWidth caption={label}>
+      <thead>
+        <tr>
+          <td></td>
+          <th scope="col">Nhai</th>
+          <th scope="col">N</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <th scope="row">17</th>
+          <td>
+            <SelectOneDropdown name="17_Nhai" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="17_N" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">16</th>
+          <td>
+            <SelectOneDropdown name="16_Nhai" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="16_N" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+        </tr>
+        <tr>
+          <th scope="row">15</th>
+          <td>
+            <SelectOneDropdown name="15_Nhai" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+          <td>
+            <SelectOneDropdown name="15_N" choices={lists.tinhtrang}></SelectOneDropdown>
+          </td>
+        </tr>
+      </tbody>
+    </Table>
   );
 };

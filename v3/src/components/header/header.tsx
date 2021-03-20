@@ -55,14 +55,14 @@ const Header: FunctionalComponent = () => {
         >
           Menu
         </a>
+        <PrimaryNav
+          className={style.primaryNav}
+          items={menuItems}
+          mobileExpanded={expanded}
+          onToggleMobileNav={onClick}
+        ></PrimaryNav>
       </nav>
       <div className={`usa-overlay${expanded ? " is-visible" : ""}`}></div>
-      <PrimaryNav
-        className={style.primaryNav}
-        items={menuItems}
-        mobileExpanded={expanded}
-        onToggleMobileNav={onClick}
-      ></PrimaryNav>
     </header>
   );
 };

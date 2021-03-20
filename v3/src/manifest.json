@@ -1,6 +1,6 @@
 {
-  "name": "v3",
-  "short_name": "v3",
+  "name": "VOSER - Phần mềm quản lí dữ liệu khám sức khoẻ răng miệng",
+  "short_name": "VOSER",
   "start_url": "/",
   "display": "standalone",
   "orientation": "portrait",

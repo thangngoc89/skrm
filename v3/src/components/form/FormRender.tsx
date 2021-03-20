@@ -1,20 +1,29 @@
 import { h, FunctionComponent } from "preact";
-import {
-  Formik,
-  FormikHelpers,
-  FormikProps,
-  Form,
-  Field,
-  FieldProps,
-} from "formik";
+import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from "formik";
 import style from "./FormRender.css";
 import { TextInput, Group, Button } from "./FormComponents";
-import { form } from "../form_schema/schema";
+import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 
 interface FormRenderer {
-  form: form;
+  form: FormSchema;
 }
 
+const renderField = (field: FieldSchema) => {
+  switch (field.type) {
+    case "group":
+      return (
+        <Group name={field.label} key={field.name}>
+          {field.fields.map(renderField)}
+        </Group>
+      );
+    case "text":
+      return <TextInput name={field.name} label={field.label || ""} optional={field.optional} />;
+    case "integer":
+      return <TextInput type="number" name={field.name} label={field.label || ""} optional={field.optional} />;
+    default:
+      return null;
+  }
+};
 export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
   return (
     <Formik
@@ -31,12 +40,10 @@ export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
           {form.labelSecondary && <h2>{form.labelSecondary}</h2>}
         </div>
         <Form className="usa-form">
-          <Group name="Hành chính">
-            <TextInput name="firstName" label="First name" />
-            <TextInput name="lastName" label="Last name" />
-
-            <Button type="submit">Submit</Button>
-          </Group>
+          {form.survey.map(renderField)}
+          <Button type="submit" secondary>
+            Submit
+          </Button>
         </Form>
       </div>
     </Formik>

@@ -23,6 +23,7 @@
   "dependencies": {
     "@trussworks/react-uswds": "^1.13.2",
     "formik": "^2.2.6",
+    "obj-str": "^1.0.3",
     "preact": "^10.3.1",
     "preact-compat": "^3.19.0",
     "preact-render-to-string": "^5.1.4",

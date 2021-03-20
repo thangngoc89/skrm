@@ -4,10 +4,11 @@ import { Route, Router } from "preact-router";
 import Home from "../routes/home";
 import Profile from "../routes/profile";
 import NotFoundPage from "../routes/notfound";
-import Header from "./header";
+import Header from "./header/header";
 import Tieuhoc from "../routes/tieu-hoc";
 
 const App: FunctionalComponent = () => {
+  
   return (
     <div id="app">
       <Header />

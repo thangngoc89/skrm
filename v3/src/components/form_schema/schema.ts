@@ -4,7 +4,7 @@ type BaseInput = {
   name: string;
   label?: string;
   condition?: string;
-  notRequired?: boolean;
+  optional?: boolean;
 };
 
 type Field =
@@ -48,6 +48,7 @@ type Field =
     }
   | {
       type: "group";
+      name: string;
       label: string;
       fields: Array<Field>;
     }

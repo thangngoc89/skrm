@@ -9,12 +9,13 @@ const hanhChinh: Array<Field> = [
   {
     type: "text",
     name: "so_ho_so",
-    label: "Số hồ sơ",
+    label: "Mã số hồ sơ",
+    optional: true,
   },
   {
     type: "text",
     name: "nguoi_kham",
-    label: "Người khams",
+    label: "Người khám",
   },
   {
     type: "text",
@@ -42,8 +43,8 @@ const hanhChinh: Array<Field> = [
   },
   {
     type: "text",
-    name: "dan_toc",
-    label: "Dân tộc",
+    name: "lop",
+    label: "Lớp",
   },
   {
     type: "text",
@@ -66,11 +67,13 @@ const tinhTrangNhuCau: Array<Field> = [
 const fields: Array<Field> = [
   {
     type: "group",
+    name: "hanh_chinh",
     label: "Hành chính",
     fields: hanhChinh,
   },
   {
     type: "group",
+    name: "tinh_trang_nhu_cau",
     label: "Tình trạng và nhu cầu",
     fields: tinhTrangNhuCau,
   },

@@ -4,7 +4,7 @@
   top: 56px;
   background: #ededed;
   width: 100%;
-  padding: 0.5em;
+  padding: 0.5rem 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;

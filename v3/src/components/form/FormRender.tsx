@@ -15,7 +15,7 @@ const renderField = (field: FieldSchema, lists: List) => {
         <Group name={field.label} key={field.name}>
           {field.fields.map((field) => renderField(field, lists))}
         </Group>
-      );
+    );
     case "date":
       return <DatePicker name={field.name} label={field.label || ""} optional={field.optional} />;
     case "text":
@@ -46,7 +46,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
           {form.labelSecondary && <h2>{form.labelSecondary}</h2>}
         </div>
         <Form className="usa-form">
-          {form.survey.map((field) => renderField(field, form.lists))}
+          {form.survey.map((field) => renderField(field, form.lists || {}))}
           <Button type="submit" secondary>
             Submit
           </Button>

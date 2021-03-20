@@ -26,7 +26,7 @@ export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional })
               {label}
             </Label>
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
-            <ThemeTextInput {...field} id={field.name} disabled error={hasError} />
+            <ThemeTextInput {...field} type="text" id={field.name} disabled error={hasError} />
 
             {/* <ThemeDatePicker
               id={field.id}

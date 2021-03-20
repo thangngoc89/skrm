@@ -1,29 +1,29 @@
-type pair = { value: string; label: string };
+type pair = { name: string; label: string };
 
 type field =
   | {
       type: "select_one";
       name: string;
-      question: string;
-      content: Array<pair>;
+      label: string;
+      choices: Array<pair>;
     }
   | {
       type: "matrix_select_one";
       name: string;
-      question: string;
-      values: Array<pair>;
+      label: string;
+      choices: Array<pair>;
       subQuestions: Array<{ id: string; question: string }>;
     }
   | {
       type: "select_many";
       name: string;
-      question: string;
-      content: Array<pair>;
+      label: string;
+      choices: Array<pair>;
     }
   | {
       type: "text";
       name: string;
-      question?: string;
+      label?: string;
       condition?: string;
     }
   | {
@@ -32,12 +32,14 @@ type field =
     }
   | {
       type: "group";
-      caption: string;
+      label: string;
       content: Array<field>;
     };
 
 type form = {
   name: string;
-  fields: Array<field>;
+  survey: Array<field>;
+  label: string;
+  labelSecondary?: string;
 };
 export { field, form };

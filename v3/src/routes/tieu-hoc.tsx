@@ -35,7 +35,7 @@ const Tieuhoc: FunctionalComponent = () => {
           <h1>Phiếu điều tra sức khỏe răng miệng</h1>
           <h2>(dành cho trẻ dưới 15 tuổi)</h2>
         </div>
-        <FormRenderer />{" "}
+        <FormRenderer />
       </div>
     </div>
   );

@@ -1,33 +1,36 @@
-import { h, FunctionComponent } from "preact";
+import { h } from "preact";
+import { useMemo } from "react";
 import { Table } from "@trussworks/react-uswds";
-import { Field, FieldProps, useFormikContext } from "formik";
 import { SelectOneDropdown } from "./FormComponents";
-import { List } from "../form_schema/schema";
+import { List, Field } from "../form_schema/schema";
 import style from "./DentalArchTable.css";
 
 interface Props {
   name: string;
   lists: List;
   label?: string;
+  headers: Array<string>;
+  rowHeaders: Array<string>;
+  alternativeRowHeaders: Array<string>;
+  fields: Array<Field>;
 }
 
-export const DentalArchTable: React.FC<Props> = ({ name, lists, label }) => {
+export const DentalArchTable: React.FC<Props> = ({
+  name,
+  lists,
+  label,
+  headers,
+  rowHeaders,
+  alternativeRowHeaders,
+}) => {
   // const context = useFormikContext();
   // console.log(context);
+  const headerLength = useMemo(() => headers.length, [headers]);
+
   return (
     <Table bordered fullWidth caption={label}>
       <thead>
-        <tr>
-          <td></td>
-          <th scope="col">Nhai</th>
-          <th scope="col">N</th>
-          <th scope="col">T</th>
-          <th scope="col">G</th>
-          <th scope="col">X</th>
-          <th scope="col">TT</th>
-          <th scope="col">NC</th>
-          <td></td>
-        </tr>
+        <tr>{headers.map((header) => (header === "" ? <td></td> : <th scope="col">{header}</th>))}</tr>
       </thead>
       <tbody className={style.tbody}>
         <tr>

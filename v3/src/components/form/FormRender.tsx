@@ -27,7 +27,7 @@ const renderField = (field: FieldSchema, lists: List) => {
     case "select_one_ref":
       return <SelectOneDropdown name={field.name} label={field.label || ""} choices={lists[field.list]} />;
     case "dental_arch_table":
-      return <DentalArchTable name={field.name} lists={lists} label={field.label} />;
+      return <DentalArchTable lists={lists} label={field.label} {...field} />;
     default:
       return null;
   }

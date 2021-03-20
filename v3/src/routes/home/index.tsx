@@ -31,7 +31,6 @@ const Home: FunctionalComponent = () => {
 
       <h1>Khám hồ sơ mới cho</h1>
       <SideNav items={navItems} />
-      <FormRenderer />
     </div>
   );
 };

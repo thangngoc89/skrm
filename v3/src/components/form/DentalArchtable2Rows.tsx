@@ -5,8 +5,6 @@ import { List, SelectPairRef } from "../form_schema/schema";
 import style from "./DentalArchTable2Rows.css";
 import objStr from "obj-str";
 
-type FieldsMap = { [key: string]: string };
-
 interface HeaderProps {
   headers: Array<string>;
 }
@@ -49,17 +47,9 @@ interface Props {
   secondRow: Array<SelectPairRef>;
 }
 export const DentalArchTable2Rows: React.FC<Props> = ({ name, lists, label, firstRow, secondRow }) => {
-  // const headerLength = useMemo(() => headers.length, [headers]);
-
-  // const fieldsMap: FieldsMap = useMemo(() => {
-  //   let map: FieldsMap = {};
-  //   fields.forEach(({ name, list }) => {
-  //     map[name] = list;
-  //   });
-  //   return map;
-  // }, [fields]);
   const firstRowHeaders: Array<string> = useMemo(() => firstRow.map(({ name, label }) => label || name), [firstRow]);
   const secondRowHeaders = useMemo(() => secondRow.map(({ name, label }) => label || name).reverse(), [firstRow]);
+
   return (
     <article className={style.wrapper}>
       <caption className={style.caption}>{label}</caption>

@@ -1,9 +1,9 @@
-import { FunctionalComponent, h } from "preact";
+import { h } from "preact";
 import style from "./test-route.css";
 import { Table } from "@trussworks/react-uswds";
 // import List from "../components/form_schema/"
 
-const Testroute: FunctionalComponent<{}> = () => {
+const Testroute: React.FC<{}> = () => {
   return (
     <div>
       <Table bordered fullWidth caption="This table uses the fullWidth prop to increase to 100% width">

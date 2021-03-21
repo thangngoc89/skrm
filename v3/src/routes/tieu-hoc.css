@@ -4,12 +4,44 @@
   top: 56px;
   background: #ededed;
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 0 0.5rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  font-size: 80%;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-.right {
-  margin: 4px 0;
+.left a,
+.right button {
+  display: inline-block;
+  height: 2rem;
+  line-height: 2rem;
+  padding: 0 0.5rem;
+  min-width: 50px;
+}
+.left a {
+  text-align: center;
+  text-decoration: none;
+  color: #000;
+  will-change: background-color;
+}
+
+.left a:not(:last-child) {
+  border-right: 1px solid rgb(167, 167, 167);
+}
+.left a:hover {
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+.right button {
+  border: 0;
+  background-color: #d83933;
+  color: #fff;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.right button:hover {
+  background-color: #b50909;
 }

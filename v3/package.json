@@ -23,7 +23,9 @@
   "dependencies": {
     "@trussworks/react-uswds": "^1.13.2",
     "@types/react-responsive": "^8.0.2",
+    "dexie": "^3.0.3",
     "formik": "^2.2.6",
+    "nanoid": "^3.1.22",
     "obj-str": "^1.0.3",
     "preact": "^10.3.1",
     "preact-compat": "^3.19.0",

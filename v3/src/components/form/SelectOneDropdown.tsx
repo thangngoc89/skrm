@@ -1,7 +1,7 @@
 import { h, FunctionComponent } from "preact";
 import { useMemo } from "react";
 import { Dropdown, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
-import { Field, FieldProps } from "formik";
+import { Field, FieldProps, FastField } from "formik";
 import { Pair } from "../form_schema/schema";
 
 interface SelectOneDropdownProps {
@@ -15,7 +15,7 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, nam
   let choiceValues: Array<string> = useMemo(() => choices.map(({ name }) => name), [choices]);
 
   return (
-    <Field name={name}>
+    <FastField name={name}>
       {({ field, form: { touched, errors, setFieldValue } }: FieldProps) => {
         const hasError = Boolean(touched[field.name] && errors[field.name]);
         return (
@@ -42,12 +42,14 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, nam
             >
               <option>--</option>
               {choices.map((pair) => (
-                <option value={pair.name}>{pair.label}</option>
+                <option value={pair.name} key={pair.name}>
+                  {pair.label}
+                </option>
               ))}
             </Dropdown>
           </FormGroup>
         );
       }}
-    </Field>
+    </FastField>
   );
 };

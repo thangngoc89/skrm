@@ -1,9 +1,9 @@
 import { h, FunctionComponent } from "preact";
 import { TextInput as ThemeTextInput, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
-import { Field, FieldProps } from "formik";
+import { FastField, FieldProps } from "formik";
 
 interface TextInputProps {
-  type?: string;
+  type?: "text" | "number";
   name: string;
   label: string;
   optional?: boolean;
@@ -11,7 +11,7 @@ interface TextInputProps {
 
 export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name, optional }) => {
   return (
-    <Field name={name}>
+    <FastField name={name}>
       {({ field, form: { touched, errors } }: FieldProps) => {
         const hasError = Boolean(touched[field.name] && errors[field.name]);
         return (
@@ -24,6 +24,6 @@ export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name
           </FormGroup>
         );
       }}
-    </Field>
+    </FastField>
   );
 };

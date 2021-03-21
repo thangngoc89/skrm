@@ -12,9 +12,7 @@ import {
 } from "./FormComponents";
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
-interface FormRenderer {
-  form: FormSchema;
-}
+import { format } from "date-fns";
 
 const renderField = (field: FieldSchema, lists: List) => {
   switch (field.type) {
@@ -42,11 +40,18 @@ const renderField = (field: FieldSchema, lists: List) => {
       return null;
   }
 };
-export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
+
+interface FormRenderer {
+  form: FormSchema;
+  initialValues?: any;
+  makeInitialValues: () => any;
+}
+
+export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues }) => {
   return (
     // @ts-ignore: broken formik definition
     <Formik
-      initialValues={{ ngay_kham: "2021-03-20" }}
+      initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
         console.log({ values, actions });
         alert(JSON.stringify(values, null, 2));
@@ -61,7 +66,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
         <Form className="usa-form">
           {form.survey.map((field) => renderField(field, form.lists || {}))}
           <Button type="submit" secondary>
-            Submit
+            Lưu
           </Button>
         </Form>
       </div>

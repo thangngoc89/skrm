@@ -1,4 +1,5 @@
 import { Field, Form } from "./schema";
+import { format } from "date-fns";
 
 const hanhChinh: Array<Field> = [
   {
@@ -705,4 +706,9 @@ const form: Form = {
   },
 };
 
-export { form };
+const makeCurrentDate = () => format(new Date(), "dd-MM-yyyy");
+const makeInitialValues = () => ({
+  ngay_kham: makeCurrentDate(),
+});
+
+export { form, makeInitialValues };

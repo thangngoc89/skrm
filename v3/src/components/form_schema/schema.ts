@@ -1,5 +1,7 @@
 type Pair = { name: string; label: string };
 
+type SelectPairRef = { name: string; list: string };
+
 type BaseInput = {
   name: string;
   label?: string;
@@ -61,7 +63,8 @@ type Field =
       headers: Array<string>;
       rowHeaders: Array<string>;
       alternativeRowHeaders: Array<string>;
-      fields: Array<Field>;
+      // Same as select_one_ref
+      fields: Array<SelectPairRef>;
     };
 
 type List = { [key: string]: Array<Pair> };
@@ -72,4 +75,4 @@ type Form = {
   label: string;
   labelSecondary?: string;
 };
-export { Pair, Field, Form, List };
+export { Pair, Field, Form, List, SelectPairRef };

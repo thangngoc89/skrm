@@ -7,6 +7,9 @@
   border: 0;
 }
 
+.emptyCell {
+  background-color: #f0f0f0 !important;
+}
 /* .thead > tr > td,
 .thead > tr > th {
   position: sticky;

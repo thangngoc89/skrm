@@ -11,8 +11,18 @@ interface SelectOneDropdownProps {
   choices: Array<Pair>;
 }
 
+type choiceValuesCache = { [key: string]: string };
+
 export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, name, optional, choices }) => {
-  let choiceValues: Array<string> = useMemo(() => choices.map(({ name }) => name), [choices]);
+  let choiceValues: choiceValuesCache = useMemo(() => {
+    let cache: choiceValuesCache = {};
+
+    choices.forEach(({ name }) => {
+      cache[name] = name;
+      cache[name.toUpperCase()] = name;
+    });
+    return cache;
+  }, [choices]);
 
   return (
     <FastField name={name}>
@@ -32,10 +42,8 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, nam
               onKeyUp={(event) => {
                 if (!event.altKey && event.key !== "Space" && event.key !== "Tab") {
                   event.preventDefault();
-                  if (choiceValues.indexOf(event.key) !== -1) {
-                    setFieldValue(field.name, event.key);
-                  } else if (choiceValues.indexOf(event.key.toLowerCase()) !== -1) {
-                    setFieldValue(field.name, event.key.toLowerCase());
+                  if (typeof choiceValues[event.key] !== "undefined") {
+                    setFieldValue(field.name, choiceValues[event.key]);
                   }
                 }
               }}

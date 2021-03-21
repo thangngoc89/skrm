@@ -1,0 +1,37 @@
+.wrapper {
+  margin: 1rem 0;
+}
+.container {
+  border: 1px solid #565c65;
+  width: 100%;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+}
+
+.rowReverse {
+  flex-direction: row-reverse;
+}
+
+.cell,
+.cellHeader {
+  flex: 1 1 0%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border: 1px solid #565c65; */
+}
+
+.cellHeader {
+  font-weight: 700;
+}
+
+.caption {
+  min-width: 300px;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.75rem;
+  text-align: left;
+}

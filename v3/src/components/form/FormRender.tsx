@@ -1,7 +1,15 @@
-import { h, FunctionComponent } from "preact";
-import { Formik, FormikHelpers, FormikProps, Form, Field, FieldProps } from "formik";
+import { h } from "preact";
+import { Formik, Form } from "formik";
 import style from "./FormRender.css";
-import { TextInput, Group, Button, DatePicker, SelectOneDropdown, DentalArchTable } from "./FormComponents";
+import {
+  TextInput,
+  Group,
+  Button,
+  DatePicker,
+  SelectOneDropdown,
+  DentalArchTable,
+  DentalArchTable2Rows,
+} from "./FormComponents";
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
 interface FormRenderer {
@@ -28,6 +36,8 @@ const renderField = (field: FieldSchema, lists: List) => {
       return <SelectOneDropdown name={field.name} label={field.label || ""} choices={lists[field.list]} />;
     case "dental_arch_table":
       return <DentalArchTable lists={lists} label={field.label} {...field} />;
+    case "dental_arch_table_2_rows":
+      return <DentalArchTable2Rows lists={lists} label={field.label} {...field} />;
     default:
       return null;
   }

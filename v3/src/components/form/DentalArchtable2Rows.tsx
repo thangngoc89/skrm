@@ -1,63 +1,43 @@
 import { h } from "preact";
 import { useMemo } from "react";
-import { Table } from "@trussworks/react-uswds";
 import { SelectOneDropdown } from "./FormComponents";
 import { List, SelectPairRef } from "../form_schema/schema";
-import style from "./DentalArchTable.css";
-
-interface SingleRowProps {
-  headers: Array<string>;
-  headerLength: number;
-  rowHeader: string;
-  alternativeRowHeader: string;
-  lists: List;
-  fieldsMap: FieldsMap;
-}
+import style from "./DentalArchTable2Rows.css";
+import objStr from "obj-str";
 
 type FieldsMap = { [key: string]: string };
 
-const SingleRow: React.FC<SingleRowProps> = ({
-  headers,
-  headerLength,
-  rowHeader,
-  alternativeRowHeader,
-  lists,
-  fieldsMap,
-}) => {
+interface HeaderProps {
+  headers: Array<string>;
+}
+
+const Header: React.FC<HeaderProps> = ({ headers }) => {
   return (
-    <tr>
-      {headers.map((_header, i) => {
-        if (i === 0) {
-          return (
-            <th scope="row" key={i}>
-              {rowHeader}
-            </th>
-          );
-        } else if (i === headerLength - 1) {
-          return alternativeRowHeader === "" ? (
-            <td></td>
-          ) : (
-            <th scope="row" key={i}>
-              {alternativeRowHeader}
-            </th>
-          );
-        } else {
-          const key = `${rowHeader}_${headers[i]}`;
-          if (fieldsMap[key]) {
-            return (
-              <td>
-                <SelectOneDropdown
-                  name={`${rowHeader}_${headers[i]}`}
-                  choices={lists[fieldsMap[key]]}
-                  key={i}
-                ></SelectOneDropdown>
-              </td>
-            );
-          }
-          return <td className={style.emptyCell}></td>;
-        }
-      })}
-    </tr>
+    <section className={style.row}>
+      {headers.map((header) => (
+        <div key={header} className={style.cellHeader}>
+          {header}
+        </div>
+      ))}
+    </section>
+  );
+};
+
+interface DataRowProps {
+  row: Array<SelectPairRef>;
+  lists: List;
+  isReverse?: boolean;
+}
+
+const DataRow: React.FC<DataRowProps> = ({ row, lists, isReverse = false }) => {
+  return (
+    <section className={objStr({ [style.row]: true, [style.rowReverse]: isReverse })}>
+      {row.map(({ name, list }) => (
+        <div key={name} className={style.cell}>
+          <SelectOneDropdown name={name} choices={lists[list]}></SelectOneDropdown>
+        </div>
+      ))}
+    </section>
   );
 };
 
@@ -65,54 +45,30 @@ interface Props {
   name: string;
   lists: List;
   label?: string;
-  headers: Array<string>;
-  rowHeaders: Array<string>;
-  alternativeRowHeaders: Array<string>;
-  fields: Array<SelectPairRef>;
+  firstRow: Array<SelectPairRef>;
+  secondRow: Array<SelectPairRef>;
 }
+export const DentalArchTable2Rows: React.FC<Props> = ({ name, lists, label, firstRow, secondRow }) => {
+  // const headerLength = useMemo(() => headers.length, [headers]);
 
-export const DentalArchTable: React.FC<Props> = ({
-  name,
-  lists,
-  label,
-  headers,
-  rowHeaders,
-  alternativeRowHeaders,
-  fields,
-}) => {
-  const headerLength = useMemo(() => headers.length, [headers]);
-
-  const fieldsMap: FieldsMap = useMemo(() => {
-    let map: FieldsMap = {};
-    fields.forEach(({ name, list }) => {
-      map[name] = list;
-    });
-    return map;
-  }, [fields]);
-
+  // const fieldsMap: FieldsMap = useMemo(() => {
+  //   let map: FieldsMap = {};
+  //   fields.forEach(({ name, list }) => {
+  //     map[name] = list;
+  //   });
+  //   return map;
+  // }, [fields]);
+  const firstRowHeaders: Array<string> = useMemo(() => firstRow.map(({ name, label }) => label || name), [firstRow]);
+  const secondRowHeaders = useMemo(() => secondRow.map(({ name, label }) => label || name).reverse(), [firstRow]);
   return (
-    <Table bordered fullWidth caption={label}>
-      <thead>
-        <tr>{headers.map((header) => (header === "" ? <td></td> : <th scope="col">{header}</th>))}</tr>
-      </thead>
-      <tbody className={style.tbody}>
-        {rowHeaders.map((rowHeader, i) => {
-          return (
-            <SingleRow
-              key={i}
-              rowHeader={rowHeader}
-              alternativeRowHeader={alternativeRowHeaders[i]}
-              headers={headers}
-              headerLength={headerLength}
-              lists={lists}
-              fieldsMap={fieldsMap}
-            />
-          );
-        })}
-      </tbody>
-      <thead>
-        <tr>{headers.map((header) => (header === "" ? <td></td> : <th scope="col">{header}</th>))}</tr>
-      </thead>
-    </Table>
+    <article className={style.wrapper}>
+      <caption className={style.caption}>{label}</caption>
+      <div className={style.container}>
+        <Header headers={firstRowHeaders} />
+        <DataRow row={firstRow} lists={lists} />
+        <DataRow row={secondRow} lists={lists} isReverse />
+        <Header headers={secondRowHeaders} />
+      </div>
+    </article>
   );
 };

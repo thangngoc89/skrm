@@ -1,6 +1,6 @@
 type Pair = { name: string; label: string };
 
-type SelectPairRef = { name: string; list: string };
+type SelectPairRef = { name: string; label?: string; list: string };
 
 type BaseInput = {
   name: string;
@@ -65,6 +65,13 @@ type Field =
       alternativeRowHeaders: Array<string>;
       // Same as select_one_ref
       fields: Array<SelectPairRef>;
+    }
+  | {
+      type: "dental_arch_table_2_rows";
+      name: string;
+      label?: string;
+      firstRow: Array<SelectPairRef>;
+      secondRow: Array<SelectPairRef>;
     };
 
 type List = { [key: string]: Array<Pair> };

@@ -307,7 +307,86 @@ const fields: Array<Field> = [
     type: "group",
     name: "ohis",
     label: "Tình trạng vệ sinh răng miệng (OHIS)",
-    fields: [],
+    fields: [
+      {
+        type: "dental_arch_table_2_rows",
+        name: "pi",
+        label: "PI",
+        firstRow: [
+          {
+            name: "pi_16N",
+            label: "16N",
+            list: "pi",
+          },
+          {
+            name: "pi_11N",
+            label: "11N",
+            list: "pi",
+          },
+          {
+            name: "pi_26N",
+            label: "26N",
+            list: "pi",
+          },
+        ],
+        secondRow: [
+          {
+            name: "pi_36T",
+            label: "36(T)",
+            list: "pi",
+          },
+          {
+            name: "pi_31N",
+            label: "31N",
+            list: "pi",
+          },
+          {
+            name: "pi_46T",
+            label: "46(T)",
+            list: "pi",
+          },
+        ],
+      },
+      {
+        type: "dental_arch_table_2_rows",
+        name: "ci",
+        label: "CI",
+        firstRow: [
+          {
+            name: "ci_16N",
+            label: "16N",
+            list: "ci",
+          },
+          {
+            name: "ci_11N",
+            label: "11N",
+            list: "ci",
+          },
+          {
+            name: "ci_26N",
+            label: "26N",
+            list: "ci",
+          },
+        ],
+        secondRow: [
+          {
+            name: "ci_36T",
+            label: "36(T)",
+            list: "ci",
+          },
+          {
+            name: "ci_31N",
+            label: "31N",
+            list: "ci",
+          },
+          {
+            name: "pi_46T",
+            label: "46(T)",
+            list: "pi",
+          },
+        ],
+      },
+    ],
   },
   {
     type: "group",
@@ -350,43 +429,68 @@ const fields: Array<Field> = [
         label: "Độ cắn chìa",
       },
       {
-        type: "select_one",
+        type: "select_one_ref",
         name: "can_nguoc_rang_truoc",
         label: "Cắn ngược răng trước",
         display: "radio",
-        choices: [
-          { name: "0", label: "0 - Không" },
-          { name: "1", label: "1 - Có" },
-        ],
+        list: "yes_no",
       },
       {
-        type: "select_one",
+        type: "select_one_ref",
         name: "can_nguoc_rang_sau",
         label: "Cắn ngược răng sau",
         display: "radio",
-        choices: [
-          { name: "0", label: "0 - Không" },
-          { name: "1", label: "1 - Có" },
-        ],
+        list: "yes_no",
       },
       {
-        type: "select_one",
+        type: "select_one_ref",
         name: "can_ho",
         label: "Cắn hở",
         display: "radio",
-        choices: [
-          { name: "0", label: "0 - Không" },
-          { name: "1", label: "1 - Có" },
+        list: "yes_no",
+      },
+      {
+        type: "dental_arch_table_2_rows",
+        name: "chen_chuc",
+        label: "Mọc chen chúc",
+        firstRow: [
+          {
+            name: "chen_chuc_sextant_1",
+            label: "Sextant 1",
+            list: "yes_no",
+          },
+          {
+            name: "chen_chuc_sextant_2",
+            label: "Sextant 2",
+            list: "yes_no",
+          },
+          {
+            name: "chen_chuc_sextant_3",
+            label: "Sextant 3",
+            list: "yes_no",
+          },
+        ],
+        secondRow: [
+          {
+            name: "chen_chuc_sextant_4",
+            label: "Sextant 4",
+            list: "yes_no",
+          },
+          {
+            name: "chen_chuc_sextant_5",
+            label: "Sextant 5",
+            list: "yes_no",
+          },
+          {
+            name: "chen_chuc_sextant_6",
+            label: "Sextant 6",
+            list: "yes_no",
+          },
         ],
       },
     ],
   },
-  {
-    type: "group",
-    name: "moc_chen_chuc",
-    label: "Mọc chen chúc",
-    fields: [],
-  },
+
   {
     type: "group",
     name: "phan_loai_angle",
@@ -424,9 +528,79 @@ const fields: Array<Field> = [
   },
   {
     type: "group",
-    name: "mih",
+    name: "mih_group",
     label: "MIH",
-    fields: [],
+    fields: [
+      {
+        type: "dental_arch_table_2_rows",
+        name: "mih",
+        label: "MIH",
+        firstRow: [
+          {
+            name: "mih_16",
+            label: "16",
+            list: "mih",
+          },
+          {
+            name: "mih_12",
+            label: "12",
+            list: "mih",
+          },
+          {
+            name: "mih_11",
+            label: "11",
+            list: "mih",
+          },
+          {
+            name: "mih_21",
+            label: "21",
+            list: "mih",
+          },
+          {
+            name: "mih_22",
+            label: "22",
+            list: "mih",
+          },
+          {
+            name: "mih_26",
+            label: "26",
+            list: "mih",
+          },
+        ],
+        secondRow: [
+          {
+            name: "mih_36",
+            label: "36",
+            list: "mih",
+          },
+          {
+            name: "mih_32",
+            label: "32",
+            list: "mih",
+          },
+          {
+            name: "mih_31",
+            label: "31",
+            list: "mih",
+          },
+          {
+            name: "mih_41",
+            label: "41",
+            list: "mih",
+          },
+          {
+            name: "mih_42",
+            label: "42",
+            list: "mih",
+          },
+          {
+            name: "mih_46",
+            label: "46",
+            list: "mih",
+          },
+        ],
+      },
+    ],
   },
 ];
 
@@ -466,6 +640,20 @@ const form: Form = {
       { name: "f", label: "F - Bít hố rãnh" },
       { name: "p", label: "P - Trám phòng ngừa" },
     ],
+    pi: [
+      { name: "0", label: "0 - Không có mảng bám" },
+      { name: "1", label: "1 - Mảng bám 1/3 cổ răng/vết dính" },
+      { name: "2", label: "2 - Mảng bám 2/3 răng" },
+      { name: "3", label: "3 - mảng bám >2/3 răng" },
+      { name: "x", label: "X - Không có răng" },
+    ],
+    ci: [
+      { name: "0", label: "0 - Không có vôi răng" },
+      { name: "1", label: "1 - Vôi răng 1/3 cổ răng" },
+      { name: "2", label: "2 - Vôi răng 2/3 răng" },
+      { name: "3", label: "3 - Vôi răng >2/3 răng" },
+      { name: "x", label: "X - Không có răng" },
+    ],
     angle: [
       { name: "1", label: "1 - Hạng I" },
       { name: "2", label: "2 - Hạng II" },
@@ -479,6 +667,10 @@ const form: Form = {
       { name: "3", label: "3 - Đã có trám phục hồi" },
       { name: "4", label: "4 - Mất do nhổ vì MIH" },
       { name: "5", label: "5 - Răng chưa mọc" },
+    ],
+    yes_no: [
+      { name: "0", label: "0 - Không" },
+      { name: "1", label: "1 - Có" },
     ],
   },
 };

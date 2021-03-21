@@ -5,6 +5,48 @@ import { SelectOneDropdown } from "./FormComponents";
 import { List, Field } from "../form_schema/schema";
 import style from "./DentalArchTable.css";
 
+interface SingleRowProps {
+  headers: Array<string>;
+  headerLength: number;
+  rowHeader: string;
+  alternativeRowHeader: string;
+  lists: List;
+}
+
+const SingleRow: React.FC<SingleRowProps> = ({ headers, headerLength, rowHeader, alternativeRowHeader, lists }) => {
+  return (
+    <tr>
+      {headers.map((header, i) => {
+        if (i === 0) {
+          return (
+            <th scope="row" key={i}>
+              {rowHeader}
+            </th>
+          );
+        } else if (i === headerLength - 1) {
+          return alternativeRowHeader === "" ? (
+            <td></td>
+          ) : (
+            <th scope="row" key={i}>
+              {alternativeRowHeader}
+            </th>
+          );
+        } else {
+          return (
+            <td>
+              <SelectOneDropdown
+                name={`${rowHeader}_${headers[i]}`}
+                choices={lists.tinhtrang}
+                key={i}
+              ></SelectOneDropdown>
+            </td>
+          );
+        }
+      })}
+    </tr>
+  );
+};
+
 interface Props {
   name: string;
   lists: List;
@@ -33,50 +75,22 @@ export const DentalArchTable: React.FC<Props> = ({
         <tr>{headers.map((header) => (header === "" ? <td></td> : <th scope="col">{header}</th>))}</tr>
       </thead>
       <tbody className={style.tbody}>
-        <tr>
-          <th scope="row">17</th>
-          <td>
-            <SelectOneDropdown name="17_Nhai" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="17_N" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="17_T" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="17_G" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="17_X" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="17_TT" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="17_NC" choices={lists.nhucau}></SelectOneDropdown>
-          </td>
-          <td></td>
-        </tr>
-        <tr>
-          <th scope="row">16</th>
-          <td>
-            <SelectOneDropdown name="16_Nhai" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="16_N" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-        </tr>
-        <tr>
-          <th scope="row">15</th>
-          <td>
-            <SelectOneDropdown name="15_Nhai" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-          <td>
-            <SelectOneDropdown name="15_N" choices={lists.tinhtrang}></SelectOneDropdown>
-          </td>
-        </tr>
+        {rowHeaders.map((rowHeader, i) => {
+          return (
+            <SingleRow
+              key={i}
+              rowHeader={rowHeader}
+              alternativeRowHeader={alternativeRowHeaders[i]}
+              headers={headers}
+              headerLength={headerLength}
+              lists={lists}
+            />
+          );
+        })}
       </tbody>
+      <thead>
+        <tr>{headers.map((header) => (header === "" ? <td></td> : <th scope="col">{header}</th>))}</tr>
+      </thead>
     </Table>
   );
 };

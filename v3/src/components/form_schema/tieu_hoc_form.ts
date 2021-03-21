@@ -99,7 +99,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "14_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "14_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "13_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "13_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "13_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "13_G", list: "tinhtrang" },
@@ -107,7 +106,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "13_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "13_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "12_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "12_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "12_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "12_G", list: "tinhtrang" },
@@ -115,7 +113,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "12_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "12_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "11_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "11_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "11_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "11_G", list: "tinhtrang" },
@@ -123,7 +120,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "11_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "11_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "21_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "21_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "21_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "21_G", list: "tinhtrang" },
@@ -131,7 +127,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "21_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "21_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "22_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "22_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "22_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "22_G", list: "tinhtrang" },
@@ -139,7 +134,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "22_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "22_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "23_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "23_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "23_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "23_G", list: "tinhtrang" },
@@ -220,7 +214,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "34_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "34_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "33_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "33_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "33_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "33_G", list: "tinhtrang" },
@@ -228,7 +221,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "33_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "33_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "32_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "32_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "32_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "32_G", list: "tinhtrang" },
@@ -236,7 +228,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "32_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "32_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "31_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "31_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "31_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "31_G", list: "tinhtrang" },
@@ -244,7 +235,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "31_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "31_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "41_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "41_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "41_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "41_G", list: "tinhtrang" },
@@ -252,7 +242,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "41_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "41_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "42_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "42_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "42_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "42_G", list: "tinhtrang" },
@@ -260,7 +249,6 @@ const tinhTrangNhuCau: Array<Field> = [
       { type: "select_one_ref", name: "42_TT", list: "tinhtrang" },
       { type: "select_one_ref", name: "42_NC", list: "nhucau" },
 
-      { type: "select_one_ref", name: "43_Nhai", list: "tinhtrang" },
       { type: "select_one_ref", name: "43_N", list: "tinhtrang" },
       { type: "select_one_ref", name: "43_T", list: "tinhtrang" },
       { type: "select_one_ref", name: "43_G", list: "tinhtrang" },

@@ -4,6 +4,9 @@ import { Table } from "@trussworks/react-uswds";
 import { SelectOneDropdown } from "./FormComponents";
 import { List, Field, SelectPairRef } from "../form_schema/schema";
 import style from "./DentalArchTable.css";
+import { Fragment } from "preact";
+import { tablet } from "../responsive";
+import { useMediaQuery } from "react-responsive";
 
 interface SingleRowProps {
   headers: Array<string>;
@@ -35,19 +38,19 @@ const SingleRow: React.FC<SingleRowProps> = ({
           );
         } else if (i === headerLength - 1) {
           return alternativeRowHeader === "" ? (
-            <td></td>
+            <td className={style.emptyCell}></td>
           ) : (
             <th scope="row" key={i}>
               {alternativeRowHeader}
             </th>
           );
-      } else {
+        } else {
           const key = `${rowHeader}_${headers[i]}`;
           if (fieldsMap[key]) {
             return (
               <td>
                 <SelectOneDropdown
-                  name={`${rowHeader}_${headers[i]}`}
+                  name={key}
                   choices={lists[fieldsMap[key]]}
                   key={i}
                 ></SelectOneDropdown>
@@ -61,17 +64,7 @@ const SingleRow: React.FC<SingleRowProps> = ({
   );
 };
 
-interface Props {
-  name: string;
-  lists: List;
-  label?: string;
-  headers: Array<string>;
-  rowHeaders: Array<string>;
-  alternativeRowHeaders: Array<string>;
-  fields: Array<SelectPairRef>;
-}
-
-export const DentalArchTable: React.FC<Props> = ({
+export const DentalArchTableBigScreen: React.FC<Props> = ({
   name,
   lists,
   label,
@@ -115,4 +108,83 @@ export const DentalArchTable: React.FC<Props> = ({
       </thead>
     </Table>
   );
+};
+
+export const DentalArchTableMobile: React.FC<Props> = ({
+  name,
+  lists,
+  label,
+  headers,
+  rowHeaders,
+  alternativeRowHeaders,
+  fields,
+}) => {
+  const fieldsMap: FieldsMap = useMemo(() => {
+    let map: FieldsMap = {};
+    fields.forEach(({ name, list }) => {
+      map[name] = list;
+    });
+    return map;
+  }, [fields]);
+
+  // Remove empty cell in start and end of headers
+  const slicedHeader = useMemo(() => {
+    return headers.slice(1, headers.length - 1);
+  }, [headers]);
+
+  return (
+    <Fragment>
+      <caption className={style.caption}>{label}</caption>
+      {rowHeaders.map((rowHeader, rowIter) => {
+        let alRowHeader = alternativeRowHeaders[rowIter] === "" ? null : alternativeRowHeaders[rowIter];
+
+        return (
+          <section key={rowIter}>
+            <p>
+              R{rowHeader} {alRowHeader && `/ R${alRowHeader}`}
+            </p>
+            <Table bordered fullWidth>
+              <tbody className={style.tbody}>
+                {slicedHeader.map((header, colIter) => {
+                  const key = `${rowHeader}_${slicedHeader[colIter]}`;
+                  return (
+                    <tr>
+                      <th scope="row">{header}</th>
+
+                      {fieldsMap[key] ? (
+                        <td>
+                          <SelectOneDropdown
+                            name={key}
+                            choices={lists[fieldsMap[key]]}
+                            key={colIter}
+                          ></SelectOneDropdown>
+                        </td>
+                      ) : (
+                        <td className={style.emptyCell}></td>
+                      )}
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </Table>
+          </section>
+        );
+      })}
+    </Fragment>
+  );
+};
+
+interface Props {
+  name: string;
+  lists: List;
+  label?: string;
+  headers: Array<string>;
+  rowHeaders: Array<string>;
+  alternativeRowHeaders: Array<string>;
+  fields: Array<SelectPairRef>;
+}
+export const DentalArchTable: React.FC<Props> = (props) => {
+  const isTablet = useMediaQuery({ minWidth: tablet });
+
+  return isTablet ? <DentalArchTableBigScreen {...props} /> : <DentalArchTableMobile {...props} />;
 };

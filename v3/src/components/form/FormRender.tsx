@@ -12,7 +12,7 @@ const renderField = (field: FieldSchema, lists: List) => {
   switch (field.type) {
     case "group":
       return (
-        <Group name={field.label} key={field.name}>
+        <Group name={field.label} key={field.name} className={style.group}>
           {field.fields.map((field) => renderField(field, lists))}
         </Group>
       );
@@ -34,6 +34,7 @@ const renderField = (field: FieldSchema, lists: List) => {
 };
 export const FormRenderer: React.FC<FormRenderer> = ({ form }) => {
   return (
+    // @ts-ignore: broken formik definition
     <Formik
       initialValues={{ ngay_kham: "2021-03-20" }}
       onSubmit={(values, actions) => {

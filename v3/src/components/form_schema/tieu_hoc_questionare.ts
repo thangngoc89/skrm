@@ -14,8 +14,7 @@ const fields: Array<Field> = [
   {
     type: "select_one",
     name: "b4",
-    label:
-      "Theo cháu cảm nhận, thì cháu thấy tình trạng **răng** của mình thế nào?",
+    label: "Theo cháu cảm nhận, thì cháu thấy tình trạng **răng** của mình thế nào?",
     choices: [
       { name: "1", label: "Hoàn toàn lành mạnh" },
       { name: "2", label: "Rất tốt" },
@@ -29,8 +28,7 @@ const fields: Array<Field> = [
   {
     type: "select_one",
     name: "b5",
-    label:
-      "Theo cháu cảm nhận, thì cháu thấy tình trạng **nướu** của mình thế nào?",
+    label: "Theo cháu cảm nhận, thì cháu thấy tình trạng **nướu** của mình thế nào?",
     choices: [
       { name: "1", label: "Hoàn toàn lành mạnh" },
       { name: "2", label: "Rất tốt" },
@@ -57,8 +55,7 @@ const fields: Array<Field> = [
   {
     name: "b7",
     type: "select_one",
-    label:
-      "Có bao giờ cháu ngại cười vì mặc cảm răng của mình không đẹp không?",
+    label: "Có bao giờ cháu ngại cười vì mặc cảm răng của mình không đẹp không?",
     choices: [
       { name: "1", label: "Rất thường xuyên" },
       { name: "2", label: "Thường xuyên" },
@@ -81,8 +78,7 @@ const fields: Array<Field> = [
   {
     name: "b9",
     type: "select_one",
-    label:
-      "Trong năm vừa qua cháu có khi nào phải nghỉ học thường xuyên hay vài ngày vì bị đau răng không?",
+    label: "Trong năm vừa qua cháu có khi nào phải nghỉ học thường xuyên hay vài ngày vì bị đau răng không?",
     choices: [
       { name: "1", label: "Có" },
       { name: "2", label: "Không" },
@@ -120,16 +116,14 @@ const fields: Array<Field> = [
       { name: "6", label: "Không đến khám trong 12 tháng trước" },
       {
         name: "7",
-        label:
-          "Không nhận được sự chăm sóc răng miệng nào hoặc không gặp nha sĩ nào",
+        label: "Không nhận được sự chăm sóc răng miệng nào hoặc không gặp nha sĩ nào",
       },
     ],
   },
   {
     name: "b12",
     type: "select_one",
-    label:
-      "Lý do của lần đến khám nha sĩ gần đây nhất là gì? (chọn 1 ô duy nhất)",
+    label: "Lý do của lần đến khám nha sĩ gần đây nhất là gì? (chọn 1 ô duy nhất)",
     choices: [
       { name: "1", label: "Đau, hay có vấn đề với răng, nướu và miệng" },
       { name: "2", label: "Điều trị/ tái khám" },
@@ -140,8 +134,7 @@ const fields: Array<Field> = [
   {
     name: "b13",
     type: "select_many",
-    label:
-      "Cháu hãy ráng nhớ xem nha sĩ đã làm gì cho cháu trong lần khám đó? Nha sĩ/ Y sĩ đã làm...",
+    label: "Cháu hãy ráng nhớ xem nha sĩ đã làm gì cho cháu trong lần khám đó? Nha sĩ/ Y sĩ đã làm...",
     choices: [
       { name: "1", label: "Trám răng" },
       { name: "2", label: "Cạo vôi răng" },
@@ -187,8 +180,7 @@ const fields: Array<Field> = [
   {
     name: "b16",
     type: "select_many",
-    label:
-      "Cháu sử dụng vật dụng nào dưới đây để đánh răng? (đọc tên từng vật dụng)",
+    label: "Cháu sử dụng vật dụng nào dưới đây để đánh răng? (đọc tên từng vật dụng)",
     choices: [
       { name: "1", label: "Bàn chải" },
       { name: "2", label: "Tăm tre" },
@@ -226,8 +218,7 @@ const fields: Array<Field> = [
   {
     name: "b19",
     type: "matrix_select_one",
-    label:
-      "Cháu có thường ăn hay uống những thức ăn sau đây, dù là ăn/ uống rất ít không? (đọc từng thứ)",
+    label: "Cháu có thường ăn hay uống những thức ăn sau đây, dù là ăn/ uống rất ít không? (đọc từng thứ)",
     choices: [
       { name: "6", label: "Vài lần/ngày" },
       { name: "5", label: "Mỗi ngày" },
@@ -339,10 +330,10 @@ const fields: Array<Field> = [
   },
 ];
 
-const form: Form = {
+export const form: Form = {
   name: "tieu_hoc_questionare",
   label: "Phỏng vấn kiến thức và thói quen chăm sóc sức khỏe răng miệng",
   survey: fields,
 };
 
-export { form };
+export const makeInitialValues = () => ({});

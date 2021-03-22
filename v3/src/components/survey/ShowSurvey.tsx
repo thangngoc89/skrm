@@ -1,11 +1,12 @@
 import { h } from "preact";
 import { ISurveyList } from "../db";
 import { Tieuhoc } from "./tieu-hoc";
+import { memo } from "react";
 
-export const ShowSurvey: React.FC<ISurveyList> = ({ surveyId, surveyType, createdAt }) => {
+const ShowSurvey: React.FC<ISurveyList> = ({ surveyId, surveyType, createdAt }) => {
   switch (surveyType) {
     case "tieu_hoc":
-      return <Tieuhoc surveyId={surveyId} />;
+      return <Tieuhoc key={surveyId} surveyId={surveyId} />;
     default:
       return (
         <div>
@@ -26,3 +27,7 @@ export const ShowSurvey: React.FC<ISurveyList> = ({ surveyId, surveyType, create
       );
   }
 };
+
+const MemoShowSurvey = memo(ShowSurvey);
+
+export { MemoShowSurvey as ShowSurvey };

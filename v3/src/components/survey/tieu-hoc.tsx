@@ -1,7 +1,8 @@
 import { h } from "preact";
 import style from "./tieu-hoc.css";
-import { FormRenderer } from "../form/FormRender";
 import { useReducer } from "react";
+
+import { FormRenderer } from "../form/FormRender";
 import * as tieu_hoc_form from "../form_schema/tieu_hoc_form";
 import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
 import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
@@ -40,6 +41,21 @@ const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, dispatch, cu
   );
 };
 
+type SelectFormToRenderProps = {
+  surveyId: string;
+  currentForm: TieuhocFormType;
+};
+const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({ surveyId, currentForm }) => {
+  switch (currentForm) {
+    case "tieu_hoc_form":
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_form} />;
+    case "tieu_hoc_questionare":
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} />;
+    case "tieu_hoc_child_oidp":
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} />;
+  }
+};
+
 type Props = {
   surveyId: string;
 };
@@ -63,9 +79,7 @@ export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
           <button>Lưu</button>
         </div>
       </div>
-      {currentForm === "tieu_hoc_form" && <FormRenderer surveyId={surveyId} {...tieu_hoc_form} />}
-      {currentForm === "tieu_hoc_questionare" && <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} />}
-      {currentForm === "tieu_hoc_child_oidp" && <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} />}
+      <SelectFormToRender currentForm={currentForm} surveyId={surveyId} />
     </div>
   );
 };

@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import { db, makeId } from "../components/db";
 import { useAsync } from "react-async-hook";
 import { SurveyType } from "src/components/types";
@@ -56,7 +56,7 @@ interface LoadSurveyProps {
   surveyId: string;
 }
 
-const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
+const NonMemoLoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
   const dataLoader = useAsync(loadSurveyAsync, [surveyId]);
 
   if (dataLoader.loading) {
@@ -67,8 +67,10 @@ const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
     return (
       <Error title="Không tìm thấy hồ sơ này" explain="Chắc là có lỗi phần mềm xảy ra. Các bạn báo anh biết nhé" />
     );
-  } else return <ShowSurvey {...dataLoader.result} />;
+  } else return <ShowSurvey key={dataLoader.result.surveyId} {...dataLoader.result} />;
 };
+
+const LoadSurvey = memo(NonMemoLoadSurvey);
 
 interface Props {
   surveyId?: string;
@@ -85,4 +87,5 @@ const MainSurveyRoute: React.FC<Props> = ({ surveyType, surveyId }) => {
   }
 };
 
-export default MainSurveyRoute;
+const memoziedMainSurveyRoute = memo(MainSurveyRoute);
+export default memoziedMainSurveyRoute;

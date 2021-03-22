@@ -6,6 +6,7 @@ import TestRoute from "../routes/test-route";
 import NotFoundPage from "../routes/notfound";
 import Header from "./header/header";
 import MainSurveyRoute from "../routes/load-survey";
+import { Tieuhoc } from "./survey/tieu-hoc";
 
 const App: FunctionalComponent = () => {
   return (
@@ -17,7 +18,7 @@ const App: FunctionalComponent = () => {
         <Route path="/new/tieu-hoc" component={MainSurveyRoute} surveyType="tieu_hoc" />
         <Route path="/new/nguoi-lon" component={MainSurveyRoute} surveyType="nguoi_lon" />
         <Route path="/survey/:surveyId" component={MainSurveyRoute} />
-        <Route path="/test" component={TestRoute} />
+        <Route path="/test" component={Tieuhoc} surveyId="123456" />
         <NotFoundPage default />
       </Router>
     </div>

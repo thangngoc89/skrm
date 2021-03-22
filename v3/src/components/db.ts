@@ -19,7 +19,7 @@ class VoserDatabase extends Dexie {
   data: Dexie.Table<ISurveyData, string>;
 
   constructor() {
-    super("VoserDatabase");
+    super("Voser");
     this.version(3).stores({
       record_list: "surveyId, surveyType",
       record_data: "[surveyId+surveyForm]",

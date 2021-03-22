@@ -1,17 +1,15 @@
 import { h } from "preact";
 import style from "./tieu-hoc.css";
-import { FormRenderer } from "../components/form/FormRender";
-// import { Link } from "preact-router/match";
+import { FormRenderer } from "../form/FormRender";
 import { useReducer } from "react";
-import * as tieu_hoc_form from "../components/form_schema/tieu_hoc_form";
-import * as tieu_hoc_questionare from "../components/form_schema/tieu_hoc_questionare";
-import * as tieu_hoc_child_oidp from "../components/form_schema/tieu_hoc_child_oidp";
-
-type FormType = "tieu_hoc_form" | "tieu_hoc_questionare" | "tieu_hoc_child_oidp";
+import * as tieu_hoc_form from "../form_schema/tieu_hoc_form";
+import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
+import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
+import { TieuhocFormType } from "../types";
 type State = {
-  currentForm: FormType;
+  currentForm: TieuhocFormType;
 };
-type Action = { type: "change_form"; newForm: FormType };
+type Action = { type: "change_form"; newForm: TieuhocFormType };
 
 function reducer(state: State, action: Action): State {
   switch (action.type) {
@@ -21,9 +19,9 @@ function reducer(state: State, action: Action): State {
 }
 
 type FormNavButtonProps = {
-  name: FormType;
+  name: TieuhocFormType;
   label: string;
-  currentForm: FormType;
+  currentForm: TieuhocFormType;
   dispatch: (action: Action) => void;
 };
 
@@ -43,10 +41,10 @@ const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, dispatch, cu
 };
 
 type Props = {
-  recordId: string;
+  surveyId: string;
 };
 
-const Tieuhoc: React.FC<{}> = () => {
+export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
   const [{ currentForm }, dispatch] = useReducer(reducer, { currentForm: "tieu_hoc_form" });
   return (
     <div>
@@ -71,5 +69,3 @@ const Tieuhoc: React.FC<{}> = () => {
     </div>
   );
 };
-
-export default Tieuhoc;

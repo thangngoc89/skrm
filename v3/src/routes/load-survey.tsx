@@ -6,6 +6,8 @@ import { SurveyType } from "src/components/types";
 import { Spinner } from "../components/spinner";
 import style from "./load-survey.css";
 import { route } from "preact-router";
+import { Error } from "../components/error";
+import { ShowSurvey } from "../components/survey/ShowSurvey";
 
 const createSurveyAsync = async (surveyType: SurveyType) => {
   return await db.list.add({
@@ -53,15 +55,23 @@ const loadSurveyAsync = async (surveyId: string) => {
 interface LoadSurveyProps {
   surveyId: string;
 }
+
 const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
   const dataLoader = useAsync(loadSurveyAsync, [surveyId]);
 
-  console.log(dataLoader);
-  return (
-    <div className={style.wrapper}>
-      <Spinner />
-    </div>
-  );
+  if (dataLoader.loading) {
+    return (
+      <div className={style.wrapper}>
+        <Spinner />
+      </div>
+    );
+  } else if (dataLoader.error) {
+    return <div className={style.wrapper}>Error: {dataLoader.error.message}</div>;
+  } else if (typeof dataLoader.result === "undefined") {
+    return (
+      <Error title="Không tìm thấy hồ sơ này" explain="Chắc là có lỗi phần mềm xảy ra. Các bạn báo anh biết nhé" />
+    );
+  } else return <ShowSurvey {...dataLoader.result} />;
 };
 
 interface Props {

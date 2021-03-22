@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { Formik, Form } from "formik";
+import { Formik, Form, useFormikContext } from "formik";
 import style from "./FormRender.css";
 import {
   TextInput,
@@ -16,6 +16,7 @@ import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema"
 import { List } from "../form_schema/schema";
 import { SurveyDataKey } from "../db";
 import { notify, Msg } from "../notify";
+import MountPortal from "../MountPortal";
 
 const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
   switch (field.type) {
@@ -80,6 +81,14 @@ interface FormRenderer {
   nextActionLabel: string;
 }
 
+const SubmitButton: React.FC<{}> = () => {
+  const { handleSubmit } = useFormikContext();
+  return (
+    <button type="submit" onClick={handleSubmit}>
+      Lưu
+    </button>
+  );
+};
 export const FormRenderer: React.FC<FormRenderer> = ({
   form,
   initialValues,
@@ -111,7 +120,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({
           <h1>{form.label}</h1>
           {form.labelSecondary && <h2>{form.labelSecondary}</h2>}
         </div>
-        <Form className="usa-form">
+        <Form className="usa-form" id="form">
           <FormGroup>
             <Label htmlFor={surveyId} hint=" (không sửa được)">
               Mã số hồ sơ VOSER
@@ -122,6 +131,9 @@ export const FormRenderer: React.FC<FormRenderer> = ({
           <Button type="submit" secondary>
             Lưu
           </Button>
+          <MountPortal id="formActions">
+            <SubmitButton />
+          </MountPortal>
         </Form>
       </div>
     </Formik>

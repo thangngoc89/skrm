@@ -164,9 +164,7 @@ export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
               dispatch={dispatch}
             />
           </nav>
-          <div className={style.right}>
-            <button>Lưu</button>
-          </div>
+          <div className={style.right} id="formActions"></div>
         </div>
         <SelectFormToRender
           currentForm={currentForm}

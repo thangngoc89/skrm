@@ -334,6 +334,7 @@ export const form: Form = {
   name: "tieu_hoc_questionare",
   label: "Phỏng vấn kiến thức và thói quen chăm sóc sức khỏe răng miệng",
   survey: fields,
+  labelVerbose: true,
 };
 
 export const makeInitialValues = () => ({});

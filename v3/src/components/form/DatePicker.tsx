@@ -12,9 +12,10 @@ interface DataPickerProps {
   name: string;
   label: string;
   optional?: boolean;
+  labelVerbose?: boolean;
 }
 
-export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional }) => {
+export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional, labelVerbose = false }) => {
   return (
     <Field name={name}>
       {({ field, form: { touched, errors, setFieldValue, setTouched } }: FieldProps) => {
@@ -23,7 +24,7 @@ export const DatePicker: React.FC<DataPickerProps> = ({ label, name, optional })
         return (
           <FormGroup error={hasError}>
             <Label htmlFor={name} error={hasError} hint={optional === true ? " (tuỳ chọn)" : ""}>
-              {label}
+              {labelVerbose && <strong>{`${name.toUpperCase()}. `}</strong>} {label}
             </Label>
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
             <ThemeTextInput {...field} type="text" id={field.name} disabled error={hasError} />

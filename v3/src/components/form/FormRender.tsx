@@ -17,7 +17,7 @@ import { List } from "../form_schema/schema";
 import { SurveyDataKey } from "../db";
 import { notify, Msg } from "../notify";
 
-const renderField = (field: FieldSchema, lists: List) => {
+const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
   switch (field.type) {
     case "group":
       return (
@@ -26,15 +26,41 @@ const renderField = (field: FieldSchema, lists: List) => {
         </Group>
       );
     case "date":
-      return <DatePicker name={field.name} label={field.label || ""} optional={field.optional} />;
+      return (
+        <DatePicker name={field.name} label={field.label || ""} optional={field.optional} labelVerbose={labelVerbose} />
+      );
     case "text":
-      return <TextInput name={field.name} label={field.label || ""} optional={field.optional} />;
+      return (
+        <TextInput name={field.name} label={field.label || ""} optional={field.optional} labelVerbose={labelVerbose} />
+      );
     case "integer":
-      return <TextInput type="number" name={field.name} label={field.label || ""} optional={field.optional} />;
+      return (
+        <TextInput
+          type="number"
+          name={field.name}
+          label={field.label || ""}
+          optional={field.optional}
+          labelVerbose={labelVerbose}
+        />
+      );
     case "select_one":
-      return <SelectOneDropdown name={field.name} label={field.label || ""} choices={field.choices} />;
+      return (
+        <SelectOneDropdown
+          name={field.name}
+          label={field.label || ""}
+          choices={field.choices}
+          labelVerbose={labelVerbose}
+        />
+      );
     case "select_one_ref":
-      return <SelectOneDropdown name={field.name} label={field.label || ""} choices={lists[field.list]} />;
+      return (
+        <SelectOneDropdown
+          name={field.name}
+          label={field.label || ""}
+          choices={lists[field.list]}
+          labelVerbose={labelVerbose}
+        />
+      );
     case "dental_arch_table":
       return <DentalArchTable lists={lists} label={field.label} {...field} />;
     case "dental_arch_table_2_rows":
@@ -90,9 +116,9 @@ export const FormRenderer: React.FC<FormRenderer> = ({
             <Label htmlFor={surveyId} hint=" (không sửa được)">
               Mã số hồ sơ VOSER
             </Label>
-            <ThemeTextInput id="surveyId" type="text" name="surveyId" value={surveyId} readOnly />
+            <ThemeTextInput id="surveyId" type="text" name="surveyId" value={surveyId} disabled />
           </FormGroup>
-          {form.survey.map((field) => renderField(field, form.lists || {}))}
+          {form.survey.map((field) => renderField(field, form.lists || {}, form.labelVerbose))}
           <Button type="submit" secondary>
             Lưu
           </Button>

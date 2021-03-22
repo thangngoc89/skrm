@@ -9,11 +9,18 @@ interface SelectOneDropdownProps {
   label?: string;
   optional?: boolean;
   choices: Array<Pair>;
+  labelVerbose?: boolean;
 }
 
 type choiceValuesCache = { [key: string]: string };
 
-export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, name, optional, choices }) => {
+export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({
+  label,
+  name,
+  optional,
+  choices,
+  labelVerbose = false,
+}) => {
   let choiceValues: choiceValuesCache = useMemo(() => {
     let cache: choiceValuesCache = {};
 
@@ -32,7 +39,7 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({ label, nam
           <FormGroup error={hasError}>
             {label && (
               <Label htmlFor={name} error={hasError} hint={optional ? " (tuỳ chọn)" : ""}>
-                {label}
+                {labelVerbose && <strong>{`${name.toUpperCase()}. `}</strong>} {label}
               </Label>
             )}
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}

@@ -81,5 +81,7 @@ type Form = {
   lists?: List;
   label: string;
   labelSecondary?: string;
+  labelVerbose?: boolean;
 };
+
 export { Pair, Field, Form, List, SelectPairRef };

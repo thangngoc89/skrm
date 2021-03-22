@@ -7,9 +7,10 @@ interface TextInputProps {
   name: string;
   label: string;
   optional?: boolean;
+  labelVerbose?: boolean;
 }
 
-export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name, optional }) => {
+export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name, optional, labelVerbose = false }) => {
   return (
     <FastField name={name}>
       {({ field, form: { touched, errors } }: FieldProps) => {
@@ -17,7 +18,7 @@ export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name
         return (
           <FormGroup error={hasError}>
             <Label htmlFor={name} error={hasError} hint={optional === true ? " (tuỳ chọn)" : ""}>
-              {label}
+              {labelVerbose && <strong>{`${name.toUpperCase()}. `}</strong>} {label}
             </Label>
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
             <ThemeTextInput {...field} id={field.name} type={type} error={hasError} />

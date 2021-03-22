@@ -2,58 +2,71 @@ import { h } from "preact";
 import { db, makeId } from "../components/db";
 import { useAsync } from "react-async-hook";
 import { SurveyType } from "src/components/types";
+import { Spinner } from "../components/spinner";
+import style from "./load-survey.css";
 
-interface Props {
-  id?: string;
-  surveyType: SurveyType;
-}
-
-const createNewSurveyAsync = async (surveyType: SurveyType) => {
-  return await db.records.add({
-    id: makeId(),
+const createSurveyAsync = async (surveyType: SurveyType) => {
+  return await db.list.add({
+    surveyId: makeId(),
     surveyType: surveyType,
+    createdAt: Date.now(),
   });
 };
 
-const NewSurvey: React.FC<Props> = ({ surveyType }) => {
-  const test = useAsync(createNewSurveyAsync, [surveyType]);
+interface NewSurveyProps {
+  surveyType: SurveyType;
+}
+
+const NewSurvey: React.FC<NewSurveyProps> = ({ surveyType }) => {
+  const dataLoader = useAsync(createSurveyAsync, [surveyType]);
+
+  console.log(dataLoader);
+  return (
+    <div className={style.wrapper}>
+      {dataLoader.loading && <Spinner />}
+      {dataLoader.error && <div>Error: {dataLoader.error.message}</div>}
+      {dataLoader.result && (
+        <div>
+          <p>New record id: {dataLoader.result}</p>
+          <p>Survey type: {surveyType}</p>
+          <p>Redirecting...</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+const loadSurveyAsync = async (surveyId: string) => {
+  return await db.list.get(surveyId);
+};
+
+interface LoadSurveyProps {
+  surveyId: string;
+}
+const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
+  const dataLoader = useAsync(loadSurveyAsync, [surveyId]);
 
   console.log(test);
   return (
-    <div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
-      <div>new</div>
+    <div className={style.wrapper}>
+      <Spinner />
     </div>
   );
 };
-const LoadSurveyRoute: React.FC<Props> = ({ surveyType, id }) => {
-  console.log(surveyType);
-  if (!id) {
+
+interface Props {
+  id?: string;
+  surveyType?: SurveyType;
+}
+
+const MainSurveyRoute: React.FC<Props> = ({ surveyType, id }) => {
+  if (!id && surveyType) {
     return <NewSurvey surveyType={surveyType} />;
+  } else if (id) {
+    return <LoadSurvey surveyId={id} />;
+  } else {
+    return null;
   }
-
-  return (
-    <div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "dsfsdftieuhocroute" </div>
-      <div> "2dsfsdftieuhocroute" </div>
-    </div>
-  );
 };
 
-export default LoadSurveyRoute;
+export default MainSurveyRoute;

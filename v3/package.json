@@ -8,7 +8,8 @@
     "serve": "sirv build --port 8080 --cors --single",
     "dev": "preact watch",
     "lint": "eslint 'src/**/*.{js,jsx,ts,tsx}'",
-    "test": "jest ./tests"
+    "test": "jest ./tests",
+    "deploy": "npm run build && echo \"thucdia2021.khoanguyen.me\" > build/CNAME && surge build"
   },
   "eslintConfig": {
     "parser": "@typescript-eslint/parser",

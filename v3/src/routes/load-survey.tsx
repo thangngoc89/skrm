@@ -1,9 +1,11 @@
 import { h } from "preact";
+import { useEffect } from "react";
 import { db, makeId } from "../components/db";
 import { useAsync } from "react-async-hook";
 import { SurveyType } from "src/components/types";
 import { Spinner } from "../components/spinner";
 import style from "./load-survey.css";
+import { route } from "preact-router";
 
 const createSurveyAsync = async (surveyType: SurveyType) => {
   return await db.list.add({
@@ -19,8 +21,16 @@ interface NewSurveyProps {
 
 const NewSurvey: React.FC<NewSurveyProps> = ({ surveyType }) => {
   const dataLoader = useAsync(createSurveyAsync, [surveyType]);
+  useEffect(() => {
+    if (dataLoader.result) {
+      route(`/survey/${dataLoader.result}`, true);
+    }
+  }, [dataLoader]);
 
-  console.log(dataLoader);
+  if (dataLoader.error) {
+    console.error(dataLoader.error);
+  }
+
   return (
     <div className={style.wrapper}>
       {dataLoader.loading && <Spinner />}
@@ -46,7 +56,7 @@ interface LoadSurveyProps {
 const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
   const dataLoader = useAsync(loadSurveyAsync, [surveyId]);
 
-  console.log(test);
+  console.log(dataLoader);
   return (
     <div className={style.wrapper}>
       <Spinner />
@@ -55,17 +65,17 @@ const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
 };
 
 interface Props {
-  id?: string;
+  surveyId?: string;
   surveyType?: SurveyType;
 }
 
-const MainSurveyRoute: React.FC<Props> = ({ surveyType, id }) => {
-  if (!id && surveyType) {
+const MainSurveyRoute: React.FC<Props> = ({ surveyType, surveyId }) => {
+  if (!surveyId && surveyType) {
     return <NewSurvey surveyType={surveyType} />;
-  } else if (id) {
-    return <LoadSurvey surveyId={id} />;
+  } else if (surveyId) {
+    return <LoadSurvey surveyId={surveyId} />;
   } else {
-    return null;
+    return <div className={style.wrapper}>Invalid MainSurveyRoute handler</div>;
   }
 };
 

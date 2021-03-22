@@ -17,6 +17,7 @@ const App: FunctionalComponent = () => {
         <Route path="/new/mau-giao" component={MainSurveyRoute} surveyType="mau_giao" />
         <Route path="/new/tieu-hoc" component={MainSurveyRoute} surveyType="tieu_hoc" />
         <Route path="/new/nguoi-lon" component={MainSurveyRoute} surveyType="nguoi_lon" />
+        <Route path="/survey/:surveyId" component={MainSurveyRoute} />
         <Route path="/tieu-hoc" component={Tieuhoc} />
         <Route path="/test" component={TestRoute} />
         <NotFoundPage default />

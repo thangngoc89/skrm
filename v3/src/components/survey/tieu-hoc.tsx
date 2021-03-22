@@ -1,23 +1,16 @@
 import { h } from "preact";
 import style from "./tieu-hoc.css";
 import { useReducer } from "react";
+import { useAsync } from "react-async-hook";
+import { db } from "../db";
 
 import { FormRenderer } from "../form/FormRender";
 import * as tieu_hoc_form from "../form_schema/tieu_hoc_form";
 import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
 import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
 import { TieuhocFormType } from "../types";
-type State = {
-  currentForm: TieuhocFormType;
-};
-type Action = { type: "change_form"; newForm: TieuhocFormType };
-
-function reducer(state: State, action: Action): State {
-  switch (action.type) {
-    case "change_form":
-      return { ...state, currentForm: action.newForm };
-  }
-}
+import { ISurveyData } from "../db";
+import { Spinner } from "../spinner";
 
 type FormNavButtonProps = {
   name: TieuhocFormType;
@@ -44,15 +37,16 @@ const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, dispatch, cu
 type SelectFormToRenderProps = {
   surveyId: string;
   currentForm: TieuhocFormType;
+  currentFormData: any;
 };
-const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({ surveyId, currentForm }) => {
+const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({ surveyId, currentForm, currentFormData }) => {
   switch (currentForm) {
     case "tieu_hoc_form":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_form} />;
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_form} initialValues={currentFormData} />;
     case "tieu_hoc_questionare":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} />;
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} initialValues={currentFormData} />;
     case "tieu_hoc_child_oidp":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} />;
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} initialValues={currentFormData} />;
   }
 };
 
@@ -60,26 +54,75 @@ type Props = {
   surveyId: string;
 };
 
+const loadForm = async (surveyId: string, currentForm: TieuhocFormType, dispatch: (action: Action) => void) => {
+  return await db.data.get([surveyId, currentForm]).then((data) => {
+    if (typeof data !== "undefined") {
+      console.log(data);
+      dispatch({ type: "update_form_data", formType: currentForm, data: data });
+    }
+  });
+};
+
+type State = {
+  currentForm: TieuhocFormType;
+  formData: {
+    tieu_hoc_form: ISurveyData | undefined;
+    tieu_hoc_questionare: ISurveyData | undefined;
+    tieu_hoc_child_oidp: ISurveyData | undefined;
+  };
+};
+type Action =
+  | { type: "change_form"; newForm: TieuhocFormType }
+  | { type: "update_form_data"; formType: TieuhocFormType; data: ISurveyData };
+
+function reducer(state: State, action: Action): State {
+  switch (action.type) {
+    case "change_form":
+      return { ...state, currentForm: action.newForm };
+    case "update_form_data": {
+      return { ...state, formData: { ...state.formData, [action.formType]: action.data.data } };
+    }
+  }
+}
+
 export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
-  const [{ currentForm }, dispatch] = useReducer(reducer, { currentForm: "tieu_hoc_form" });
-  return (
-    <div>
-      <div className={style.sticky}>
-        <nav className={style.left}>
-          <FormNavButton name="tieu_hoc_form" label="Phiếu điều tra" currentForm={currentForm} dispatch={dispatch} />
-          <FormNavButton
-            name="tieu_hoc_questionare"
-            label="Bảng câu hỏi"
-            currentForm={currentForm}
-            dispatch={dispatch}
-          />
-          <FormNavButton name="tieu_hoc_child_oidp" label="Child-OIDP" currentForm={currentForm} dispatch={dispatch} />
-        </nav>
-        <div className={style.right}>
-          <button>Lưu</button>
+  const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
+    currentForm: "tieu_hoc_form",
+    formData: {
+      tieu_hoc_form: undefined,
+      tieu_hoc_questionare: undefined,
+      tieu_hoc_child_oidp: undefined,
+    },
+  });
+  const dataLoader = useAsync(loadForm, [surveyId, currentForm, dispatch]);
+
+  if (!dataLoader.loading && !dataLoader.error) {
+    return (
+      <div>
+        <div className={style.sticky}>
+          <nav className={style.left}>
+            <FormNavButton name="tieu_hoc_form" label="Phiếu điều tra" currentForm={currentForm} dispatch={dispatch} />
+            <FormNavButton
+              name="tieu_hoc_questionare"
+              label="Bảng câu hỏi"
+              currentForm={currentForm}
+              dispatch={dispatch}
+            />
+            <FormNavButton
+              name="tieu_hoc_child_oidp"
+              label="Child-OIDP"
+              currentForm={currentForm}
+              dispatch={dispatch}
+            />
+          </nav>
+          <div className={style.right}>
+            <button>Lưu</button>
+          </div>
         </div>
+        <SelectFormToRender currentForm={currentForm} surveyId={surveyId} currentFormData={formData[currentForm]} />
       </div>
-      <SelectFormToRender currentForm={currentForm} surveyId={surveyId} />
-    </div>
-  );
+    );
+  } else {
+    return <Spinner />;
+  }
 };

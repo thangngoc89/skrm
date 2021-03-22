@@ -16,7 +16,7 @@ export interface ISurveyData {
 
 class VoserDatabase extends Dexie {
   list: Dexie.Table<ISurveyList, string>;
-  data: Dexie.Table<ISurveyData, string>;
+  data: Dexie.Table<ISurveyData, [string, string]>;
 
   constructor() {
     super("Voser");
@@ -30,3 +30,5 @@ class VoserDatabase extends Dexie {
 }
 
 export const db = new VoserDatabase();
+
+// global.db = db;

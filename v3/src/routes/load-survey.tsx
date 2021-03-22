@@ -56,7 +56,7 @@ interface LoadSurveyProps {
   surveyId: string;
 }
 
-const NonMemoLoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
+const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
   const dataLoader = useAsync(loadSurveyAsync, [surveyId]);
 
   if (dataLoader.loading) {
@@ -69,8 +69,6 @@ const NonMemoLoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
     );
   } else return <ShowSurvey key={dataLoader.result.surveyId} {...dataLoader.result} />;
 };
-
-const LoadSurvey = memo(NonMemoLoadSurvey);
 
 interface Props {
   surveyId?: string;

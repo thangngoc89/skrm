@@ -11,7 +11,7 @@ interface SelectOneDropdownProps {
   labelVerbose?: boolean;
 }
 
-export const SelectOneRadio: React.FC<SelectOneDropdownProps> = ({
+export const SelectMany: React.FC<SelectOneDropdownProps> = ({
   label,
   name,
   optional,
@@ -21,6 +21,7 @@ export const SelectOneRadio: React.FC<SelectOneDropdownProps> = ({
   return (
     <FastField name={name}>
       {({ field, form: { touched, errors, setFieldValue } }: FieldProps) => {
+        const fieldValue = field.value || [];
         const hasError = Boolean(touched[field.name] && errors[field.name]);
         return (
           <FormGroup error={hasError}>
@@ -30,20 +31,24 @@ export const SelectOneRadio: React.FC<SelectOneDropdownProps> = ({
               </Label>
             )}
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
-            {choices.map(({ name, label }, i) => {
+            {choices.map(({ name, label }) => {
               const uniqueName = `${field.name}_${name}`;
               return (
-                <Checkbox id="checkbox" name="checkbox" label="My Checkbox" />
-                // <Radio
-                //   key={uniqueName}
-                //   id={uniqueName}
-                //   value={name}
-                //   name={field.name}
-                //   label={label}
-                //   checked={name === field.value}
-                //   onClick={field.onChange}
-                //   onBlur={field.onBlur}
-                // ></Radio>
+                <Checkbox
+                  id={uniqueName}
+                  name={name}
+                  checked={fieldValue.indexOf(name) !== -1}
+                  label={label}
+                  onChange={(event) => {
+                    if (event.target.checked) {
+                      setFieldValue(field.name, [...fieldValue, name]);
+                    } else {
+                      const idx = field.value.indexOf(name);
+                      setFieldValue(field.name, [...fieldValue.slice(0, idx), ...fieldValue.slice(idx + 1)]);
+                    }
+                  }}
+                  onBlur={field.onBlur}
+                />
               );
             })}
           </FormGroup>

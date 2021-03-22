@@ -8,6 +8,7 @@ import {
   DatePicker,
   SelectOneDropdown,
   SelectOneRadio,
+  SelectMany,
   DentalArchTable,
   DentalArchTable2Rows,
 } from "./FormComponents";
@@ -82,6 +83,10 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
           choices={lists[field.list]}
           labelVerbose={labelVerbose}
         />
+      );
+    case "select_many":
+      return (
+        <SelectMany name={field.name} label={field.label || ""} choices={field.choices} labelVerbose={labelVerbose} />
       );
     case "dental_arch_table":
       return <DentalArchTable lists={lists} label={field.label} {...field} />;

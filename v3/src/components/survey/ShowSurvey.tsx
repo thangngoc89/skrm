@@ -7,6 +7,22 @@ export const ShowSurvey: React.FC<ISurveyList> = ({ surveyId, surveyType, create
     case "tieu_hoc":
       return <Tieuhoc surveyId={surveyId} />;
     default:
-      return <div>"Unknown how to handle this"</div>;
+      return (
+        <div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+          <div>"Unknown how to handle this"</div>
+        </div>
+      );
   }
 };

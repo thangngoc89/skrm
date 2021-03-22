@@ -60,11 +60,7 @@ const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
   const dataLoader = useAsync(loadSurveyAsync, [surveyId]);
 
   if (dataLoader.loading) {
-    return (
-      <div className={style.wrapper}>
-        <Spinner />
-      </div>
-    );
+    return null;
   } else if (dataLoader.error) {
     return <div className={style.wrapper}>Error: {dataLoader.error.message}</div>;
   } else if (typeof dataLoader.result === "undefined") {

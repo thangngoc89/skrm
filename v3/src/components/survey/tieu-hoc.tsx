@@ -63,9 +63,9 @@ export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
           <button>Lưu</button>
         </div>
       </div>
-      {currentForm === "tieu_hoc_form" && <FormRenderer {...tieu_hoc_form} />}
-      {currentForm === "tieu_hoc_questionare" && <FormRenderer {...tieu_hoc_questionare} />}
-      {currentForm === "tieu_hoc_child_oidp" && <FormRenderer {...tieu_hoc_child_oidp} />}
+      {currentForm === "tieu_hoc_form" && <FormRenderer surveyId={surveyId} {...tieu_hoc_form} />}
+      {currentForm === "tieu_hoc_questionare" && <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} />}
+      {currentForm === "tieu_hoc_child_oidp" && <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} />}
     </div>
   );
 };

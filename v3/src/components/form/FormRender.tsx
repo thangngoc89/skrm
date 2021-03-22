@@ -10,9 +10,10 @@ import {
   DentalArchTable,
   DentalArchTable2Rows,
 } from "./FormComponents";
+import { TextInput as ThemeTextInput, FormGroup, Label } from "@trussworks/react-uswds";
+
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
-import { format } from "date-fns";
 
 const renderField = (field: FieldSchema, lists: List) => {
   switch (field.type) {
@@ -42,12 +43,13 @@ const renderField = (field: FieldSchema, lists: List) => {
 };
 
 interface FormRenderer {
+  surveyId: string;
   form: FormSchema;
   initialValues?: any;
   makeInitialValues: () => any;
 }
 
-export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues }) => {
+export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues, surveyId }) => {
   return (
     // @ts-ignore: broken formik definition
     <Formik
@@ -64,6 +66,12 @@ export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, make
           {form.labelSecondary && <h2>{form.labelSecondary}</h2>}
         </div>
         <Form className="usa-form">
+          <FormGroup>
+            <Label htmlFor={surveyId} hint=" (không sửa được)">
+              Mã số hồ sơ VOSER
+            </Label>
+            <ThemeTextInput id="surveyId" type="text" name="surveyId" value={surveyId} readOnly />
+          </FormGroup>
           {form.survey.map((field) => renderField(field, form.lists || {}))}
           <Button type="submit" secondary>
             Lưu

@@ -3,6 +3,7 @@ import { Link } from "preact-router/match";
 import style from "./header.css";
 import { useState } from "react";
 // import { SwReadyCheck } from "./SwReadyCheck";
+import { version } from "../info";
 
 import { PrimaryNav } from "@trussworks/react-uswds";
 
@@ -30,6 +31,7 @@ const Header: FunctionalComponent = () => {
     <header class={style.header}>
       <h1>
         <Link href="/">VOSER</Link>
+        <span className={style.version}>v{version}</span>
         {/* <SwReadyCheck /> */}
       </h1>
       <nav className={style.laptop}>

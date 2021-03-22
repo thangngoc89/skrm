@@ -27,6 +27,9 @@
   text-decoration: none;
 }
 
+.version {
+  font-size: 12px;
+}
 .header nav {
   float: right;
   font-size: 100%;

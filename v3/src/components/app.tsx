@@ -7,10 +7,12 @@ import NotFoundPage from "../routes/notfound";
 import Header from "./header/header";
 import MainSurveyRoute from "../routes/load-survey";
 import { Tieuhoc } from "./survey/tieu-hoc";
+import { ToastContainer } from "react-toastify";
 
 const App: FunctionalComponent = () => {
   return (
     <div id="app">
+      <ToastContainer autoClose={15000} />
       <Header />
       <Router>
         <Route path="/" component={Home} />

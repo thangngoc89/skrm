@@ -1,4 +1,5 @@
 import { h } from "preact";
+import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import style from "./FormRender.css";
 import {
@@ -15,6 +16,7 @@ import { UseAsyncReturn } from "react-async-hook";
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
 import { SurveyDataKey } from "../db";
+import { notify, Msg } from "../notify";
 
 const renderField = (field: FieldSchema, lists: List) => {
   switch (field.type) {
@@ -52,12 +54,19 @@ interface FormRenderer {
 }
 
 export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues, surveyId, save }) => {
+  useEffect(() => {
+    notify.success(<Msg title="Lưu dữ liệu thành công." buttonLabel="Tiếp theo" />, {
+      position: notify.POSITION.BOTTOM_RIGHT,
+      pauseOnFocusLoss: true,
+    });
+  }, []);
   return (
     // @ts-ignore: broken formik definition
     <Formik
       initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
         return save.execute(values).then(() => {
+          notify.success("Lưu dữ liệu thành công", { position: notify.POSITION.BOTTOM_RIGHT, pauseOnFocusLoss: true });
           actions.setSubmitting(false);
         });
       }}

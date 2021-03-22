@@ -1,6 +1,19 @@
-.button {
+.wrapper p {
+  margin: 0.5rem 0;
+  /* font-weight: 700; */
+}
+
+.wrapper button {
   border: 0;
   background-color: #fff;
   border-radius: 5px;
   color: #000;
+  padding: 0.25rem 0.5rem;
+  margin-top: 0.5rem;
+  cursor: pointer;
+  will-change: background-color;
+}
+
+.wrapper button:hover {
+  background-color: #eee;
 }

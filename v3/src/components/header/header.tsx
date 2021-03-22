@@ -9,16 +9,16 @@ const menuItems = [
   <Link className="usa-nav__link" activeClassName="usa-current" href="/" key="home">
     Home
   </Link>,
-  <Link className="usa-nav__link" activeClassName="usa-current" href="/new/mau-giao" key="mau-giao">
+  <Link className="usa-nav__link" activeClassName="usa-current" href="/new/mau_giao" key="mau-giao">
     Mẫu giáo
   </Link>,
-  <Link className="usa-nav__link" activeClassName="usa-current" href="/new/tieu-hoc" key="tieu-hoc">
+  <Link className="usa-nav__link" activeClassName="usa-current" href="/new/tieu_hoc" key="tieu-hoc">
     Tiểu học
   </Link>,
-  <Link className="usa-nav__link" activeClassName="usa-current" href="/new/nguoi-lon" key="nguoi-lon">
+  <Link className="usa-nav__link" activeClassName="usa-current" href="/new/nguoi_lon" key="nguoi-lon">
     Người lớn
   </Link>,
-  <Link className="usa-nav__link" activeClassName="usa-current" href="/quan-li" key="quan-li">
+  <Link className="usa-nav__link" activeClassName="usa-current" href="/quan_li" key="quan-li">
     Quản lí
   </Link>,
 ];
@@ -32,16 +32,16 @@ const Header: FunctionalComponent = () => {
       </h1>
 
       <nav className={style.laptop}>
-        <Link activeClassName={style.active} href="/new/mau-giao" title="Tạo hồ sơ mẫu giáo">
+        <Link activeClassName={style.active} href="/new/mau_giao" title="Tạo hồ sơ mẫu giáo">
           Mẫu giáo
         </Link>
-        <Link activeClassName={style.active} href="/new/tieu-hoc" title="Tạo hồ sơ tiểu học">
+        <Link activeClassName={style.active} href="/new/tieu_hoc" title="Tạo hồ sơ tiểu học">
           Tiểu học
         </Link>
-        <Link activeClassName={style.active} href="/new/nguoi-lon" title="Tạo hồ sơ người lớn">
+        <Link activeClassName={style.active} href="/new/nguoi_lon" title="Tạo hồ sơ người lớn">
           Người lớn
         </Link>
-        <Link activeClassName={style.active} href="/quan-li">
+        <Link activeClassName={style.active} href="/quan_li">
           Quản lí
         </Link>
       </nav>

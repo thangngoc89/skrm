@@ -1,5 +1,4 @@
 import { h } from "preact";
-import { useEffect } from "react";
 import { Formik, Form } from "formik";
 import style from "./FormRender.css";
 import {
@@ -51,22 +50,33 @@ interface FormRenderer {
   initialValues?: any;
   makeInitialValues: () => any;
   save: UseAsyncReturn<SurveyDataKey, [formData: any]>;
+  nextAction: () => void;
+  nextActionLabel: string;
 }
 
-export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues, surveyId, save }) => {
-  useEffect(() => {
-    notify.success(<Msg title="Lưu dữ liệu thành công." buttonLabel="Tiếp theo" />, {
-      position: notify.POSITION.BOTTOM_RIGHT,
-      pauseOnFocusLoss: true,
-    });
-  }, []);
+export const FormRenderer: React.FC<FormRenderer> = ({
+  form,
+  initialValues,
+  makeInitialValues,
+  surveyId,
+  save,
+  nextAction,
+  nextActionLabel,
+}) => {
   return (
     // @ts-ignore: broken formik definition
     <Formik
       initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
+        console.log("Calling onSubmit");
         return save.execute(values).then(() => {
-          notify.success("Lưu dữ liệu thành công", { position: notify.POSITION.BOTTOM_RIGHT, pauseOnFocusLoss: true });
+          notify.success(
+            <Msg title="Lưu dữ liệu thành công." buttonLabel={nextActionLabel} buttonOnClick={nextAction} />,
+            {
+              position: notify.POSITION.BOTTOM_RIGHT,
+              pauseOnFocusLoss: true,
+            }
+          );
           actions.setSubmitting(false);
         });
       }}

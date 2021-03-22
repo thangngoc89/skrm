@@ -3,13 +3,15 @@ import style from "./tieu-hoc.css";
 import { useReducer } from "react";
 import { useAsync, useAsyncCallback, UseAsyncReturn } from "react-async-hook";
 import { db, SurveyDataKey, ISurveyData } from "../db";
-
+import { route } from "preact-router";
 import { FormRenderer } from "../form/FormRender";
 import * as tieu_hoc_form from "../form_schema/tieu_hoc_form";
 import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
 import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
-import { TieuhocFormType } from "../types";
+import { TieuhocFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
+
+const surveyType: SurveyType = "tieu_hoc";
 
 type FormNavButtonProps = {
   name: TieuhocFormType;
@@ -33,20 +35,60 @@ const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, dispatch, cu
   );
 };
 
+const makeNextAction = (currentForm: TieuhocFormType, dispatch: (action: Action) => void) => {
+  switch (currentForm) {
+    case "tieu_hoc_form":
+      return {
+        nextAction: () => {
+          dispatch({ type: "change_form", newForm: "tieu_hoc_questionare" });
+          global.scrollTo(0, 0);
+        },
+        nextActionLabel: "Tiếp theo",
+      };
+    case "tieu_hoc_questionare":
+      return {
+        nextAction: () => {
+          dispatch({ type: "change_form", newForm: "tieu_hoc_child_oidp" });
+          global.scrollTo(0, 0);
+        },
+        nextActionLabel: "Tiếp theo",
+      };
+    case "tieu_hoc_child_oidp":
+      return { nextAction: () => route("/new/" + surveyType), nextActionLabel: "Thêm hồ sơ mới" };
+  }
+};
+
 type SelectFormToRenderProps = {
   surveyId: string;
   currentForm: TieuhocFormType;
   currentFormData: any;
   save: UseAsyncReturn<SurveyDataKey, [formData: any]>;
+  dispatch: (action: Action) => void;
 };
-const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({ surveyId, currentForm, currentFormData, save }) => {
+const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({
+  surveyId,
+  currentForm,
+  currentFormData,
+  save,
+  dispatch,
+}) => {
+  const { nextAction, nextActionLabel } = makeNextAction(currentForm, dispatch);
+
+  const commonProps = {
+    surveyId,
+    save,
+    initialValues: currentFormData,
+    nextAction,
+    nextActionLabel,
+  };
+
   switch (currentForm) {
     case "tieu_hoc_form":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_form} initialValues={currentFormData} save={save} />;
+      return <FormRenderer {...commonProps} {...tieu_hoc_form} />;
     case "tieu_hoc_questionare":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} initialValues={currentFormData} save={save} />;
+      return <FormRenderer {...commonProps} {...tieu_hoc_questionare} />;
     case "tieu_hoc_child_oidp":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} initialValues={currentFormData} save={save} />;
+      return <FormRenderer {...commonProps} {...tieu_hoc_child_oidp} />;
   }
 };
 
@@ -130,6 +172,7 @@ export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
           surveyId={surveyId}
           currentFormData={formData[currentForm]}
           save={saveData}
+          dispatch={dispatch}
         />
       </div>
     );

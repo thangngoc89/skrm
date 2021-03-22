@@ -1,5 +1,5 @@
-import { h, FunctionComponent } from "preact";
-import { Radio, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
+import { h } from "preact";
+import { Checkbox, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
 import { FieldProps, FastField } from "formik";
 import { Pair } from "../form_schema/schema";
 
@@ -33,16 +33,17 @@ export const SelectOneRadio: React.FC<SelectOneDropdownProps> = ({
             {choices.map(({ name, label }, i) => {
               const uniqueName = `${field.name}_${name}`;
               return (
-                <Radio
-                  key={uniqueName}
-                  id={uniqueName}
-                  value={name}
-                  name={field.name}
-                  label={label}
-                  checked={name === field.value}
-                  onClick={field.onChange}
-                  onBlur={field.onBlur}
-                ></Radio>
+                <Checkbox id="checkbox" name="checkbox" label="My Checkbox" />
+                // <Radio
+                //   key={uniqueName}
+                //   id={uniqueName}
+                //   value={name}
+                //   name={field.name}
+                //   label={label}
+                //   checked={name === field.value}
+                //   onClick={field.onChange}
+                //   onBlur={field.onBlur}
+                // ></Radio>
               );
             })}
           </FormGroup>

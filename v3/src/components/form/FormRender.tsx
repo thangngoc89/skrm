@@ -68,7 +68,6 @@ export const FormRenderer: React.FC<FormRenderer> = ({
     <Formik
       initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
-        console.log("Calling onSubmit");
         return save.execute(values).then(() => {
           notify.success(
             <Msg title="Lưu dữ liệu thành công." buttonLabel={nextActionLabel} buttonOnClick={nextAction} />,

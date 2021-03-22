@@ -49,7 +49,7 @@ interface FormRenderer {
   form: FormSchema;
   initialValues?: any;
   makeInitialValues: () => any;
-  save: UseAsyncReturn<SurveyDataKey, [formData: any]>;
+  save: UseAsyncReturn<SurveyDataKey, [any]>;
   nextAction: () => void;
   nextActionLabel: string;
 }

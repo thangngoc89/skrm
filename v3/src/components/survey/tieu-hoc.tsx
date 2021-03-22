@@ -62,7 +62,7 @@ type SelectFormToRenderProps = {
   surveyId: string;
   currentForm: TieuhocFormType;
   currentFormData: any;
-  save: UseAsyncReturn<SurveyDataKey, [formData: any]>;
+  save: UseAsyncReturn<SurveyDataKey, [any]>;
   dispatch: (action: Action) => void;
 };
 const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({

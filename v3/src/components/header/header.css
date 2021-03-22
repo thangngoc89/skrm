@@ -10,6 +10,15 @@
   z-index: 50;
 }
 
+.header h1 {
+  display: flex;
+  align-items: center;
+}
+
+.header h1 svg {
+  fill: #07bc0c;
+}
+
 .header h1,
 .header h1 a {
   float: left;

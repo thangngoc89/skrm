@@ -1,15 +1,14 @@
 import { h } from "preact";
 import style from "./tieu-hoc.css";
 import { useReducer } from "react";
-import { useAsync } from "react-async-hook";
-import { db } from "../db";
+import { useAsync, useAsyncCallback, UseAsyncReturn } from "react-async-hook";
+import { db, SurveyDataKey, ISurveyData } from "../db";
 
 import { FormRenderer } from "../form/FormRender";
 import * as tieu_hoc_form from "../form_schema/tieu_hoc_form";
 import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
 import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
 import { TieuhocFormType } from "../types";
-import { ISurveyData } from "../db";
 import { Spinner } from "../spinner";
 
 type FormNavButtonProps = {
@@ -38,15 +37,16 @@ type SelectFormToRenderProps = {
   surveyId: string;
   currentForm: TieuhocFormType;
   currentFormData: any;
+  save: UseAsyncReturn<SurveyDataKey, [formData: any]>;
 };
-const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({ surveyId, currentForm, currentFormData }) => {
+const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({ surveyId, currentForm, currentFormData, save }) => {
   switch (currentForm) {
     case "tieu_hoc_form":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_form} initialValues={currentFormData} />;
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_form} initialValues={currentFormData} save={save} />;
     case "tieu_hoc_questionare":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} initialValues={currentFormData} />;
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_questionare} initialValues={currentFormData} save={save} />;
     case "tieu_hoc_child_oidp":
-      return <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} initialValues={currentFormData} />;
+      return <FormRenderer surveyId={surveyId} {...tieu_hoc_child_oidp} initialValues={currentFormData} save={save} />;
   }
 };
 
@@ -57,10 +57,15 @@ type Props = {
 const loadForm = async (surveyId: string, currentForm: TieuhocFormType, dispatch: (action: Action) => void) => {
   return await db.data.get([surveyId, currentForm]).then((data) => {
     if (typeof data !== "undefined") {
-      console.log(data);
       dispatch({ type: "update_form_data", formType: currentForm, data: data });
     }
   });
+};
+
+const saveForm = (surveyId: string, currentForm: TieuhocFormType, dispatch: (action: Action) => void) => {
+  return async (formData: any) => {
+    return await db.data.put({ data: formData, surveyId, surveyForm: currentForm }, [surveyId, currentForm]);
+  };
 };
 
 type State = {
@@ -95,6 +100,7 @@ export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
     },
   });
   const dataLoader = useAsync(loadForm, [surveyId, currentForm, dispatch]);
+  const saveData = useAsyncCallback(saveForm(surveyId, currentForm, dispatch));
 
   if (!dataLoader.loading && !dataLoader.error) {
     return (
@@ -119,7 +125,12 @@ export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
             <button>Lưu</button>
           </div>
         </div>
-        <SelectFormToRender currentForm={currentForm} surveyId={surveyId} currentFormData={formData[currentForm]} />
+        <SelectFormToRender
+          currentForm={currentForm}
+          surveyId={surveyId}
+          currentFormData={formData[currentForm]}
+          save={saveData}
+        />
       </div>
     );
   } else {

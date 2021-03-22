@@ -11,9 +11,10 @@ import {
   DentalArchTable2Rows,
 } from "./FormComponents";
 import { TextInput as ThemeTextInput, FormGroup, Label } from "@trussworks/react-uswds";
-
+import { UseAsyncReturn } from "react-async-hook";
 import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
+import { SurveyDataKey } from "../db";
 
 const renderField = (field: FieldSchema, lists: List) => {
   switch (field.type) {
@@ -47,17 +48,18 @@ interface FormRenderer {
   form: FormSchema;
   initialValues?: any;
   makeInitialValues: () => any;
+  save: UseAsyncReturn<SurveyDataKey, [formData: any]>;
 }
 
-export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues, surveyId }) => {
+export const FormRenderer: React.FC<FormRenderer> = ({ form, initialValues, makeInitialValues, surveyId, save }) => {
   return (
     // @ts-ignore: broken formik definition
     <Formik
       initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
-        console.log({ values, actions });
-        alert(JSON.stringify(values, null, 2));
-        actions.setSubmitting(false);
+        return save.execute(values).then(() => {
+          actions.setSubmitting(false);
+        });
       }}
     >
       <div className={style.main}>

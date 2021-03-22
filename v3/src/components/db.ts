@@ -8,6 +8,9 @@ export interface ISurveyList {
   surveyType: SurveyType;
   createdAt: number;
 }
+
+export type SurveyDataKey = [string, string];
+
 export interface ISurveyData {
   surveyId: string;
   surveyForm: string;
@@ -16,7 +19,7 @@ export interface ISurveyData {
 
 class VoserDatabase extends Dexie {
   list: Dexie.Table<ISurveyList, string>;
-  data: Dexie.Table<ISurveyData, [string, string]>;
+  data: Dexie.Table<ISurveyData, SurveyDataKey>;
 
   constructor() {
     super("Voser");

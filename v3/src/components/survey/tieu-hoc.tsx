@@ -10,7 +10,7 @@ import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
 import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
 import { TieuhocFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
-
+import { notify } from "../notify";
 const surveyType: SurveyType = "tieu_hoc";
 
 type FormNavButtonProps = {
@@ -20,15 +20,33 @@ type FormNavButtonProps = {
   dispatch: (action: Action) => void;
 };
 
+// @todo: fix me
+// const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, dispatch, currentForm }) => {
+//   return (
+//     <a
+//       href="#"
+//       onClick={(e) => {
+//         e.preventDefault();
+//         dispatch({ type: "change_form", newForm: name });
+//       }}
+//       disabled={currentForm === name}
+//     >
+//       {label}
+//     </a>
+//   );
+// };
+
 const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, dispatch, currentForm }) => {
   return (
     <a
       href="#"
       onClick={(e) => {
         e.preventDefault();
-        dispatch({ type: "change_form", newForm: name });
+        // dispatch({ type: "change_form", newForm: name });
+        notify.info("Các bạn bấm Lưu -> Tiếp theo để sang bảng tiếp theo", { autoClose: 5000 });
       }}
-      disabled={currentForm === name}
+      className={currentForm === name ? style.active : ""}
+      disabled
     >
       {label}
     </a>

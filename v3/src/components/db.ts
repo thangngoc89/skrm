@@ -1,10 +1,11 @@
 import Dexie from "dexie";
+import { SurveyType } from "./types";
 
-export type SurveyType = "mau_giao" | "tieu_hoc" | "nguoi_lon";
+export { nanoid as makeId } from "nanoid";
 
 export interface ISurveyList {
   id: string;
-  type: SurveyType;
+  surveyType: SurveyType;
 }
 export interface ISurveyData {
   id: string;
@@ -17,8 +18,9 @@ class VoserDatabase extends Dexie {
 
   constructor() {
     super("VoserDatabase");
-    this.version(1).stores({
-      records: "++id, first, last",
+    this.version(2).stores({
+      record_list: "id, surveyType",
+      record_data: "id",
     });
     this.records = this.table("record_list");
     this.data = this.table("record_data");

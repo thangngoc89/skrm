@@ -1,13 +1,16 @@
 import { h } from "preact";
 import { ISurveyList } from "../db";
 import { Tieuhoc } from "./tieu-hoc";
+import { Maugiao } from "./mau-giao";
 import { memo } from "react";
 import { Error } from "../error";
 
-const ShowSurvey: React.FC<ISurveyList> = ({ surveyId, surveyType, createdAt }) => {
+const ShowSurvey: React.FC<ISurveyList> = ({ surveyId, surveyType }) => {
   switch (surveyType) {
     case "tieu_hoc":
       return <Tieuhoc key={surveyId} surveyId={surveyId} />;
+    case "mau_giao":
+      return <Maugiao key={surveyId} surveyId={surveyId} />;
     default:
       return (
         <div className="wrapper">

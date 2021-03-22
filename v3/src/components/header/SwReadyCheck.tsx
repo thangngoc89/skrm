@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useState, useEffect } from "react";
-import { FaRegCheckCircle } from "react-icons/fa";
+import style from "./SwReadyCheck.css";
 
 export const SwReadyCheck: React.FC<{}> = () => {
   const [isReady, setReady] = useState(false);
@@ -12,5 +12,5 @@ export const SwReadyCheck: React.FC<{}> = () => {
     }
   }, []);
   // @ts-ignore
-  return isReady ? <FaRegCheckCircle /> : null;
+  return isReady ? <span className={style.ready}></span> : null;
 };

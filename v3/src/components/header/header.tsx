@@ -1,6 +1,6 @@
 import { FunctionalComponent, h } from "preact";
 import { Link } from "preact-router/match";
-import style from "./style.css";
+import style from "./header.css";
 import { useState } from "react";
 
 import { PrimaryNav } from "@trussworks/react-uswds";
@@ -27,18 +27,18 @@ const Header: FunctionalComponent = () => {
   const onClick = (): void => setExpanded((prvExpanded) => !prvExpanded);
   return (
     <header class={style.header}>
-      <h1>VOSER</h1>
+      <h1>
+        <Link href="/">VOSER</Link>
+      </h1>
+
       <nav className={style.laptop}>
-        <Link activeClassName={style.active} href="/">
-          Home
-        </Link>
-        <Link activeClassName={style.active} href="/new/mau-giao">
+        <Link activeClassName={style.active} href="/new/mau-giao" title="Tạo hồ sơ mẫu giáo">
           Mẫu giáo
         </Link>
-        <Link activeClassName={style.active} href="/new/tieu-hoc">
+        <Link activeClassName={style.active} href="/new/tieu-hoc" title="Tạo hồ sơ tiểu học">
           Tiểu học
         </Link>
-        <Link activeClassName={style.active} href="/new/nguoi-lon">
+        <Link activeClassName={style.active} href="/new/nguoi-lon" title="Tạo hồ sơ người lớn">
           Người lớn
         </Link>
         <Link activeClassName={style.active} href="/quan-li">

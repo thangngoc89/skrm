@@ -7,6 +7,7 @@ import {
   Button,
   DatePicker,
   SelectOneDropdown,
+  SelectOneRadio,
   DentalArchTable,
   DentalArchTable2Rows,
 } from "./FormComponents";
@@ -45,6 +46,16 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
         />
       );
     case "select_one":
+      if (field.display === "radio") {
+        return (
+          <SelectOneRadio
+            name={field.name}
+            label={field.label || ""}
+            choices={field.choices}
+            labelVerbose={labelVerbose}
+          />
+        );
+      }
       return (
         <SelectOneDropdown
           name={field.name}
@@ -54,6 +65,16 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
         />
       );
     case "select_one_ref":
+      if (field.display === "radio") {
+        return (
+          <SelectOneRadio
+            name={field.name}
+            label={field.label || ""}
+            choices={lists[field.list]}
+            labelVerbose={labelVerbose}
+          />
+        );
+      }
       return (
         <SelectOneDropdown
           name={field.name}
@@ -67,7 +88,7 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
     case "dental_arch_table_2_rows":
       return <DentalArchTable2Rows lists={lists} label={field.label} {...field} />;
     default:
-      return null;
+      return <h1>Missing {field.type}</h1>;
   }
 };
 
@@ -103,11 +124,11 @@ export const FormRenderer: React.FC<FormRenderer> = ({
     <Formik
       initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
+        console.log(values);
         return save.execute(values).then(() => {
           notify.success(
             <Msg title="Lưu dữ liệu thành công." buttonLabel={nextActionLabel} buttonOnClick={nextAction} />,
             {
-              position: notify.POSITION.BOTTOM_RIGHT,
               pauseOnFocusLoss: true,
             }
           );

@@ -153,7 +153,7 @@ function reducer(state: State, action: Action): State {
 
 export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
   const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
-    currentForm: "tieu_hoc_form",
+    currentForm: "tieu_hoc_questionare",
     formData: {
       tieu_hoc_form: undefined,
       tieu_hoc_questionare: undefined,

@@ -1,15 +1,17 @@
+import { Radio } from "@trussworks/react-uswds";
 import { Field, Form } from "./schema";
 
 const fields: Array<Field> = [
   {
-    name: "b2",
     type: "select_one",
+    name: "b2",
     label: "Nơi cư ngụ",
     choices: [
       { name: "1", label: "Nội thành" },
       { name: "2", label: "Ngoại thành" },
       { name: "3", label: "Tỉnh" },
     ],
+    display: "radio",
   },
   {
     type: "select_one",
@@ -24,6 +26,7 @@ const fields: Array<Field> = [
       { name: "6", label: "Hoàn toàn không tốt" },
       { name: "9", label: "Không biết" },
     ],
+    display: "radio",
   },
   {
     type: "select_one",
@@ -38,6 +41,7 @@ const fields: Array<Field> = [
       { name: "6", label: "Hoàn toàn không tốt" },
       { name: "9", label: "Không biết" },
     ],
+    display: "radio",
   },
   {
     type: "select_one",
@@ -51,6 +55,7 @@ const fields: Array<Field> = [
       { name: "4", label: "Không bao giờ" },
       { name: "9", label: "Không biết" },
     ],
+    display: "radio",
   },
   {
     name: "b7",
@@ -62,6 +67,7 @@ const fields: Array<Field> = [
       { name: "3", label: "Thỉnh thoảng" },
       { name: "4", label: "Chưa bao giờ" },
     ],
+    display: "radio",
   },
   {
     name: "b8",
@@ -74,6 +80,7 @@ const fields: Array<Field> = [
       { name: "4", label: "Không hài lòng lắm" },
       { name: "5", label: "Không hài lòng chút nào" },
     ],
+    display: "radio",
   },
   {
     name: "b9",
@@ -83,6 +90,7 @@ const fields: Array<Field> = [
       { name: "1", label: "Có" },
       { name: "2", label: "Không" },
     ],
+    display: "radio",
   },
   {
     name: "b10",
@@ -119,6 +127,7 @@ const fields: Array<Field> = [
         label: "Không nhận được sự chăm sóc răng miệng nào hoặc không gặp nha sĩ nào",
       },
     ],
+    display: "radio",
   },
   {
     name: "b12",
@@ -130,6 +139,7 @@ const fields: Array<Field> = [
       { name: "3", label: "Kiểm tra định kỳ" },
       { name: "9", label: "Không biết/ không nhớ" },
     ],
+    display: "radio",
   },
   {
     name: "b13",
@@ -149,6 +159,7 @@ const fields: Array<Field> = [
   {
     name: "b13_custom",
     type: "text",
+    label: "Điều trị khác điền tại đây",
     condition: "b13 == 8",
   },
   {
@@ -163,6 +174,7 @@ const fields: Array<Field> = [
       { name: "5", label: "Một người lớn khác" },
       { name: "6", label: "Bạn cháu" },
     ],
+    display: "radio",
   },
   {
     name: "b15",
@@ -176,6 +188,7 @@ const fields: Array<Field> = [
       { name: "5", label: "Mỗi ngày một lần" },
       { name: "6", label: "Mỗi ngày ít nhất là hai lần" },
     ],
+    display: "radio",
   },
   {
     name: "b16",
@@ -194,6 +207,7 @@ const fields: Array<Field> = [
   {
     name: "b16_custom",
     type: "text",
+    label: "Vật dụng khác ghi tại đây",
     condition: "b16 == 7",
   },
   {
@@ -204,6 +218,7 @@ const fields: Array<Field> = [
       { name: "1", label: "Có" },
       { name: "2", label: "Không" },
     ],
+    display: "radio",
   },
   {
     name: "b18",
@@ -214,6 +229,7 @@ const fields: Array<Field> = [
       { name: "2", label: "Không" },
       { name: "9", label: "Không biết" },
     ],
+    display: "radio",
   },
   {
     name: "b19",
@@ -270,6 +286,7 @@ const fields: Array<Field> = [
       { name: "6", label: "Nội trợ" },
       { name: "7", label: "Nghề khác (ghi rõ)" },
     ],
+    display: "radio",
   },
   {
     name: "b21_custom",
@@ -289,10 +306,12 @@ const fields: Array<Field> = [
       { name: "6", label: "Nội trợ" },
       { name: "7", label: "Nghề khác (ghi rõ)" },
     ],
+    display: "radio",
   },
   {
     name: "b22_custom",
     type: "text",
+    label: "Nghề khác ghi rõ tại đây",
     condition: "b22 == 7",
   },
   {
@@ -312,6 +331,7 @@ const fields: Array<Field> = [
       },
       { name: "9", label: "Không biết" },
     ],
+    display: "radio",
   },
   {
     name: "b24",
@@ -327,6 +347,7 @@ const fields: Array<Field> = [
       { name: "7", label: "Không có người trưởng thành là nữ trong gia đình" },
       { name: "9", label: "Không biết" },
     ],
+    display: "radio",
   },
 ];
 

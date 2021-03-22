@@ -23,8 +23,8 @@ class VoserDatabase extends Dexie {
 
   constructor() {
     super("Voser");
-    this.version(3).stores({
-      record_list: "surveyId, surveyType",
+    this.version(4).stores({
+      record_list: "surveyId, surveyType, createdAt",
       record_data: "[surveyId+surveyForm]",
     });
     this.list = this.table("record_list");
@@ -34,4 +34,5 @@ class VoserDatabase extends Dexie {
 
 export const db = new VoserDatabase();
 
+// @ts-ignore
 // global.db = db;

@@ -65,6 +65,7 @@ type SelectFormToRenderProps = {
   save: UseAsyncReturn<SurveyDataKey, [any]>;
   dispatch: (action: Action) => void;
 };
+
 const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({
   surveyId,
   currentForm,

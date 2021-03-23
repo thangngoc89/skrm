@@ -20,6 +20,8 @@ import { List } from "../form_schema/schema";
 import { SurveyDataKey } from "../db";
 import { notify, Msg } from "../notify";
 import MountPortal from "../MountPortal";
+import { useAsyncCallback } from "react-async-hook";
+import { db, ISurveyData } from "../db";
 
 const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
   switch (field.type) {
@@ -125,7 +127,6 @@ interface FormRenderer {
   form: FormSchema;
   initialValues?: any;
   makeInitialValues: () => any;
-  save: UseAsyncReturn<SurveyDataKey, [any]>;
   nextAction: () => void;
   nextActionLabel: string;
 }
@@ -138,15 +139,22 @@ const SubmitButton: React.FC<{}> = () => {
     </button>
   );
 };
+
+const saveForm = (surveyId: string, currentForm: string) => {
+  return async (formData: any) => {
+    return await db.data.put({ data: formData, surveyId, surveyForm: currentForm }, [surveyId, currentForm]);
+  };
+};
+
 export const FormRenderer: React.FC<FormRenderer> = ({
   form,
   initialValues,
   makeInitialValues,
   surveyId,
-  save,
   nextAction,
   nextActionLabel,
 }) => {
+  const save = useAsyncCallback(saveForm(surveyId, form.name));
   return (
     // @ts-ignore: broken formik definition
     <Formik

@@ -292,6 +292,7 @@ const form: Form = {
   name: "tieu_hoc_form",
   label: "Phiếu điều tra sức khỏe răng miệng",
   labelSecondary: "(dành cho học sinh Mẫu giáo)",
+  labelShort: "Phiếu điều tra",
   survey: fields,
   lists: {
     tinhtrang: [

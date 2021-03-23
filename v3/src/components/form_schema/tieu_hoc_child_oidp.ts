@@ -116,6 +116,7 @@ const fields: Array<Field> = [
 export const form: Form = {
   name: "tieu_hoc_child_oidp",
   label: "Bảng câu hỏi về những khó chịu từ răng miệng",
+  labelShort: "Child-OIDP",
   survey: fields,
   lists: {
     khochiu: [

@@ -669,6 +669,7 @@ const form: Form = {
   name: "nguoi_lon_form",
   label: "Phiếu điều tra sức khỏe răng miệng",
   labelSecondary: "(dành cho người trưởng thành)",
+  labelShort: "Phiếu điều tra",
   survey: fields,
   lists: {
     tinhtrang: [

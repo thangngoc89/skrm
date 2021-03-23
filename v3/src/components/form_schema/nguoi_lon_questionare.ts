@@ -418,6 +418,7 @@ const fields: Array<Field> = [
 export const form: Form = {
   name: "nguoi_lon_questionare",
   label: "Bảng câu hỏi phỏng vấn kiến thức và thói quen chăm sóc răng miệng",
+  labelShort: "Bảng câu hỏi",
   labelSecondary: "(Dành cho người trường thành)",
   survey: fields,
   labelVerbose: true,

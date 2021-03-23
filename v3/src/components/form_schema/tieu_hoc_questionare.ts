@@ -160,7 +160,7 @@ const fields: Array<Field> = [
     type: "text",
     label: "Điều trị khác điền tại đây",
     condition: "b13 == 8",
-    optional: true
+    optional: true,
   },
   {
     name: "b14",
@@ -293,7 +293,7 @@ const fields: Array<Field> = [
     name: "b21_custom",
     type: "text",
     condition: "b21 == 7",
-    optional: true
+    optional: true,
   },
   {
     name: "b22",
@@ -357,6 +357,7 @@ const fields: Array<Field> = [
 export const form: Form = {
   name: "tieu_hoc_questionare",
   label: "Phỏng vấn kiến thức và thói quen chăm sóc sức khỏe răng miệng",
+  labelShort: "Bảng câu hỏi",
   survey: fields,
   labelVerbose: true,
 };

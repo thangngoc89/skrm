@@ -1,3 +1,6 @@
+import { Color as HeaderColor } from "../useHeaderColor";
+import { SurveyType } from "../types";
+
 type Pair = { name: string; label: string };
 
 type SelectPairRef = { name: string; label?: string; list: string };
@@ -87,7 +90,17 @@ type Form = {
   lists?: List;
   label: string;
   labelSecondary?: string;
+  labelShort: string;
   labelVerbose?: boolean;
 };
 
-export { Pair, Field, Form, List, SelectPairRef };
+type Survey = {
+  name: SurveyType;
+  forms: Array<{
+    form: Form;
+    makeInitialValues: () => any;
+  }>;
+  headerColor: HeaderColor;
+};
+
+export { Pair, Field, Form, List, SelectPairRef, Survey };

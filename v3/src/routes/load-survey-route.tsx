@@ -1,18 +1,19 @@
 import { h } from "preact";
 import { AsyncAction } from "../components/types";
-import { db, ISurveyList } from "../components/db";
+import { db, IDbSurvey } from "../components/db";
 import { Error } from "../components/error";
-import { ShowSurvey } from "../components/survey/ShowSurvey";
+import { SurveySwitcher } from "../components/survey/SurveySwitcher";
 import { useEffect, useState } from "react";
 import { Spinner } from "../components/spinner";
 
-type State = AsyncAction<ISurveyList | undefined, string>;
+type State = AsyncAction<IDbSurvey | undefined, string>;
 
 interface LoadSurveyProps {
   surveyId: string;
+  currentForm?: string;
 }
 
-const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
+const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId, currentForm }) => {
   const [state, setState] = useState<State>({ type: "initial" });
 
   useEffect(() => {
@@ -44,7 +45,7 @@ const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId }) => {
           <Error title="Không tìm thấy hồ sơ này" explain="Chắc là có lỗi phần mềm xảy ra. Các bạn báo anh biết nhé" />
         );
       }
-      return <ShowSurvey key={survey.surveyId} {...survey} />;
+      return <SurveySwitcher key={survey.surveyId} survey={survey} currentForm={currentForm} />;
     case "error":
       return (
         <div className="wrapper">

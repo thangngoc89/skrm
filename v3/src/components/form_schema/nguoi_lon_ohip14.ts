@@ -111,6 +111,7 @@ const fields: Array<Field> = [
 
 export const form: Form = {
   name: "nguoi_lon_ohip14",
+  labelShort: "OHIP-14",
   label: "Phỏng vấn kiến thức và thói quen chăm sóc sức khỏe răng miệng",
   survey: fields,
   labelVerbose: true,

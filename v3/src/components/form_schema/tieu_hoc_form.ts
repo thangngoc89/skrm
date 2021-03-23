@@ -609,6 +609,7 @@ const form: Form = {
   name: "tieu_hoc_form",
   label: "Phiếu điều tra sức khỏe răng miệng",
   labelSecondary: "(dành cho trẻ dưới 15 tuổi)",
+  labelShort: "Phiếu điều tra",
   survey: fields,
   lists: {
     tinhtrang: [

@@ -3,7 +3,7 @@ import { SurveyType } from "./types";
 
 export { nanoid as makeId } from "nanoid";
 
-export interface ISurveyList {
+export interface IDbSurvey {
   surveyId: string;
   surveyType: SurveyType;
   createdAt: number;
@@ -18,7 +18,7 @@ export interface ISurveyData {
 }
 
 class VoserDatabase extends Dexie {
-  list: Dexie.Table<ISurveyList, string>;
+  list: Dexie.Table<IDbSurvey, string>;
   data: Dexie.Table<ISurveyData, SurveyDataKey>;
 
   constructor() {

@@ -1,9 +1,10 @@
 import { useEffect } from "react";
 
-type Color = "purple" | "yellow" | "green" | "pink";
+export type Color = "purple" | "yellow" | "green" | "pink" | "default";
 
 const colorToHex = (color: Color) => {
   switch (color) {
+    case "default":
     case "purple":
       return "#673ab7";
     case "yellow":
@@ -18,7 +19,6 @@ const colorToHex = (color: Color) => {
 export const useHeaderColor = (color: Color) => {
   useEffect(() => {
     const header = document.getElementById("header");
-    console.log(header);
     if (header) {
       header.style.backgroundColor = colorToHex(color);
     }

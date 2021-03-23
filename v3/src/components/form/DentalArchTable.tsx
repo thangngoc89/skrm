@@ -12,7 +12,7 @@ interface SingleRowProps {
   headers: Array<string>;
   headerLength: number;
   rowHeader: string;
-  alternativeRowHeader: string;
+  alternativeRowHeader?: string;
   lists: List;
   fieldsMap: FieldsMap;
 }
@@ -36,7 +36,7 @@ const SingleRow: React.FC<SingleRowProps> = ({
               {rowHeader}
             </th>
           );
-        } else if (i === headerLength - 1) {
+        } else if (alternativeRowHeader && i === headerLength - 1) {
           return alternativeRowHeader === "" ? (
             <td className={style.emptyCell}></td>
           ) : (
@@ -49,11 +49,7 @@ const SingleRow: React.FC<SingleRowProps> = ({
           if (fieldsMap[key]) {
             return (
               <td>
-                <SelectOneDropdown
-                  name={key}
-                  choices={lists[fieldsMap[key]]}
-                  key={i}
-                ></SelectOneDropdown>
+                <SelectOneDropdown name={key} choices={lists[fieldsMap[key]]} key={i}></SelectOneDropdown>
               </td>
             );
           }
@@ -94,7 +90,7 @@ export const DentalArchTableBigScreen: React.FC<Props> = ({
             <SingleRow
               key={i}
               rowHeader={rowHeader}
-              alternativeRowHeader={alternativeRowHeaders[i]}
+              alternativeRowHeader={alternativeRowHeaders && alternativeRowHeaders[i]}
               headers={headers}
               headerLength={headerLength}
               lists={lists}
@@ -136,7 +132,10 @@ export const DentalArchTableMobile: React.FC<Props> = ({
     <Fragment>
       <caption className={style.caption}>{label}</caption>
       {rowHeaders.map((rowHeader, rowIter) => {
-        let alRowHeader = alternativeRowHeaders[rowIter] === "" ? null : alternativeRowHeaders[rowIter];
+        let alRowHeader;
+        if (alternativeRowHeaders) {
+          alRowHeader = alternativeRowHeaders[rowIter] === "" ? null : alternativeRowHeaders[rowIter];
+        }
 
         return (
           <section key={rowIter}>
@@ -180,7 +179,7 @@ interface Props {
   label?: string;
   headers: Array<string>;
   rowHeaders: Array<string>;
-  alternativeRowHeaders: Array<string>;
+  alternativeRowHeaders?: Array<string>;
   fields: Array<SelectPairRef>;
 }
 export const DentalArchTable: React.FC<Props> = (props) => {

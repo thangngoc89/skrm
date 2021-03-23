@@ -68,7 +68,7 @@ type Field =
       label?: string;
       headers: Array<string>;
       rowHeaders: Array<string>;
-      alternativeRowHeaders: Array<string>;
+      alternativeRowHeaders?: Array<string>;
       // Same as select_one_ref
       fields: Array<SelectPairRef>;
     }

@@ -7,7 +7,7 @@ import { route } from "preact-router";
 import { FormRenderer } from "../form/FormRender";
 import * as nguoi_lon_form from "../form_schema/nguoi_lon_form";
 import * as nguoi_lon_questionare from "../form_schema/nguoi_lon_questionare";
-import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
+import * as nguoi_lon_ohip14 from "../form_schema/nguoi_lon_ohip14";
 import { NguoilonFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
 import { notify } from "../notify";
@@ -107,7 +107,7 @@ const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({
     case "nguoi_lon_questionare":
       return <FormRenderer {...commonProps} {...nguoi_lon_questionare} />;
     case "nguoi_lon_ohip14":
-      return <FormRenderer {...commonProps} {...tieu_hoc_child_oidp} />;
+      return <FormRenderer {...commonProps} {...nguoi_lon_ohip14} />;
   }
 };
 
@@ -153,7 +153,7 @@ function reducer(state: State, action: Action): State {
 
 export const Nguoilon: React.FC<Props> = ({ surveyId }) => {
   const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
-    currentForm: "nguoi_lon_questionare",
+    currentForm: "nguoi_lon_form",
     formData: {
       nguoi_lon_form: undefined,
       nguoi_lon_questionare: undefined,
@@ -175,7 +175,7 @@ export const Nguoilon: React.FC<Props> = ({ surveyId }) => {
               currentForm={currentForm}
               dispatch={dispatch}
             />
-            <FormNavButton name="nguoi_lon_ohip14" label="Child-OIDP" currentForm={currentForm} dispatch={dispatch} />
+            <FormNavButton name="nguoi_lon_ohip14" label="OHIP-14" currentForm={currentForm} dispatch={dispatch} />
           </nav>
           <div className={style.right} id="formActions"></div>
         </div>

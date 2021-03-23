@@ -9,6 +9,7 @@ import {
   SelectOneDropdown,
   SelectOneRadio,
   SelectMany,
+  MatrixSelectOne,
   DentalArchTable,
   DentalArchTable2Rows,
 } from "./FormComponents";
@@ -88,11 +89,22 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       return (
         <SelectMany name={field.name} label={field.label || ""} choices={field.choices} labelVerbose={labelVerbose} />
       );
+    case "matrix_select_one":
+      return (
+        <MatrixSelectOne
+          name={field.name}
+          label={field.label || ""}
+          choices={field.choices}
+          labelVerbose={labelVerbose}
+          subQuestions={field.subQuestions}
+        />
+      );
     case "dental_arch_table":
       return <DentalArchTable lists={lists} label={field.label} {...field} />;
     case "dental_arch_table_2_rows":
       return <DentalArchTable2Rows lists={lists} label={field.label} {...field} />;
     default:
+      console.warn("Missing field type:", field.type);
       return <h1>Missing {field.type}</h1>;
   }
 };

@@ -20,12 +20,10 @@ export const useHeaderColor = (color: Color) => {
     const header = document.getElementById("header");
     console.log(header);
     if (header) {
-      console.log("set initial header");
       header.style.backgroundColor = colorToHex(color);
     }
 
     return () => {
-      console.log("calling remove");
       if (header) {
         header.style.backgroundColor = colorToHex("purple");
       }

@@ -11,7 +11,9 @@ import * as nguoi_lon_ohip14 from "../form_schema/nguoi_lon_ohip14";
 import { NguoilonFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
 import { notify } from "../notify";
-const surveyType: SurveyType = "tieu_hoc";
+import { useHeaderColor } from "../useHeaderColor";
+
+const surveyType: SurveyType = "nguoi_lon";
 
 type FormNavButtonProps = {
   name: NguoilonFormType;
@@ -152,6 +154,8 @@ function reducer(state: State, action: Action): State {
 }
 
 export const Nguoilon: React.FC<Props> = ({ surveyId }) => {
+  useHeaderColor("green");
+
   const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
     currentForm: "nguoi_lon_form",
     formData: {

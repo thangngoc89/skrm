@@ -8,6 +8,7 @@ import { FormRenderer } from "../form/FormRender";
 import * as mau_giao_form from "../form_schema/mau_giao_form";
 import { MaugiaoFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
+import { useHeaderColor } from "../useHeaderColor";
 
 const surveyType: SurveyType = "mau_giao";
 
@@ -105,6 +106,8 @@ function reducer(state: State, action: Action): State {
 }
 
 export const Maugiao: React.FC<Props> = ({ surveyId }) => {
+  useHeaderColor("yellow");
+
   const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
     currentForm: "mau_giao_form",
     formData: {

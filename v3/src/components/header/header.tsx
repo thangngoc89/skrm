@@ -28,7 +28,7 @@ const Header: FunctionalComponent = () => {
   const [expanded, setExpanded] = useState(false);
   const onClick = (): void => setExpanded((prvExpanded) => !prvExpanded);
   return (
-    <header class={style.header}>
+    <header id="header" class={style.header}>
       <h1>
         <Link href="/">VOSER</Link>
         <span className={style.version}>v{version}</span>

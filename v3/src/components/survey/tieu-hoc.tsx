@@ -11,6 +11,8 @@ import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
 import { TieuhocFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
 import { notify } from "../notify";
+import { useHeaderColor } from "../useHeaderColor";
+
 const surveyType: SurveyType = "tieu_hoc";
 
 type FormNavButtonProps = {
@@ -152,6 +154,8 @@ function reducer(state: State, action: Action): State {
 }
 
 export const Tieuhoc: React.FC<Props> = ({ surveyId }) => {
+  useHeaderColor("pink");
+
   const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
     currentForm: "tieu_hoc_form",
     formData: {

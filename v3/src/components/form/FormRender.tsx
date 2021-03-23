@@ -112,9 +112,11 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       return <DentalArchTable lists={lists} label={field.label} {...field} />;
     case "dental_arch_table_2_rows":
       return <DentalArchTable2Rows lists={lists} label={field.label} {...field} />;
-    default:
-      console.warn("Missing field type:", field.type);
-      return <h1>Missing {field.type}</h1>;
+    case "note":
+      return <p>{field.label}</p>;
+    // default:
+    //   console.warn("Missing field type:", field.type);
+    //   return <h1>Missing {field.type}</h1>;
   }
 };
 

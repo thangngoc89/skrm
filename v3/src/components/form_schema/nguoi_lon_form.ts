@@ -61,6 +61,10 @@ const hanhChinh: Array<Field> = [
 
 const tinhTrangNhuCau: Array<Field> = [
   {
+    type: "note",
+    label: "CR = Tình trạng chân răng; Mã số ghi nhận tương tự tình trạng thân răng.",
+  },
+  {
     type: "dental_arch_table",
     name: "ham_tren",
     label: "Hàm trên",

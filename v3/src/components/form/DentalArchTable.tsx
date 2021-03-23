@@ -2,7 +2,7 @@ import { h } from "preact";
 import { useMemo } from "react";
 import { Table } from "@trussworks/react-uswds";
 import { SelectOneDropdown } from "./FormComponents";
-import { List, Field, SelectPairRef } from "../form_schema/schema";
+import { List, SelectPairRef } from "../form_schema/schema";
 import style from "./DentalArchTable.css";
 import { Fragment } from "preact";
 import { tablet } from "../responsive";

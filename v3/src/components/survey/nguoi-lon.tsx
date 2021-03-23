@@ -6,7 +6,7 @@ import { db, SurveyDataKey, ISurveyData } from "../db";
 import { route } from "preact-router";
 import { FormRenderer } from "../form/FormRender";
 import * as nguoi_lon_form from "../form_schema/nguoi_lon_form";
-import * as tieu_hoc_questionare from "../form_schema/tieu_hoc_questionare";
+import * as nguoi_lon_questionare from "../form_schema/nguoi_lon_questionare";
 import * as tieu_hoc_child_oidp from "../form_schema/tieu_hoc_child_oidp";
 import { NguoilonFormType, SurveyType } from "../types";
 import { Spinner } from "../spinner";
@@ -105,7 +105,7 @@ const SelectFormToRender: React.FC<SelectFormToRenderProps> = ({
     case "nguoi_lon_form":
       return <FormRenderer {...commonProps} {...nguoi_lon_form} />;
     case "nguoi_lon_questionare":
-      return <FormRenderer {...commonProps} {...tieu_hoc_questionare} />;
+      return <FormRenderer {...commonProps} {...nguoi_lon_questionare} />;
     case "nguoi_lon_ohip14":
       return <FormRenderer {...commonProps} {...tieu_hoc_child_oidp} />;
   }
@@ -153,7 +153,7 @@ function reducer(state: State, action: Action): State {
 
 export const Nguoilon: React.FC<Props> = ({ surveyId }) => {
   const [{ currentForm, formData }, dispatch] = useReducer(reducer, {
-    currentForm: "nguoi_lon_form",
+    currentForm: "nguoi_lon_questionare",
     formData: {
       nguoi_lon_form: undefined,
       nguoi_lon_questionare: undefined,

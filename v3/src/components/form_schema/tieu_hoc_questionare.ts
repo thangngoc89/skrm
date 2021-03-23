@@ -1,4 +1,3 @@
-import { Radio } from "@trussworks/react-uswds";
 import { Field, Form } from "./schema";
 
 const fields: Array<Field> = [
@@ -161,6 +160,7 @@ const fields: Array<Field> = [
     type: "text",
     label: "Điều trị khác điền tại đây",
     condition: "b13 == 8",
+    optional: true
   },
   {
     name: "b14",
@@ -208,6 +208,7 @@ const fields: Array<Field> = [
     name: "b16_custom",
     type: "text",
     label: "Vật dụng khác ghi tại đây",
+    optional: true,
     condition: "b16 == 7",
   },
   {
@@ -292,6 +293,7 @@ const fields: Array<Field> = [
     name: "b21_custom",
     type: "text",
     condition: "b21 == 7",
+    optional: true
   },
   {
     name: "b22",
@@ -312,6 +314,7 @@ const fields: Array<Field> = [
     name: "b22_custom",
     type: "text",
     label: "Nghề khác ghi rõ tại đây",
+    optional: true,
     condition: "b22 == 7",
   },
   {

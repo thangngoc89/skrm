@@ -668,7 +668,7 @@ const fields: Array<Field> = [
 const form: Form = {
   name: "nguoi_lon_form",
   label: "Phiếu điều tra sức khỏe răng miệng",
-  labelSecondary: "(dành cho người từ 16 tuổi)",
+  labelSecondary: "(dành cho người trưởng thanh2)",
   survey: fields,
   lists: {
     tinhtrang: [

@@ -1,11 +1,12 @@
-.loader,
-.loader:after {
+.spinner,
+.spinner:after {
   border-radius: 50%;
   width: 10em;
   height: 10em;
 }
 
-.loader {
+.spinner {
+  opacity: 0;
   margin: 60px auto;
   font-size: 10px;
   position: relative;
@@ -15,14 +16,19 @@
   border-bottom: 1.1em solid rgb(125, 76, 219);
   border-left: 1.1em solid rgba(125, 76, 219, 0.2);
   transform: translateZ(0);
-  animation: load8 1.1s infinite linear;
+  animation: spin 1.1s infinite linear;
 }
 
-@keyframes load8 {
+@keyframes spin {
   0% {
     transform: rotate(0deg);
   }
   100% {
     transform: rotate(360deg);
   }
+}
+
+.delay {
+  opacity: 1;
+  transition: opacity 0.5s cubic-bezier(1, 0, 0.1, 0);
 }

@@ -125,6 +125,7 @@ export const SurveyRender: React.FC<Props> = ({ surveyId, currentForm: routeCurr
             <div className={style.right} id="formActions"></div>
           </div>
           <FormRenderer
+            key={surveyId + currentForm}
             form={surveySchema.forms[currentFormPosition].form}
             surveyId={surveyId}
             initialValues={result && result.data}

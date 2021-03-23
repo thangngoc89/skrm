@@ -37,6 +37,12 @@ type Field =
       label?: string;
       choices: Array<Pair>;
     }
+  | {
+      type: "select_many_ref";
+      name: string;
+      label?: string;
+      list: string;
+    }
   | ({
       type: "text";
     } & BaseInput)

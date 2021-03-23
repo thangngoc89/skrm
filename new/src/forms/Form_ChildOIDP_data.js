@@ -1,6 +1,6 @@
 export const lietkeOptions = [
   { value: "1", label: "Đau răng, nhức răng" },
-  { value: "2", label: "Ê buốt răng khi ăn kem, khi uống nước đá, nước nóng" },
+  { value: "2", label: "Ê buốt răng khi ăn kem, khi uống nước đá, nước nóng..." },
   { value: "3", label: "Sâu răng, có lỗ trên răng" },
   { value: "4", label: "Răng sữa bị lung lay, sắp rụng" },
   {

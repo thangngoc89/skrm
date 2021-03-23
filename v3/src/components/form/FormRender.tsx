@@ -89,6 +89,15 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       return (
         <SelectMany name={field.name} label={field.label || ""} choices={field.choices} labelVerbose={labelVerbose} />
       );
+    case "select_many_ref":
+      return (
+        <SelectMany
+          name={field.name}
+          label={field.label || ""}
+          choices={lists[field.list]}
+          labelVerbose={labelVerbose}
+        />
+      );
     case "matrix_select_one":
       return (
         <MatrixSelectOne

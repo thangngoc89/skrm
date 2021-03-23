@@ -2,6 +2,11 @@ import { Field, Form } from "./schema";
 
 const fields: Array<Field> = [
   {
+    type: "note",
+    label:
+      "Bảng câu hỏi này dùng để nghiên cứu mối liên quan giữa những hiểu biết về bệnh sâu răng, thói quen chăm sóc răng miệng và tình trạng bệnh sâu răng. Kính xin các Ông/Bà vui lòng dành thời gian trả lời chính xác các câu hỏi sau đây, bằng cách đánh dấu (X) vào ô mà Ông/Bà chọn là câu trả lời. Xin cảm ơn.",
+  },
+  {
     type: "select_one",
     name: "a1",
     label: "Giới tính",
@@ -242,7 +247,7 @@ const fields: Array<Field> = [
   {
     name: "a18",
     type: "select_many",
-    label: "Ông/bà có mang hàm giả tháo lắp nào không?",
+    label: "Ông/bà có gặp khó khăn gì trong việc đeo hàm giả không?",
     choices: [
       { name: "1", label: "Ông/bà có phát âm rõ ràng không (66, 100%)?" },
       { name: "2", label: "Ông/bà có ăn uống dễ dàng không?" },
@@ -307,7 +312,7 @@ const fields: Array<Field> = [
     name: "a21",
     type: "select_one",
     display: "radio",
-    label: "Ông/bà có mang hàm giả tháo lắp nào không?",
+    label: "Trong vòng 30 ngày qua, vào những ngày ông/bà uống rượu, bia đã uống bao nhiêu ly mỗi ngày?",
     choices: [
       { name: "0", label: "Ít hơn 1 ly" },
       { name: "1", label: "1 ly" },
@@ -321,7 +326,7 @@ const fields: Array<Field> = [
   {
     name: "a22",
     type: "select_many",
-    label: "Ông/bà có mang hàm giả tháo lắp nào không?",
+    label: "Phương tiện đi lại chính của ông/bà là? (có thể chọn nhiều câu trả lời)",
     choices: [
       { name: "1", label: "Xe hơi riêng" },
       { name: "2", label: "Xe gắn máy trên 20 triệu đồng" },

@@ -1,3 +1,28 @@
+.main {
+  padding: 56px 20px;
+  min-height: 100%;
+  width: 100%;
+}
+
+.main > .intro {
+  text-align: center;
+  margin: 3em 0;
+}
+
+.main > .intro h1 {
+  margin-bottom: 0;
+}
+.main > .intro h2 {
+  margin-top: 0;
+  font-weight: 400;
+}
+
+.group {
+  margin-top: 1rem;
+}
+
+/** Sticky header **/
+
 .sticky {
   position: sticky;
   z-index: 10;
@@ -12,35 +37,36 @@
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }
 
-.left a,
+.left button,
 .right button {
   display: inline-block;
   height: 2rem;
   line-height: 2rem;
   padding: 0 0.5rem;
   min-width: 50px;
+  border: 0;
+  cursor: pointer;
 }
-.left a {
+
+.left button {
   text-align: center;
   text-decoration: none;
   color: #000;
   will-change: background-color;
 }
 
-.left a:not(:last-child) {
+.left button:not(:last-child) {
   border-right: 1px solid rgb(167, 167, 167);
 }
-.left a:hover,
+.left button:hover,
 .left .active {
   background-color: rgba(0, 0, 0, 0.2);
 }
 
 .right button {
-  border: 0;
   background-color: #d83933;
   color: #fff;
   font-weight: 700;
-  cursor: pointer;
 }
 
 .right button:hover {

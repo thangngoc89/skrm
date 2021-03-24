@@ -1,17 +1,14 @@
 import { h } from "preact";
-import style from "./SurveyRender.css";
 import { useState, useEffect, useMemo, memo } from "react";
 import { db, ISurveyData } from "../db";
-import { Link } from "preact-router/match";
 import { route } from "preact-router";
 import { AsyncAction } from "../types";
 
-import { FormRenderer } from "../form/FormRender";
+import { FormRenderer } from "./FormRender";
 import { Spinner } from "../spinner";
 import { useHeaderColor } from "../useHeaderColor";
 import { Survey } from "../form_schema/schema";
 import { Error } from "../error";
-import { FormNavButton } from "./FormNavButton";
 
 /////////////// DATABASE OPERATIONS ///////////////////
 const loadForm = async (surveyId: string, currentForm: string) => {
@@ -90,25 +87,16 @@ export const SurveyRender: React.FC<Props> = ({ surveyId, currentForm: routeCurr
       const result = state.payload;
 
       return (
-        <div>
-          <div className={style.sticky}>
-            <nav className={style.left}>
-              {surveySchema.forms.map(({ form }) => {
-                return <FormNavButton key={form.name} name={form.name} label={form.labelShort} surveyId={surveyId} />;
-              })}
-            </nav>
-            <div className={style.right} id="formActions"></div>
-          </div>
-          <FormRenderer
-            key={surveyId + currentForm}
-            form={surveySchema.forms[currentFormPosition].form}
-            surveyId={surveyId}
-            initialValues={result && result.data}
-            makeInitialValues={surveySchema.forms[currentFormPosition].makeInitialValues}
-            nextAction={nextAction}
-            nextActionLabel={nextActionLabel}
-          />
-        </div>
+        <FormRenderer
+          key={surveyId + currentForm}
+          surveySchema={surveySchema}
+          form={surveySchema.forms[currentFormPosition].form}
+          surveyId={surveyId}
+          initialValues={result && result.data}
+          makeInitialValues={surveySchema.forms[currentFormPosition].makeInitialValues}
+          nextAction={nextAction}
+          nextActionLabel={nextActionLabel}
+        />
       );
 
     case "error":

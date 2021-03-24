@@ -27,6 +27,7 @@
     "date-fns": "^2.19.0",
     "dexie": "^3.0.3",
     "formik": "^2.2.6",
+    "framer-motion": "^4.0.3",
     "nanoid": "^3.1.22",
     "obj-str": "^1.0.3",
     "preact": "^10.3.1",
@@ -36,6 +37,7 @@
     "preact-router": "^3.2.1",
     "react-async-hook": "^3.6.2",
     "react-icons": "^4.2.0",
+    "react-laag": "^2.0.2",
     "react-responsive": "^8.2.0",
     "react-toastify": "^7.0.3"
   },

@@ -27,3 +27,10 @@
   top: 118px;
   border: 1px solid black;
 } */
+
+.mobileRowHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}

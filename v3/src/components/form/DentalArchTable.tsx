@@ -7,6 +7,8 @@ import style from "./DentalArchTable.css";
 import { Fragment } from "preact";
 import { tablet } from "../responsive";
 import { useMediaQuery } from "react-responsive";
+import { DropdownMenu } from "../DropdownMenu";
+import { useFormikContext } from "formik";
 
 interface SingleRowProps {
   headers: Array<string>;
@@ -106,6 +108,67 @@ export const DentalArchTableBigScreen: React.FC<Props> = ({
   );
 };
 
+interface DropdownSetSoundToothProps {
+  toothNumber: string;
+  fieldsMap: FieldsMap;
+  slicedHeader: Array<string>;
+}
+
+const DropdownSetSoundTooth: React.FC<DropdownSetSoundToothProps> = ({ toothNumber, fieldsMap, slicedHeader }) => {
+  const { setValues, values } = useFormikContext();
+
+  return (
+    <DropdownMenu
+      items={[
+        {
+          label: "Răng sữa tốt",
+          action: () => {
+            let toothValues: any = {};
+            slicedHeader.forEach((toothSurface: string) => {
+              const posibleValue = toothSurface === "NC" ? "0" : "a";
+              const key = `${toothNumber}_${toothSurface}`;
+
+              if (fieldsMap[key]) {
+                toothValues[key] = posibleValue;
+              }
+            });
+            setValues(
+              {
+                // @ts-ignore
+                ...values,
+                ...toothValues,
+              },
+              false
+            );
+          },
+        },
+        {
+          label: "Răng vĩnh viễn tốt",
+          action: () => {
+            let toothValues: any = {};
+            slicedHeader.forEach((toothSurface: string) => {
+              const posibleValue = 0;
+              const key = `${toothNumber}_${toothSurface}`;
+
+              if (fieldsMap[key]) {
+                toothValues[key] = posibleValue;
+              }
+            });
+
+            setValues(
+              {
+                // @ts-ignore
+                ...values,
+                ...toothValues,
+              },
+              false
+            );
+          },
+        },
+      ]}
+    />
+  );
+};
 export const DentalArchTableMobile: React.FC<Props> = ({
   name,
   lists,
@@ -139,9 +202,12 @@ export const DentalArchTableMobile: React.FC<Props> = ({
 
         return (
           <section key={rowIter}>
-            <p>
-              R{rowHeader} {alRowHeader && `/ R${alRowHeader}`}
-            </p>
+            <div className={style.mobileRowHeader}>
+              <span>
+                R{rowHeader} {alRowHeader && `/ R${alRowHeader}`}{" "}
+              </span>
+              <DropdownSetSoundTooth toothNumber={rowHeader} fieldsMap={fieldsMap} slicedHeader={slicedHeader} />
+            </div>
             <Table bordered fullWidth>
               <tbody className={style.tbody}>
                 {slicedHeader.map((header, colIter) => {

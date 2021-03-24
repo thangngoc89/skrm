@@ -1,0 +1,42 @@
+.button,
+.list button {
+  display: inline-block;
+  cursor: pointer;
+  border: 0;
+  background-color: transparent;
+  padding: 0.25rem;
+}
+
+.icon {
+  display: inline-block;
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  fill: rgb(125, 76, 219);
+  stroke: rgb(125, 76, 219);
+}
+
+.tooltip {
+  background-color: #fff;
+  border: 1px solid #000;
+  padding: 0.5rem;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+}
+
+.list > * + * {
+  margin-top: 0.5rem;
+}
+
+.list button {
+  border-bottom: 1px solid transparent;
+  will-change: border-bottom-color;
+  /* transition: border-bottom-color 0.1s ease-out; */
+}
+.list button:hover {
+  border-bottom-color: #2491ff;
+  color: #2491ff;
+}

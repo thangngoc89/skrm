@@ -27,6 +27,7 @@ export const FormNavButton: React.FC<FormNavButtonProps> = ({
       onClick={(e) => {
         e.preventDefault();
         if (dirty) {
+          // @todo: change to set state instead
           setFieldValue("__internal_redirect", formRoute, false);
           handleSubmit(e);
         } else {

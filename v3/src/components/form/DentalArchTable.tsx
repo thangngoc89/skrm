@@ -124,11 +124,12 @@ const DropdownSetSoundTooth: React.FC<DropdownSetSoundToothProps> = ({ toothNumb
           label: "Răng sữa tốt",
           action: () => {
             let toothValues: any = {};
+
             slicedHeader.forEach((toothSurface: string) => {
               const posibleValue = toothSurface === "NC" ? "0" : "a";
               const key = `${toothNumber}_${toothSurface}`;
 
-              if (fieldsMap[key]) {
+              if (key in fieldsMap) {
                 toothValues[key] = posibleValue;
               }
             });
@@ -150,7 +151,7 @@ const DropdownSetSoundTooth: React.FC<DropdownSetSoundToothProps> = ({ toothNumb
               const posibleValue = 0;
               const key = `${toothNumber}_${toothSurface}`;
 
-              if (fieldsMap[key]) {
+              if (key in fieldsMap) {
                 toothValues[key] = posibleValue;
               }
             });

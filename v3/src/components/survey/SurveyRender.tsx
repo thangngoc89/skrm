@@ -8,40 +8,15 @@ import { AsyncAction } from "../types";
 
 import { FormRenderer } from "../form/FormRender";
 import { Spinner } from "../spinner";
-import { notify } from "../notify";
 import { useHeaderColor } from "../useHeaderColor";
 import { Survey } from "../form_schema/schema";
 import { Error } from "../error";
+import { FormNavButton } from "./FormNavButton";
 
 /////////////// DATABASE OPERATIONS ///////////////////
 const loadForm = async (surveyId: string, currentForm: string) => {
   return await db.data.get([surveyId, currentForm]);
 };
-///////////////////////////////////////////////////////
-
-type FormNavButtonProps = {
-  name: string;
-  label: string;
-  surveyId: string;
-};
-
-const FormNavButton: React.FC<FormNavButtonProps> = ({ name, label, surveyId }) => {
-  return (
-    <Link
-      href={`/survey/${surveyId}/${name}`}
-      onClick={(e) => {
-        e.preventDefault();
-        // dispatch({ type: "change_form", newForm: name });
-        notify.info("Các bạn bấm Lưu -> Tiếp theo để sang bảng tiếp theo", { autoClose: 5000 });
-      }}
-      activeClassName={style.active}
-      disabled
-    >
-      {label}
-    </Link>
-  );
-};
-
 const makeNextAction = (surveySchema: Survey, surveyId: string, currentFormPosition: number) => {
   const maxPosition = surveySchema.forms.length - 1;
   if (maxPosition === currentFormPosition) {

@@ -13,16 +13,17 @@ interface Props {
   survey: IDbSurvey;
   currentForm?: string;
 }
+
 const SurveySwitcher: React.FC<Props> = ({ survey: { surveyId, surveyType }, currentForm }) => {
+  const key = surveyId + currentForm;
+
   switch (surveyType) {
     case "tieu_hoc":
-      return <SurveyRender key={surveyId} surveySchema={tieuhocSurvey} surveyId={surveyId} currentForm={currentForm} />;
+      return <SurveyRender key={key} surveySchema={tieuhocSurvey} surveyId={surveyId} currentForm={currentForm} />;
     case "mau_giao":
-      return <SurveyRender key={surveyId} surveySchema={maugiaoSurvey} surveyId={surveyId} currentForm={currentForm} />;
+      return <SurveyRender key={key} surveySchema={maugiaoSurvey} surveyId={surveyId} currentForm={currentForm} />;
     case "nguoi_lon":
-      return (
-        <SurveyRender key={surveyId} surveySchema={nguoilonSurvey} surveyId={surveyId} currentForm={currentForm} />
-      );
+      return <SurveyRender key={key} surveySchema={nguoilonSurvey} surveyId={surveyId} currentForm={currentForm} />;
     default:
       return (
         <div className="wrapper">
@@ -32,6 +33,4 @@ const SurveySwitcher: React.FC<Props> = ({ survey: { surveyId, surveyType }, cur
   }
 };
 
-const MemoSurveySwitcher = memo(SurveySwitcher);
-
-export { MemoSurveySwitcher as SurveySwitcher };
+export { SurveySwitcher };

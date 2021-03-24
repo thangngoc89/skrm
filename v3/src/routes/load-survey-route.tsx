@@ -42,7 +42,10 @@ const LoadSurvey: React.FC<LoadSurveyProps> = ({ surveyId, currentForm }) => {
 
       if (typeof survey === "undefined") {
         return (
-          <Error title="Không tìm thấy hồ sơ này" explain="Chắc là có lỗi phần mềm xảy ra. Các bạn báo anh biết nhé" />
+          <Error
+            title="Không tìm thấy hồ sơ này"
+            explain="Có thể hồ sơ này đã bị xoá hoặc lần trước các bạn đã sử dụng trình duyệt khác"
+          />
         );
       }
       return <SurveySwitcher key={survey.surveyId} survey={survey} currentForm={currentForm} />;

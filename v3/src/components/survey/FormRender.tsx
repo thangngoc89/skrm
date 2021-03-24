@@ -174,7 +174,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({
         });
       }}
     >
-      <Fragment>
+      <div>
         <div className={style.sticky}>
           <nav className={style.left}>
             {surveySchema.forms.map(({ form }) => {
@@ -212,7 +212,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({
             </Button>
           </Form>
         </div>
-      </Fragment>
+      </div>
     </Formik>
   );
 };

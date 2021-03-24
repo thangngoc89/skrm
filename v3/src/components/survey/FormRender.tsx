@@ -1,6 +1,9 @@
 import { h } from "preact";
+import { Fragment } from "react";
+
 import { Formik, Form, useFormikContext } from "formik";
 import style from "./FormRender.css";
+
 import {
   TextInput,
   Group,
@@ -12,22 +15,22 @@ import {
   MatrixSelectOne,
   DentalArchTable,
   DentalArchTable2Rows,
-} from "./FormComponents";
+} from "../form/FormComponents";
+
 import { TextInput as ThemeTextInput, FormGroup, Label } from "@trussworks/react-uswds";
-import { UseAsyncReturn } from "react-async-hook";
-import { Form as FormSchema, Field as FieldSchema } from "../form_schema/schema";
+import { Form as FormSchema, Field as FieldSchema, Survey } from "../form_schema/schema";
 import { List } from "../form_schema/schema";
-import { SurveyDataKey } from "../db";
 import { notify, Msg } from "../notify";
-import MountPortal from "../MountPortal";
 import { useAsyncCallback } from "react-async-hook";
-import { db, ISurveyData } from "../db";
+import { db } from "../db";
+import { FormNavButton } from "./FormNavButton";
+import { route } from "preact-router";
 
 const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
   switch (field.type) {
     case "group":
       return (
-        <Group name={field.label} key={field.name} className={style.group}>
+        <Group name={field.label} className={style.group}>
           {field.fields.map((field) => renderField(field, lists))}
         </Group>
       );
@@ -116,10 +119,17 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       return <DentalArchTable2Rows lists={lists} label={field.label} {...field} />;
     case "note":
       return <p>{field.label}</p>;
-    // default:
-    //   console.warn("Missing field type:", field.type);
-    //   return <h1>Missing {field.type}</h1>;
   }
+};
+
+const SubmitButton: React.FC<{}> = () => {
+  const { handleSubmit } = useFormikContext();
+
+  return (
+    <button type="submit" onClick={handleSubmit}>
+      Lưu
+    </button>
+  );
 };
 
 interface FormRenderer {
@@ -129,16 +139,8 @@ interface FormRenderer {
   makeInitialValues: () => any;
   nextAction: () => void;
   nextActionLabel: string;
+  surveySchema: Survey;
 }
-
-const SubmitButton: React.FC<{}> = () => {
-  const { handleSubmit } = useFormikContext();
-  return (
-    <button type="submit" onClick={handleSubmit}>
-      Lưu
-    </button>
-  );
-};
 
 const saveForm = (surveyId: string, currentForm: string) => {
   return async (formData: any) => {
@@ -147,6 +149,7 @@ const saveForm = (surveyId: string, currentForm: string) => {
 };
 
 export const FormRenderer: React.FC<FormRenderer> = ({
+  surveySchema,
   form,
   initialValues,
   makeInitialValues,
@@ -154,44 +157,75 @@ export const FormRenderer: React.FC<FormRenderer> = ({
   nextAction,
   nextActionLabel,
 }) => {
+  const currentForm = form.name;
   const save = useAsyncCallback(saveForm(surveyId, form.name));
   return (
     // @ts-ignore: broken formik definition
     <Formik
       initialValues={initialValues || makeInitialValues()}
       onSubmit={(values, actions) => {
-        console.log(values);
-        return save.execute(values).then(() => {
+        const { __internal_redirect, ...formData } = values;
+
+        const shouldRedirect = typeof __internal_redirect === "string";
+
+        return save.execute(formData).then(() => {
           notify.success(
-            <Msg title="Lưu dữ liệu thành công." buttonLabel={nextActionLabel} buttonOnClick={nextAction} />,
+            shouldRedirect ? (
+              "Lưu dữ liệu thành công."
+            ) : (
+              <Msg title="Lưu dữ liệu thành công." buttonLabel={nextActionLabel} buttonOnClick={nextAction} />
+            ),
             {
               pauseOnFocusLoss: true,
             }
           );
+
+          if (shouldRedirect) {
+            route(__internal_redirect, true);
+          }
+
           actions.setSubmitting(false);
         });
       }}
     >
-      <div className={style.main}>
-        <div className={style.intro}>
-          <h1>{form.label}</h1>
-          {form.labelSecondary && <h2>{form.labelSecondary}</h2>}
-        </div>
-        <Form className="usa-form" id="form">
-          <FormGroup>
-            <Label htmlFor={surveyId} hint=" (không sửa được)">
-              Mã số hồ sơ VOSER
-            </Label>
-            <ThemeTextInput id="surveyId" type="text" name="surveyId" value={surveyId} disabled />
-          </FormGroup>
-          {form.survey.map((field) => renderField(field, form.lists || {}, form.labelVerbose))}
-          <Button type="submit" secondary>
-            Lưu
-          </Button>
-          <MountPortal id="formActions">
+      <div>
+        <div className={style.sticky}>
+          <nav className={style.left}>
+            {surveySchema.forms.map(({ form }) => {
+              return (
+                <FormNavButton
+                  key={form.name}
+                  name={form.name}
+                  label={form.labelShort}
+                  currentForm={currentForm}
+                  surveyId={surveyId}
+                  activeClassName={style.active}
+                />
+              );
+            })}
+          </nav>
+          <div className={style.right}>
             <SubmitButton />
-          </MountPortal>
-        </Form>
+          </div>
+        </div>
+        <div className={style.main}>
+          <div className={style.intro}>
+            <h1>{form.label}</h1>
+            {form.labelSecondary && <h2>{form.labelSecondary}</h2>}
+          </div>
+          <Form className="usa-form" id="form">
+            <FormGroup>
+              <Label htmlFor={surveyId} hint=" (không sửa được)">
+                Mã số hồ sơ VOSER
+              </Label>
+              <ThemeTextInput id="surveyId" type="text" name="surveyId" value={surveyId} disabled />
+            </FormGroup>
+            {form.survey.map((field) => renderField(field, form.lists || {}, form.labelVerbose))}
+            <Button type="submit" secondary>
+              Lưu
+            </Button>
+          </Form>
+        </div>
       </div>
     </Formik>
   );

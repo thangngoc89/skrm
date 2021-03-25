@@ -12,8 +12,15 @@ import { Error } from "../error";
 
 /////////////// DATABASE OPERATIONS ///////////////////
 const loadForm = async (surveyId: string, currentForm: string) => {
-  return await db.data.get([surveyId, currentForm]);
+  const result = await db.data.get([surveyId, currentForm]);
+
+  // DO NOT REMOVE. I was so stupid
+  if (currentForm === "tieu_hoc_form" && typeof result === "undefined") {
+    return await db.data.get([surveyId, "mau_giao_form"]);
+  }
+  return result;
 };
+
 const makeNextAction = (surveySchema: Survey, surveyId: string, currentFormPosition: number) => {
   const maxPosition = surveySchema.forms.length - 1;
   if (maxPosition === currentFormPosition) {

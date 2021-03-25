@@ -9,6 +9,7 @@ import { format } from "date-fns";
 import { Link } from "preact-router/match";
 import { notify } from "../components/notify";
 import { IDbSurvey, SyncStatus } from "../components/db";
+import { dataUpsert, surveyUpsert } from "../components/data/firebase";
 
 const formatDate = (epoch: number) => {
   return format(new Date(epoch), "dd-MM-yyyy hh:mm:ss");
@@ -21,8 +22,24 @@ interface SurveyDisplayProps {
 const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
   const syncData = useAsyncCallback(async () => {
     try {
-      const surveys = await db.list.where("synced").noneOf([SyncStatus.Synced]).toArray();
-      console.log(surveys);
+      const surveys = await db.list.where("synced").notEqual(SyncStatus.Synced).toArray();
+      console.log("surveys", surveys.length);
+
+      for (let i = 0; i < surveys.length; i++) {
+        const survey = surveys[i];
+        await surveyUpsert(survey);
+        await db.list.update(survey.surveyId, { synced: SyncStatus.Synced });
+      }
+
+      const surveyData = await db.data.where("synced").notEqual(SyncStatus.Synced).toArray();
+      console.log("surveyData", surveyData.length);
+
+      for (let i = 0; i < surveyData.length; i++) {
+        const form = surveyData[i];
+        await dataUpsert(form);
+        await db.data.update([form.surveyId, form.surveyForm], { synced: SyncStatus.Synced });
+      }
+
       return surveys;
     } catch (error) {
       console.error(error);

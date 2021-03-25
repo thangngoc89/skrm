@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useEffect, useState } from "react";
-import { db, makeId } from "../components/db";
+import { db, makeId, SyncStatus } from "../components/db";
 import { SurveyType } from "src/components/types";
 import { route } from "preact-router";
 import { Spinner } from "../components/spinner";
@@ -20,6 +20,7 @@ const CreateSurvey: React.FC<CreateSurveyProps> = ({ surveyType }) => {
         surveyId: makeId(),
         surveyType: surveyType,
         createdAt: Date.now(),
+        synced: SyncStatus.NotSynced,
       })
       .then((surveyId) => {
         route(`/survey/${surveyId}`, true);

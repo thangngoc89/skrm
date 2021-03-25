@@ -22,7 +22,7 @@ import { Form as FormSchema, Field as FieldSchema, Survey } from "../form_schema
 import { List } from "../form_schema/schema";
 import { notify, Msg } from "../notify";
 import { useAsyncCallback } from "react-async-hook";
-import { db } from "../db";
+import { db, SyncStatus, ulid } from "../db";
 import { FormNavButton } from "./FormNavButton";
 import { route } from "preact-router";
 
@@ -144,7 +144,10 @@ interface FormRenderer {
 
 const saveForm = (surveyId: string, currentForm: string) => {
   return async (formData: any) => {
-    return await db.data.put({ data: formData, surveyId, surveyForm: currentForm }, [surveyId, currentForm]);
+    return await db.data.put(
+      { data: formData, surveyId, surveyForm: currentForm, synced: SyncStatus.NotSynced, id: ulid() },
+      [surveyId, currentForm]
+    );
   };
 };
 

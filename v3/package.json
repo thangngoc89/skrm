@@ -26,6 +26,7 @@
     "@types/react-responsive": "^8.0.2",
     "date-fns": "^2.19.0",
     "dexie": "^3.0.3",
+    "dexie-react-hooks": "^1.0.6",
     "firebase-firestore-lite": "^1.0.3",
     "formik": "^2.2.6",
     "framer-motion": "^4.0.3",

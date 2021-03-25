@@ -53,6 +53,7 @@
   text-decoration: none;
   color: #000;
   will-change: background-color;
+  background-color: transparent;
 }
 
 .left button:not(:last-child) {

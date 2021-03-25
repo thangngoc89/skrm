@@ -8,27 +8,65 @@ import { Error } from "../components/error";
 import { format } from "date-fns";
 import { Link } from "preact-router/match";
 import { notify } from "../components/notify";
+import { IDbSurvey, SyncStatus } from "../components/db";
 
 const formatDate = (epoch: number) => {
   return format(new Date(epoch), "dd-MM-yyyy hh:mm:ss");
 };
 
-const fetchSurveys = async () => await db.list.orderBy("createdAt").limit(50).reverse().toArray();
+interface SurveyDisplayProps {
+  surveys: Array<IDbSurvey>;
+}
 
-const SyncButton: React.FC<{}> = ({ children }) => {
-  const asyncOnClick = useAsyncCallback(() =>
-    new Promise((resolve) => {
-      setTimeout(resolve, 2000);
-    }).then(() => {
-      notify.success("Đã đồng bộ thành công");
-    })
-  );
+const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
+  const syncData = useAsyncCallback(async () => {
+    try {
+      const surveys = await db.list.where("synced").noneOf([SyncStatus.Synced]).toArray();
+      console.log(surveys);
+      return surveys;
+    } catch (error) {
+      console.error(error);
+    }
+  });
+
   return (
-    <Button type="button" secondary onClick={asyncOnClick.execute} disabled={asyncOnClick.loading}>
-      {asyncOnClick.loading ? "Đang đồng bộ..." : children}
-    </Button>
+    <div className={style.wrapper}>
+      <header className={style.header}>
+        <h1>Quản lí hồ sơ</h1>
+        <Button type="button" secondary onClick={syncData.execute} disabled={syncData.loading}>
+          {syncData.loading ? "Đang đồng bộ..." : "Đồng bộ"}
+        </Button>
+      </header>
+      <Table bordered fullWidth>
+        <thead>
+          <tr>
+            <th scope="col">Mã số</th>
+            <th scope="col">Loại hồ sơ</th>
+            <th scope="col">Thời gian tạo</th>
+            <td></td>
+          </tr>
+        </thead>
+        <tbody>
+          {surveys.map(({ surveyId, surveyType, createdAt }) => (
+            <tr key={surveyId}>
+              <td>{surveyId}</td>
+              <td>{surveyType}</td>
+              <td>{formatDate(createdAt)}</td>
+              <td>
+                <Link href={`/survey/${surveyId}`}>
+                  <Button type="button">Xem</Button>
+                </Link>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </Table>
+    </div>
   );
 };
+
+const fetchSurveys = async () => await db.list.orderBy("createdAt").limit(50).reverse().toArray();
+
 const QuanLi: React.FC<{}> = () => {
   const dataLoader = useAsync(fetchSurveys, []);
 
@@ -48,38 +86,7 @@ const QuanLi: React.FC<{}> = () => {
   } else if (dataLoader.result) {
     const surveys = dataLoader.result;
 
-    return (
-      <div className={style.wrapper}>
-        <header className={style.header}>
-          <h1>Quản lí hồ sơ</h1>
-          <SyncButton>Đồng bộ</SyncButton>
-        </header>
-        <Table bordered fullWidth>
-          <thead>
-            <tr>
-              <th scope="col">Mã số</th>
-              <th scope="col">Loại hồ sơ</th>
-              <th scope="col">Thời gian tạo</th>
-              <td></td>
-            </tr>
-          </thead>
-          <tbody>
-            {surveys.map(({ surveyId, surveyType, createdAt }) => (
-              <tr key={surveyId}>
-                <td>{surveyId}</td>
-                <td>{surveyType}</td>
-                <td>{formatDate(createdAt)}</td>
-                <td>
-                  <Link href={`/survey/${surveyId}`}>
-                    <Button type="button">Xem</Button>
-                  </Link>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
-      </div>
-    );
+    return <SurveyDisplay surveys={surveys} />;
   } else {
     return (
       <div className={style.wrapper}>

@@ -26,6 +26,7 @@
     "@types/react-responsive": "^8.0.2",
     "date-fns": "^2.19.0",
     "dexie": "^3.0.3",
+    "firebase-firestore-lite": "^1.0.3",
     "formik": "^2.2.6",
     "framer-motion": "^4.0.3",
     "nanoid": "^3.1.22",
@@ -39,7 +40,8 @@
     "react-icons": "^4.2.0",
     "react-laag": "^2.0.2",
     "react-responsive": "^8.2.0",
-    "react-toastify": "^7.0.3"
+    "react-toastify": "^7.0.3",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",

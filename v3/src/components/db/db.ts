@@ -39,14 +39,8 @@ class VoserDatabase extends Dexie {
     this.version(5)
       .stores({
         record_list: "surveyId, surveyType, createdAt, syncStatus",
-        record_data: "[surveyId+surveyForm], syncStatus, surveyDataId",
+        record_data: "[surveyId+surveyForm], syncStatus",
         record_revisions: "surveyDataId, syncStatus, surveyDataId",
-      })
-      .upgrade((tx) => {
-        // @ts-ignore
-        return tx.record_list.toCollection().modify((survey: ISurvey) => {
-          survey.syncStatus = SyncStatus.NotSync;
-        });
       })
       .upgrade((tx) => {
         // @ts-ignore
@@ -55,6 +49,20 @@ class VoserDatabase extends Dexie {
           if (typeof surveyData.surveyDataId === "undefined") {
             surveyData.surveyDataId = ulid();
           }
+        });
+      });
+
+    // This is same as version 5. Just for transaction
+    this.version(6)
+      .stores({
+        record_list: "surveyId, surveyType, createdAt, syncStatus",
+        record_data: "[surveyId+surveyForm], syncStatus",
+        record_revisions: "surveyDataId, syncStatus, surveyDataId",
+      })
+      .upgrade((tx) => {
+        // @ts-ignore
+        return tx.record_list.toCollection().modify((survey: ISurvey) => {
+          survey.syncStatus = SyncStatus.NotSync;
         });
       });
     this.list = this.table("record_list");

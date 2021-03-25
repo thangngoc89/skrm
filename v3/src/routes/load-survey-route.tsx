@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { AsyncAction } from "../components/types";
-import { db, IDbSurvey } from "../components/db";
+import { db, IDbSurvey } from "../components/db/db";
 import { Error } from "../components/error";
 import { SurveySwitcher } from "../components/survey/SurveySwitcher";
 import { useEffect, useState } from "react";

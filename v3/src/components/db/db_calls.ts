@@ -12,10 +12,18 @@ export const loadSurvey = async (surveyId: string, currentForm: string) => {
 };
 
 export const saveForm = async (surveyId: string, formName: string, formData: any) => {
-  return await db.data.put(
-    { surveyDataId: makeId(), surveyId, surveyForm: formName, data: formData, syncStatus: SyncStatus.NotSync },
-    [surveyId, formName]
-  );
+  return await db.transaction("rw", ["record_data", "record_revisions"], async () => {
+    const surveyData = {
+      surveyDataId: makeId(),
+      surveyId,
+      surveyForm: formName,
+      data: formData,
+      syncStatus: SyncStatus.NotSync,
+    };
+
+    await db.data.put(surveyData, [surveyId, formName]);
+    await db.revision.add(surveyData, surveyData.surveyDataId);
+  });
 };
 
 export const createSurvey = async (surveyType: SurveyType) => {

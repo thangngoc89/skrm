@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useEffect, useState } from "react";
-import { db, makeId } from "../components/db/db";
+import { createSurvey } from "../components/db/db_calls";
 import { SurveyType } from "src/components/types";
 import { route } from "preact-router";
 import { Spinner } from "../components/spinner";
@@ -15,12 +15,7 @@ type State = { type: "error"; payload: string } | { type: "initial" };
 const CreateSurvey: React.FC<CreateSurveyProps> = ({ surveyType }) => {
   const [state, setState] = useState<State>({ type: "initial" });
   useEffect(() => {
-    db.list
-      .add({
-        surveyId: makeId(),
-        surveyType: surveyType,
-        createdAt: Date.now(),
-      })
+    createSurvey(surveyType)
       .then((surveyId) => {
         route(`/survey/${surveyId}`, true);
       })

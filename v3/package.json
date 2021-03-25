@@ -39,7 +39,8 @@
     "react-icons": "^4.2.0",
     "react-laag": "^2.0.2",
     "react-responsive": "^8.2.0",
-    "react-toastify": "^7.0.3"
+    "react-toastify": "^7.0.3",
+    "ulid": "^2.3.0"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",

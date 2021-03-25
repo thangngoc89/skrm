@@ -28,7 +28,7 @@ export interface ISurveyData {
 class VoserDatabase extends Dexie {
   list: Dexie.Table<IDbSurvey, string>;
   data: Dexie.Table<ISurveyData, SurveyDataKey>;
-  revision: Dexie.Table<ISurveyData, SurveyDataKey>;
+  revision: Dexie.Table<ISurveyData, string>;
 
   constructor() {
     super("Voser");

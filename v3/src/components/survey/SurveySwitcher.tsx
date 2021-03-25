@@ -1,5 +1,5 @@
 import { h } from "preact";
-import { IDbSurvey } from "../db";
+import { IDbSurvey } from "../db/db";
 import { SurveyRender } from "./SurveyRender";
 
 import { survey as maugiaoSurvey } from "../form_schema/mau_giao";

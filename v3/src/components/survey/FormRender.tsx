@@ -1,6 +1,4 @@
 import { h } from "preact";
-import { Fragment } from "react";
-
 import { Formik, Form, useFormikContext } from "formik";
 import style from "./FormRender.css";
 
@@ -22,7 +20,7 @@ import { Form as FormSchema, Field as FieldSchema, Survey } from "../form_schema
 import { List } from "../form_schema/schema";
 import { notify, Msg } from "../notify";
 import { useAsyncCallback } from "react-async-hook";
-import { db } from "../db";
+import { saveForm } from "../db/db_calls";
 import { FormNavButton } from "./FormNavButton";
 import { route } from "preact-router";
 
@@ -142,12 +140,6 @@ interface FormRenderer {
   surveySchema: Survey;
 }
 
-const saveForm = (surveyId: string, currentForm: string) => {
-  return async (formData: any) => {
-    return await db.data.put({ data: formData, surveyId, surveyForm: currentForm }, [surveyId, currentForm]);
-  };
-};
-
 export const FormRenderer: React.FC<FormRenderer> = ({
   surveySchema,
   form,
@@ -158,7 +150,8 @@ export const FormRenderer: React.FC<FormRenderer> = ({
   nextActionLabel,
 }) => {
   const currentForm = form.name;
-  const save = useAsyncCallback(saveForm(surveyId, form.name));
+  const save = useAsyncCallback(saveForm);
+  
   return (
     // @ts-ignore: broken formik definition
     <Formik
@@ -168,7 +161,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({
 
         const shouldRedirect = typeof __internal_redirect === "string";
 
-        return save.execute(formData).then(() => {
+        return save.execute(surveyId, form.name, formData).then(() => {
           notify.success(
             shouldRedirect ? (
               "Lưu dữ liệu thành công."

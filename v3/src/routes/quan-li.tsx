@@ -1,7 +1,7 @@
 import { h } from "preact";
 import style from "./quan-li.css";
 import { Table, Button } from "@trussworks/react-uswds";
-import { db } from "../components/db";
+import { db } from "../components/db/db";
 import { useAsync, useAsyncCallback } from "react-async-hook";
 import { Spinner } from "../components/spinner";
 import { Error } from "../components/error";

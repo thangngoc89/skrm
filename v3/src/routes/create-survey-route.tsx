@@ -1,6 +1,6 @@
 import { h } from "preact";
 import { useEffect, useState } from "react";
-import { db, makeId } from "../components/db";
+import { db, makeId } from "../components/db/db";
 import { SurveyType } from "src/components/types";
 import { route } from "preact-router";
 import { Spinner } from "../components/spinner";

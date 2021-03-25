@@ -1,6 +1,7 @@
 import { h } from "preact";
 import { useState, useEffect, useMemo, memo } from "react";
-import { db, ISurveyData } from "../db";
+import { ISurveyData } from "../db/db";
+import { loadSurvey } from "../db/db_calls";
 import { route } from "preact-router";
 import { AsyncAction } from "../types";
 
@@ -11,16 +12,6 @@ import { Survey } from "../form_schema/schema";
 import { Error } from "../error";
 
 /////////////// DATABASE OPERATIONS ///////////////////
-const loadForm = async (surveyId: string, currentForm: string) => {
-  const result = await db.data.get([surveyId, currentForm]);
-
-  // DO NOT REMOVE. I was so stupid
-  if (currentForm === "tieu_hoc_form" && typeof result === "undefined") {
-    return await db.data.get([surveyId, "mau_giao_form"]);
-  }
-  return result;
-};
-
 const makeNextAction = (surveySchema: Survey, surveyId: string, currentFormPosition: number) => {
   const maxPosition = surveySchema.forms.length - 1;
   if (maxPosition === currentFormPosition) {
@@ -72,7 +63,7 @@ export const SurveyRender: React.FC<Props> = ({ surveyId, currentForm: routeCurr
 
   const [state, setState] = useState<State>({ type: "initial" });
   useEffect(() => {
-    loadForm(surveyId, currentForm)
+    loadSurvey(surveyId, currentForm)
       .then((result) => setState({ type: "success", payload: result }))
       .catch((error) => {
         console.error(error);

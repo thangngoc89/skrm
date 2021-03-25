@@ -1,5 +1,5 @@
 import Dexie from "dexie";
-import { SurveyType } from "./types";
+import { SurveyType } from "../types";
 
 export { nanoid as makeId } from "nanoid";
 

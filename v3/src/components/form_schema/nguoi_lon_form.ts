@@ -68,7 +68,7 @@ const tinhTrangNhuCau: Array<Field> = [
     type: "dental_arch_table",
     name: "ham_tren",
     label: "Hàm trên",
-    headers: ["", "Nhai", "N", "T", "G", "X", "TT", "CR", "NC"],
+    headers: ["", "Nhai", "N", "T", "G", "X", "TT", "CR", "NC", ""],
     rowHeaders: ["18", "17", "16", "15", "14", "13", "12", "11", "21", "22", "23", "24", "25", "26", "27", "28"],
     fields: [
       { name: "18_Nhai", list: "tinhtrang" },
@@ -214,7 +214,7 @@ const tinhTrangNhuCau: Array<Field> = [
     type: "dental_arch_table",
     name: "ham_duoi",
     label: "Hàm dưới",
-    headers: ["", "Nhai", "N", "T", "G", "X", "TT", "CR", "NC"],
+    headers: ["", "Nhai", "N", "T", "G", "X", "TT", "CR", "NC", ""],
     rowHeaders: ["38", "37", "36", "35", "34", "33", "32", "31", "41", "42", "43", "44", "45", "46", "47", "48"],
     fields: [
       { name: "38_Nhai", list: "tinhtrang" },

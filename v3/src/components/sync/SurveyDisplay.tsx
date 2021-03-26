@@ -65,27 +65,16 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
         const change: RemoteData = changes[i];
         await upsert(change, machineId);
 
-        switch (change.type) {
-          case "survey":
-            await db.list.update(change.payload.surveyId, { syncStatus: SyncStatus.Synced });
-            break;
-          case "surveyData":
-            await db.data.update([change.payload.surveyId, change.payload.surveyForm], {
-              syncStatus: SyncStatus.Synced,
-            });
-            break;
-
-          case "surveyRevision":
-            await db.revision.update(change.payload.surveyDataId, {
-              syncStatus: SyncStatus.Synced,
-            });
-            break;
-        }
+        await setDbSyncStatusToDone(change);
         setCount((count) => count + 1);
       }
 
       setStatus(SyncProcessStatus.Done);
-      notify.success("Đồng bộ dữ liệu thành công");
+      if (count === total) {
+        notify.success("Đồng bộ dữ liệu thành công");
+      } else {
+        notify.warn(`Có lỗi xảy ra khi đồng bộ. Chỉ đồng bộ được ${count}/${total} hồ sơ`);
+      }
     } catch (error) {
       console.error(error);
       notify.error("Có lỗi xảy ra khi đồng bộ dữ liệu");
@@ -144,3 +133,22 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
     </div>
   );
 };
+
+async function setDbSyncStatusToDone(change: RemoteData) {
+  switch (change.type) {
+    case "survey":
+      await db.list.update(change.payload.surveyId, { syncStatus: SyncStatus.Synced });
+      break;
+    case "surveyData":
+      await db.data.update([change.payload.surveyId, change.payload.surveyForm], {
+        syncStatus: SyncStatus.Synced,
+      });
+      break;
+
+    case "surveyRevision":
+      await db.revision.update(change.payload.surveyDataId, {
+        syncStatus: SyncStatus.Synced,
+      });
+      break;
+  }
+}

@@ -7,7 +7,6 @@ import { Link } from "preact-router/match";
 import { db, IDbSurvey, ISurveyData, SyncStatus } from "../db/db";
 import { upsert, RemoteData } from "../db/firestore";
 import { format } from "date-fns";
-import { AsyncAction } from "../types";
 import { notify } from "../notify";
 
 const formatDate = (epoch: number) => {
@@ -67,17 +66,18 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
         switch (change.type) {
           case "survey":
             await db.list.update(change.payload.surveyId, { syncStatus: SyncStatus.Synced });
+            break;
           case "surveyData":
-            // @ts-ignore
             await db.data.update([change.payload.surveyId, change.payload.surveyForm], {
               syncStatus: SyncStatus.Synced,
             });
+            break;
 
           case "surveyRevision":
-            // @ts-ignore
             await db.revision.update(change.payload.surveyDataId, {
               syncStatus: SyncStatus.Synced,
             });
+            break;
         }
         setCount((count) => count + 1);
       }

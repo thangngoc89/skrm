@@ -72,3 +72,10 @@
 .right button:hover {
   background-color: #b50909;
 }
+
+/** Toast */
+
+.toast a {
+  color: #fff;
+  display: block;
+}

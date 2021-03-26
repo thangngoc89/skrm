@@ -3,6 +3,8 @@ import { useMemo } from "react";
 import { Dropdown, FormGroup, Label, ErrorMessage } from "@trussworks/react-uswds";
 import { Field, FieldProps, FastField } from "formik";
 import { Pair } from "../form_schema/schema";
+import objstr from "obj-str";
+import style from "./SelectOneDropdown.css";
 
 export enum DisplayStyle {
   Default,
@@ -47,6 +49,9 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({
             <Dropdown
               {...field}
               id={field.name}
+              className={objstr({
+                [style.minimalError]: hasError,
+              })}
               onKeyUp={(event) => {
                 if (!event.altKey && event.key !== "Space" && event.key !== "Tab") {
                   event.preventDefault();
@@ -83,6 +88,9 @@ export const SelectOneDropdown: React.FC<SelectOneDropdownProps> = ({
             <Dropdown
               {...field}
               id={field.name}
+              className={objstr({
+                ["usa-input--error"]: hasError,
+              })}
               onKeyUp={(event) => {
                 if (!event.altKey && event.key !== "Space" && event.key !== "Tab") {
                   event.preventDefault();

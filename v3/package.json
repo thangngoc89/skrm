@@ -41,7 +41,8 @@
     "react-laag": "^2.0.2",
     "react-responsive": "^8.2.0",
     "react-toastify": "^7.0.3",
-    "ulid": "^2.3.0"
+    "ulid": "^2.3.0",
+    "yup": "^0.32.9"
   },
   "devDependencies": {
     "@types/enzyme": "^3.10.5",

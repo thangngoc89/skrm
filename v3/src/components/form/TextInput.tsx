@@ -21,7 +21,7 @@ export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name
               {labelVerbose && <strong>{`${name.toUpperCase()}. `}</strong>} {label}
             </Label>
             {hasError && <ErrorMessage>{errors[field.name]}</ErrorMessage>}
-            <ThemeTextInput {...field} id={field.name} type={type} error={hasError} />
+            <ThemeTextInput id={field.name} type={type} error={hasError} {...field} />
           </FormGroup>
         );
       }}

@@ -1,7 +1,8 @@
 import { h } from "preact";
+import { useMemo } from "react";
 import { Formik, Form, useFormikContext } from "formik";
 import style from "./FormRender.css";
-
+import { makeYupSchema } from "../form_schema/validate";
 import {
   TextInput,
   Group,
@@ -28,21 +29,34 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
   switch (field.type) {
     case "group":
       return (
-        <Group name={field.label} className={style.group}>
+        <Group key={field.name} name={field.label} className={style.group}>
           {field.fields.map((field) => renderField(field, lists))}
         </Group>
       );
     case "date":
       return (
-        <DatePicker name={field.name} label={field.label || ""} optional={field.optional} labelVerbose={labelVerbose} />
+        <DatePicker
+          key={field.name}
+          name={field.name}
+          label={field.label || ""}
+          optional={field.optional}
+          labelVerbose={labelVerbose}
+        />
       );
     case "text":
       return (
-        <TextInput name={field.name} label={field.label || ""} optional={field.optional} labelVerbose={labelVerbose} />
+        <TextInput
+          key={field.name}
+          name={field.name}
+          label={field.label || ""}
+          optional={field.optional}
+          labelVerbose={labelVerbose}
+        />
       );
     case "integer":
       return (
         <TextInput
+          key={field.name}
           type="number"
           name={field.name}
           label={field.label || ""}
@@ -121,8 +135,8 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
 };
 
 const SubmitButton: React.FC<{}> = () => {
-  const { handleSubmit } = useFormikContext();
-
+  const { handleSubmit, isValidating, errors } = useFormikContext();
+  console.log({ isValidating, errors });
   return (
     <button type="submit" onClick={handleSubmit}>
       Lưu
@@ -151,11 +165,14 @@ export const FormRenderer: React.FC<FormRenderer> = ({
 }) => {
   const currentForm = form.name;
   const save = useAsyncCallback(saveForm);
-  
+  const validationSchema = useMemo(() => makeYupSchema(form), [form]);
   return (
     // @ts-ignore: broken formik definition
     <Formik
       initialValues={initialValues || makeInitialValues()}
+      validationSchema={validationSchema}
+      validateOnBlur={false}
+      validateOnChange={false}
       onSubmit={(values, actions) => {
         const { __internal_redirect, ...formData } = values;
 

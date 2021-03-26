@@ -13,20 +13,16 @@ type BaseInput = {
 };
 
 type Field =
-  | {
+  | ({
       type: "select_one";
-      name: string;
-      label?: string;
       choices: Array<Pair>;
       display?: "dropdown" | "radio";
-    }
-  | {
+    } & BaseInput)
+  | ({
       type: "select_one_ref";
-      name: string;
-      label?: string;
       list: string;
       display?: "dropdown" | "radio";
-    }
+    } & BaseInput)
   | {
       type: "matrix_select_one";
       name: string;

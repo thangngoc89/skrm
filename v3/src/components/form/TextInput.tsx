@@ -14,7 +14,7 @@ export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name
   return (
     <FastField name={name}>
       {({ field, form: { touched, errors } }: FieldProps) => {
-        const hasError = Boolean(touched[field.name] && errors[field.name]);
+        const hasError = Boolean(errors[field.name]);
         return (
           <FormGroup error={hasError}>
             <Label htmlFor={name} error={hasError} hint={optional === true ? " (tuỳ chọn)" : ""}>

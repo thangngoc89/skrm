@@ -13,7 +13,7 @@ interface TextInputProps {
 export const TextInput: React.FC<TextInputProps> = ({ type = "text", label, name, optional, labelVerbose = false }) => {
   return (
     <FastField name={name}>
-      {({ field, form: { touched, errors } }: FieldProps) => {
+      {({ field, form: { errors } }: FieldProps) => {
         const hasError = Boolean(errors[field.name]);
         return (
           <FormGroup error={hasError}>

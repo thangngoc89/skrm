@@ -11,17 +11,21 @@ interface SelectOneDropdownProps {
   labelVerbose?: boolean;
 }
 
+
+
 export const SelectOneRadio: React.FC<SelectOneDropdownProps> = ({
   label,
   name,
   optional,
   choices,
   labelVerbose = false,
+ 
 }) => {
   return (
     <FastField name={name}>
-      {({ field, form: { touched, errors, setFieldValue } }: FieldProps) => {
-        const hasError = Boolean(touched[field.name] && errors[field.name]);
+      {({ field, form: { errors } }: FieldProps) => {
+        const hasError = Boolean(errors[field.name]);
+        console.log({ hasError });
         return (
           <FormGroup error={hasError}>
             {label && (

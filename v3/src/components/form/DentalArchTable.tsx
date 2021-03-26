@@ -9,6 +9,7 @@ import { tablet } from "../responsive";
 import { useMediaQuery } from "react-responsive";
 import { DropdownMenu, Placement } from "../DropdownMenu";
 import { useFormikContext } from "formik";
+import { DisplayStyle } from "./SelectOneDropdown";
 
 type FieldsMap = { [key: string]: string };
 
@@ -151,7 +152,12 @@ const SingleRow: React.FC<SingleRowProps> = ({
           if (fieldsMap[key]) {
             return (
               <td>
-                <SelectOneDropdown name={key} choices={lists[fieldsMap[key]]} key={i}></SelectOneDropdown>
+                <SelectOneDropdown
+                  name={key}
+                  choices={lists[fieldsMap[key]]}
+                  displayStyle={DisplayStyle.Minimal}
+                  key={i}
+                ></SelectOneDropdown>
               </td>
             );
           }
@@ -261,6 +267,7 @@ export const DentalArchTableMobile: React.FC<Props> = ({
                             name={key}
                             choices={lists[fieldsMap[key]]}
                             key={colIter}
+                            displayStyle={DisplayStyle.Minimal}
                           ></SelectOneDropdown>
                         </td>
                       ) : (

@@ -4,6 +4,7 @@ import { SelectOneDropdown } from "./FormComponents";
 import { List, SelectPairRef } from "../form_schema/schema";
 import style from "./DentalArchTable2Rows.css";
 import objStr from "obj-str";
+import { DisplayStyle } from "./SelectOneDropdown";
 
 interface HeaderProps {
   headers: Array<string>;
@@ -32,7 +33,7 @@ const DataRow: React.FC<DataRowProps> = ({ row, lists, isReverse = false }) => {
     <section className={objStr({ [style.row]: true, [style.rowReverse]: isReverse })}>
       {row.map(({ name, list }) => (
         <div key={name} className={style.cell}>
-          <SelectOneDropdown name={name} choices={lists[list]}></SelectOneDropdown>
+          <SelectOneDropdown name={name} choices={lists[list]} displayStyle={DisplayStyle.Minimal}></SelectOneDropdown>
         </div>
       ))}
     </section>

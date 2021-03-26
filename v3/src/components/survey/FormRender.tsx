@@ -14,6 +14,11 @@ import { route } from "preact-router";
 import { renderField } from "./renderField";
 
 const ToastForValidation: React.FC<{ keys: Array<string> }> = ({ keys }) => {
+  let finalKeys: string[] = [];
+  if (keys.length > 10) {
+    finalKeys = keys.slice(0, 10);
+  }
+
   return (
     <div className={style.toast}>
       <p>
@@ -21,7 +26,7 @@ const ToastForValidation: React.FC<{ keys: Array<string> }> = ({ keys }) => {
       </p>
       <p>Vui lòng kiểm tra lại các mục sau:</p>
 
-      {keys.map((key) => {
+      {finalKeys.map((key) => {
         return (
           <a
             href={"#" + key}
@@ -37,6 +42,7 @@ const ToastForValidation: React.FC<{ keys: Array<string> }> = ({ keys }) => {
           </a>
         );
       })}
+      {keys.length > 10 && <p>(...{keys.length - 10} mục nữa)</p>}
     </div>
   );
 };

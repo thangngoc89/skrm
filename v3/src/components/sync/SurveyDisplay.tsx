@@ -8,6 +8,7 @@ import { db, IDbSurvey, ISurveyData, SyncStatus } from "../db/db";
 import { upsert, RemoteData } from "../db/firestore";
 import { format } from "date-fns";
 import { notify } from "../notify";
+import { useMachineId } from "./useMachineId";
 
 const formatDate = (epoch: number) => {
   return format(new Date(epoch), "dd-MM-yyyy hh:mm:ss");
@@ -28,6 +29,7 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
   const [total, setTotal] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
   const [syncProcessStatus, setStatus] = useState(SyncProcessStatus.Initial);
+  const machineId = useMachineId();
 
   const syncData = useAsyncCallback(async () => {
     try {
@@ -61,7 +63,7 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
 
       for (let i = 0; i < changes.length; i++) {
         const change: RemoteData = changes[i];
-        await upsert(change);
+        await upsert(change, machineId);
 
         switch (change.type) {
           case "survey":

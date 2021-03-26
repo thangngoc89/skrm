@@ -68,6 +68,7 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       if (field.display === "radio") {
         return (
           <SelectOneRadio
+            key={field.name}
             name={field.name}
             label={field.label || ""}
             choices={field.choices}
@@ -77,6 +78,7 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       }
       return (
         <SelectOneDropdown
+          key={field.name}
           name={field.name}
           label={field.label || ""}
           choices={field.choices}
@@ -87,6 +89,7 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       if (field.display === "radio") {
         return (
           <SelectOneRadio
+            key={field.name}
             name={field.name}
             label={field.label || ""}
             choices={lists[field.list]}
@@ -96,6 +99,7 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       }
       return (
         <SelectOneDropdown
+          key={field.name}
           name={field.name}
           label={field.label || ""}
           choices={lists[field.list]}
@@ -104,12 +108,19 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
       );
     case "select_many":
       return (
-        <SelectMany name={field.name} label={field.label || ""} choices={field.choices} labelVerbose={labelVerbose} />
+        <SelectMany
+          key={field.name}
+          name={field.name}
+          label={field.label || ""}
+          choices={field.choices}
+          labelVerbose={labelVerbose}
+        />
       );
     case "select_many_ref":
       return (
         <SelectMany
           name={field.name}
+          key={field.name}
           label={field.label || ""}
           choices={lists[field.list]}
           labelVerbose={labelVerbose}
@@ -118,6 +129,7 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
     case "matrix_select_one":
       return (
         <MatrixSelectOne
+          key={field.name}
           name={field.name}
           label={field.label || ""}
           choices={field.choices}
@@ -126,9 +138,9 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
         />
       );
     case "dental_arch_table":
-      return <DentalArchTable lists={lists} label={field.label} {...field} />;
+      return <DentalArchTable key={field.name} lists={lists} label={field.label} {...field} />;
     case "dental_arch_table_2_rows":
-      return <DentalArchTable2Rows lists={lists} label={field.label} {...field} />;
+      return <DentalArchTable2Rows key={field.name} lists={lists} label={field.label} {...field} />;
     case "note":
       return <p>{field.label}</p>;
   }
@@ -136,7 +148,8 @@ const renderField = (field: FieldSchema, lists: List, labelVerbose = false) => {
 
 const SubmitButton: React.FC<{}> = () => {
   const { handleSubmit, isValidating, errors } = useFormikContext();
-  console.log({ isValidating, errors });
+  console.log(errors);
+
   return (
     <button type="submit" onClick={handleSubmit}>
       Lưu

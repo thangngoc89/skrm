@@ -2,20 +2,23 @@ import { Fragment, h } from "preact";
 import { useState } from "react";
 import { useLayer, Arrow } from "react-laag";
 import style from "./DropdownMenu.css";
+import type { Placement } from "react-laag";
+export type { Placement };
 
 interface Props {
   items: Array<{
     label: string;
     action: () => void;
   }>;
+  placement?: Placement;
 }
 
-export const DropdownMenu: React.FC<Props> = ({ items, children }) => {
+export const DropdownMenu: React.FC<Props> = ({ items, placement = "bottom-end", children }) => {
   const [isOpen, setOpen] = useState(false);
 
   const { triggerProps, layerProps, arrowProps, renderLayer } = useLayer({
     isOpen,
-    placement: "bottom-end",
+    placement,
   });
 
   return (
@@ -27,6 +30,7 @@ export const DropdownMenu: React.FC<Props> = ({ items, children }) => {
           e.preventDefault;
           setOpen(!isOpen);
         }}
+        tabIndex={-1}
         {...triggerProps}
       >
         <svg viewBox="0 0 24 24" className={style.icon}>

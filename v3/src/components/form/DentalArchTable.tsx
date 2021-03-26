@@ -7,8 +7,103 @@ import style from "./DentalArchTable.css";
 import { Fragment } from "preact";
 import { tablet } from "../responsive";
 import { useMediaQuery } from "react-responsive";
-import { DropdownMenu } from "../DropdownMenu";
+import { DropdownMenu, Placement } from "../DropdownMenu";
 import { useFormikContext } from "formik";
+
+type FieldsMap = { [key: string]: string };
+
+interface DropdownSetSoundToothProps {
+  toothNumber: string;
+  fieldsMap: FieldsMap;
+  slicedHeader: Array<string>;
+  placement?: Placement;
+}
+
+const DropdownSetSoundTooth: React.FC<DropdownSetSoundToothProps> = ({
+  toothNumber,
+  fieldsMap,
+  slicedHeader,
+  placement,
+}) => {
+  const { setValues, values } = useFormikContext();
+
+  return (
+    <DropdownMenu
+      placement={placement}
+      items={[
+        {
+          label: "Răng sữa tốt",
+          action: () => {
+            let toothValues: any = {};
+
+            slicedHeader.forEach((toothSurface: string) => {
+              const posibleValue = toothSurface === "NC" ? "0" : "a";
+              const key = `${toothNumber}_${toothSurface}`;
+
+              if (key in fieldsMap) {
+                toothValues[key] = posibleValue;
+              }
+            });
+            setValues(
+              {
+                // @ts-ignore
+                ...values,
+                ...toothValues,
+              },
+              false
+            );
+          },
+        },
+        {
+          label: "Răng vĩnh viễn tốt",
+          action: () => {
+            let toothValues: any = {};
+            slicedHeader.forEach((toothSurface: string) => {
+              const posibleValue = 0;
+              const key = `${toothNumber}_${toothSurface}`;
+
+              if (key in fieldsMap) {
+                toothValues[key] = posibleValue;
+              }
+            });
+
+            setValues(
+              {
+                // @ts-ignore
+                ...values,
+                ...toothValues,
+              },
+              false
+            );
+          },
+        },
+        {
+          label: "Răng chưa mọc",
+          action: () => {
+            let toothValues: any = {};
+            slicedHeader.forEach((toothSurface: string) => {
+              const posibleValue = toothSurface === "NC" ? "0" : "8";
+              const key = `${toothNumber}_${toothSurface}`;
+
+              if (key in fieldsMap) {
+                toothValues[key] = posibleValue;
+              }
+            });
+
+            setValues(
+              {
+                // @ts-ignore
+                ...values,
+                ...toothValues,
+              },
+              false
+            );
+          },
+        },
+      ]}
+    />
+  );
+};
 
 interface SingleRowProps {
   headers: Array<string>;
@@ -18,9 +113,6 @@ interface SingleRowProps {
   lists: List;
   fieldsMap: FieldsMap;
 }
-
-type FieldsMap = { [key: string]: string };
-
 const SingleRow: React.FC<SingleRowProps> = ({
   headers,
   headerLength,
@@ -35,7 +127,15 @@ const SingleRow: React.FC<SingleRowProps> = ({
         if (i === 0) {
           return (
             <th scope="row" key={i}>
-              {rowHeader}
+              <div className={style.rowHeader}>
+                {rowHeader}
+                <DropdownSetSoundTooth
+                  placement="bottom-start"
+                  toothNumber={rowHeader}
+                  fieldsMap={fieldsMap}
+                  slicedHeader={headers}
+                />
+              </div>
             </th>
           );
         } else if (alternativeRowHeader && i === headerLength - 1) {
@@ -108,68 +208,6 @@ export const DentalArchTableBigScreen: React.FC<Props> = ({
   );
 };
 
-interface DropdownSetSoundToothProps {
-  toothNumber: string;
-  fieldsMap: FieldsMap;
-  slicedHeader: Array<string>;
-}
-
-const DropdownSetSoundTooth: React.FC<DropdownSetSoundToothProps> = ({ toothNumber, fieldsMap, slicedHeader }) => {
-  const { setValues, values } = useFormikContext();
-
-  return (
-    <DropdownMenu
-      items={[
-        {
-          label: "Răng sữa tốt",
-          action: () => {
-            let toothValues: any = {};
-
-            slicedHeader.forEach((toothSurface: string) => {
-              const posibleValue = toothSurface === "NC" ? "0" : "a";
-              const key = `${toothNumber}_${toothSurface}`;
-
-              if (key in fieldsMap) {
-                toothValues[key] = posibleValue;
-              }
-            });
-            setValues(
-              {
-                // @ts-ignore
-                ...values,
-                ...toothValues,
-              },
-              false
-            );
-          },
-        },
-        {
-          label: "Răng vĩnh viễn tốt",
-          action: () => {
-            let toothValues: any = {};
-            slicedHeader.forEach((toothSurface: string) => {
-              const posibleValue = 0;
-              const key = `${toothNumber}_${toothSurface}`;
-
-              if (key in fieldsMap) {
-                toothValues[key] = posibleValue;
-              }
-            });
-
-            setValues(
-              {
-                // @ts-ignore
-                ...values,
-                ...toothValues,
-              },
-              false
-            );
-          },
-        },
-      ]}
-    />
-  );
-};
 export const DentalArchTableMobile: React.FC<Props> = ({
   name,
   lists,

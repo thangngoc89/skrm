@@ -10,3 +10,8 @@
   justify-content: space-between;
   align-items: center;
 }
+
+.syncStatus {
+  padding: 2rem 1rem;
+  background-color: #f0f0f0;
+}

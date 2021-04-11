@@ -7,7 +7,7 @@ import { makeYupSchema } from "../form_schema/validate";
 import { TextInput as ThemeTextInput, FormGroup, Label } from "@trussworks/react-uswds";
 import { Form as FormSchema, Survey } from "../form_schema/schema";
 import { notify, Msg } from "../notify";
-import { useAsyncCallback } from "react-async-hook";
+import { useAsyncCallback, UseAsyncReturn } from "react-async-hook";
 import { saveForm } from "../db/db_calls";
 import { FormNavButton } from "./FormNavButton";
 import { route } from "preact-router";
@@ -46,8 +46,16 @@ const ToastForValidation: React.FC<{ keys: Array<string> }> = ({ keys }) => {
     </div>
   );
 };
-const SubmitButton: React.FC<{}> = () => {
-  const { handleSubmit, isValidating, errors } = useFormikContext();
+
+interface SubmitButtonProps {
+  save: UseAsyncReturn<void, [surveyId: string, formName: string, formData: any]>;
+  surveyId: string;
+  formName: string;
+}
+
+const SubmitButton: React.FC<SubmitButtonProps> = ({ save, surveyId, formName }) => {
+  const { values, handleSubmit, isValidating, errors, submitCount } = useFormikContext();
+
   useEffect(() => {
     if (!isValidating) {
       const keys = Object.keys(errors);
@@ -57,6 +65,18 @@ const SubmitButton: React.FC<{}> = () => {
       }
     }
   }, [errors, isValidating]);
+
+  useEffect(() => {
+    if (submitCount !== 0) {
+      // @ts-ignore
+      const { __internal_redirect, ...formData } = values;
+
+      save.execute(surveyId, formName, formData).then(() => {
+        notify.info("Đã lưu dữ liệu.");
+      });
+    }
+  }, [submitCount]);
+
   return (
     <button type="submit" onClick={handleSubmit}>
       Lưu
@@ -86,6 +106,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({
   const currentForm = form.name;
   const save = useAsyncCallback(saveForm);
   const validationSchema = useMemo(() => makeYupSchema(form), [form]);
+
   return (
     // @ts-ignore: broken formik definition
     <Formik
@@ -135,7 +156,7 @@ export const FormRenderer: React.FC<FormRenderer> = ({
             })}
           </nav>
           <div className={style.right}>
-            <SubmitButton />
+            <SubmitButton save={save} surveyId={surveyId} formName={form.name} />
           </div>
         </div>
         <div className={style.main}>

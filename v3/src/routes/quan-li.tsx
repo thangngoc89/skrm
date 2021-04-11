@@ -36,7 +36,7 @@ const QuanLi: React.FC<QuanLiProps> = ({ skip, pageSize }) => {
   } else if (dataLoader.result) {
     const surveys = dataLoader.result;
 
-    return <SurveyDisplay surveys={surveys} />;
+    return <SurveyDisplay surveys={surveys} offset={offset} limit={limit} />;
   } else {
     return (
       <div className="wrapper">

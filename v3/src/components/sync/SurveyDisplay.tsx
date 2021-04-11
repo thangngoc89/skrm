@@ -9,6 +9,7 @@ import { upsert, RemoteData } from "../db/firestore";
 import { format } from "date-fns";
 import { notify } from "../notify";
 import { useMachineId } from "./useMachineId";
+import { SurveyDisplayPagination } from "./SurveyDisplayPagination";
 
 const formatDate = (epoch: number) => {
   return format(new Date(epoch), "dd-MM-yyyy hh:mm:ss");
@@ -16,6 +17,8 @@ const formatDate = (epoch: number) => {
 
 interface SurveyDisplayProps {
   surveys: Array<IDbSurvey>;
+  offset: number;
+  limit: number;
 }
 
 enum SyncProcessStatus {
@@ -25,7 +28,7 @@ enum SyncProcessStatus {
   Done = 3,
 }
 
-export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
+export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys, offset, limit }) => {
   const [total, setTotal] = useState<number>(0);
   const [count, setCount] = useState<number>(0);
   const [syncProcessStatus, setStatus] = useState(SyncProcessStatus.Initial);
@@ -105,7 +108,7 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
           <span>Đồng bộ thành công</span>
         </div>
       )}
-
+      <SurveyDisplayPagination offset={offset} limit={limit} />
       <Table bordered fullWidth>
         <thead>
           <tr>
@@ -130,6 +133,7 @@ export const SurveyDisplay: React.FC<SurveyDisplayProps> = ({ surveys }) => {
           ))}
         </tbody>
       </Table>
+      <SurveyDisplayPagination offset={offset} limit={limit} />
     </div>
   );
 };

@@ -1,0 +1,9 @@
+.main {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.main > * + * {
+  margin-left: 0.5rem;
+}

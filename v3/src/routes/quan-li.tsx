@@ -5,10 +5,20 @@ import { Spinner } from "../components/spinner";
 import { Error } from "../components/error";
 import { SurveyDisplay } from "../components/sync/SurveyDisplay";
 
-const fetchSurveys = async () => await db.list.orderBy("createdAt").limit(50).reverse().toArray();
+const fetchSurveys = async (offset: number, limit: number) => {
+  return await db.list.orderBy("createdAt").reverse().offset(offset).limit(limit).toArray();
+};
 
-const QuanLi: React.FC<{}> = () => {
-  const dataLoader = useAsync(fetchSurveys, []);
+interface QuanLiProps {
+  skip: string;
+  pageSize: string;
+}
+
+const QuanLi: React.FC<QuanLiProps> = ({ skip, pageSize }) => {
+  const offset = parseInt(skip, 10) || 0;
+  const limit = parseInt(pageSize, 10) || 50;
+
+  const dataLoader = useAsync(fetchSurveys, [offset, limit]);
 
   if (dataLoader.loading) {
     return (

@@ -21,7 +21,7 @@ const App: FunctionalComponent = () => {
         <Route path="/new/tieu_hoc" component={CreateSurvey} surveyType="tieu_hoc" />
         <Route path="/new/nguoi_lon" component={CreateSurvey} surveyType="nguoi_lon" />
         <Route path="/survey/:surveyId/:currentForm?" component={LoadSurvey} />
-        <Route path="/quan_li" component={QuanLi} />
+        <Route path="/quan_li/:skip?/:pageSize?" component={QuanLi} />
         <Route path="/test" component={Testroute} />
         <NotFoundPage default />
       </Router>

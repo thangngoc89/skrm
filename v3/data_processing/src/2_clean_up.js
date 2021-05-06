@@ -1,3 +1,17 @@
+/**
+ * Plan
+ - Delete empty surveyData
+    DELETE FROM "surveyData" WHERE data = "{}";
+ - Delete survey without data
+    DELETE FROM survey 
+    WHERE surveyId NOT IN 
+      (
+        SELECT survey.surveyId FROM "survey"
+        JOIN surveyData ON survey.surveyId = surveyData.surveyId
+        GROUP BY survey.surveyId
+      )
+
+ */
 const knex = require("knex")(require("../knexfile").development);
 
 const fs = require("fs");

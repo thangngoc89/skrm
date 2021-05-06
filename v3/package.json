@@ -21,6 +21,7 @@
       "build/"
     ]
   },
+  "type": "module",
   "dependencies": {
     "@trussworks/react-uswds": "^1.13.2",
     "@types/react-responsive": "^8.0.2",
@@ -58,6 +59,7 @@
     "jest-preset-preact": "^4.0.2",
     "preact-cli": "^3.0.0",
     "sirv-cli": "^1.0.0-next.3",
+    "ts-node": "^9.1.1",
     "typescript": "^3.7.5"
   },
   "jest": {

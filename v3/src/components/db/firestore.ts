@@ -1,7 +1,7 @@
 import { Database } from "firebase-firestore-lite";
 import { IDbSurvey, ISurveyData } from "./db";
 
-const db = new Database({ projectId: "thucdia-e52ff" });
+export const db = new Database({ projectId: "thucdia-e52ff" });
 const db_prefix = process.env.NODE_ENV === "production" ? "prod" : "dev";
 
 export type RemoteData =

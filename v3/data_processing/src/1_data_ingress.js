@@ -20,7 +20,7 @@ const processSuryvey = async () => {
       surveyId: data.surveyId,
       machineId: data.machineId,
       surveyType: data.surveyType,
-      createdAt: new Date(data.createdAt),
+      createdAt: new Date(data.createdAt).toISOString(),
     };
 
     await knex("survey").insert(newSurvey);
@@ -55,7 +55,7 @@ const processSurveyData = async () => {
 };
 
 const main = async () => {
-  // await processSuryvey();
+  await processSuryvey();
   await processSurveyData();
 
   knex.destroy();

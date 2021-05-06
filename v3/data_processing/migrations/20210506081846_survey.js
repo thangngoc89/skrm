@@ -1,6 +1,9 @@
 exports.up = function (knex) {
   return knex.schema.createTable("survey", function (table) {
-    table.string("id").primary();
+    table.string("surveyId").primary();
+    table.string("machineId").notNullable();
+    table.string("surveyType").notNullable();
+    table.timestamp("createdAt").notNullable();
   });
 };
 

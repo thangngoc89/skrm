@@ -10,8 +10,8 @@
         JOIN surveyData ON survey.surveyId = surveyData.surveyId
         GROUP BY survey.surveyId
       )
-
  */
+
 const knex = require("knex")(require("../knexfile").development);
 
 const fs = require("fs");
@@ -44,23 +44,26 @@ function surveyHeaders(forms) {
 function formHeaders(form) {
   const fields = form.form.survey;
 
-  let result = fields.reduce(pluckFieldHeader, []);
+  let result = fields.reduce((acc, field) => pluckFieldHeader(acc, field, form.form.lists), []);
   return result;
 }
 
-function pluckFieldHeader(acc, field) {
+function pluckFieldHeader(acc, field, lists) {
   switch (field.type) {
     case "group":
-      const groupFields = field.fields.reduce(pluckFieldHeader, []);
+      const groupFields = field.fields.reduce((acc, field) => pluckFieldHeader(acc, field, lists), []);
       return typeof groupFields !== "undefined" ? [...acc, ...groupFields] : acc;
     case "date":
     case "text":
     case "integer":
     case "select_one":
     case "select_one_ref":
-    case "select_many":
-    case "select_many_ref":
       return [...acc, field.name];
+
+    case "select_many":
+      return [...acc, ...field.choices.map(({ name }) => `${field.name}_${name}`)];
+    case "select_many_ref":
+      return [...acc, ...lists[field.list].map(({ name }) => `${field.name}_${name}`)];
 
     case "matrix_select_one":
       return [...acc, ...field.subQuestions.map((f) => f.id)];

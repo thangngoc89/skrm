@@ -11,6 +11,7 @@
   "dependencies": {
     "date-fns": "^2.21.2",
     "knex": "^0.95.4",
-    "sqlite3": "^5.0.2"
+    "sqlite3": "^5.0.2",
+    "xlsx": "^0.16.9"
   }
 }

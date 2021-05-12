@@ -16,6 +16,8 @@ const knex = require("knex")(require("../knexfile").development);
 
 const fs = require("fs");
 const readline = require("readline");
+const { survey } = require("./form_schema/tieu_hoc");
+const XLSX = require("xlsx");
 
 const mainSurveyMap = {
   tieu_hoc: require("./form_schema/tieu_hoc").survey,
@@ -26,11 +28,45 @@ const mainSurveyMap = {
 const main = async () => {
   const count = await knex("survey").count("surveyId").first();
   const totalSurvey = count["count(`surveyId`)"];
-  console.log("Total survey", totalSurvey);
 
-  const headers = surveyHeaders(mainSurveyMap.tieu_hoc.forms);
-  console.log(headers.reverse());
-  console.log(headers.length);
+  const data = await knex("survey").select("*").where("surveyType", "=", "tieu_hoc").first();
+
+  const survey = data;
+
+  const allForms = await knex("surveyData")
+    .select("*")
+    .where("surveyId", "=", survey.surveyId)
+    .orderBy("surveyDataId", "DESC");
+
+  // Filter out old versions
+  const latestForms = allForms.reduce((acc, form) => {
+    if (acc.find(({ surveyForm }) => surveyForm === form.surveyForm)) {
+      return acc;
+    } else {
+      return [...acc, form];
+    }
+  }, []);
+
+  const surveyType = survey.surveyType;
+
+  let row = { voser_id: survey.surveyId };
+
+  latestForms.forEach(({ surveyForm, data }) => {
+    const formSchema = mainSurveyMap[surveyType].forms.find((f) => f.form.name === surveyForm);
+    makeFormData(JSON.parse(data), formSchema, row);
+  });
+
+  console.log(row);
+
+  const headers = ["voser_id", ...surveyHeaders(mainSurveyMap.tieu_hoc.forms)];
+
+  const wb = XLSX.utils.book_new();
+  const ws = XLSX.utils.json_to_sheet([row], { header: headers });
+
+  XLSX.utils.book_append_sheet(wb, ws, "tieu_hoc");
+
+  XLSX.writeFile(wb, "out.xlsx");
+
   knex.destroy();
 };
 
@@ -74,5 +110,77 @@ function pluckFieldHeader(acc, field, lists) {
       return [...acc, ...field.firstRow.map((f) => f.name), ...field.secondRow.map((f) => f.name)];
     case "note":
       return acc;
+  }
+}
+
+function makeFormData(data, form, result) {
+  const fields = form.form.survey;
+
+  fields.forEach((field) => makeFieldData(result, field, data, form.form.lists));
+}
+function makeFieldData(result, field, data, lists) {
+  switch (field.type) {
+    case "group":
+      field.fields.forEach((field) => makeFieldData(result, field, data, lists));
+      break;
+    case "date":
+    case "text":
+    case "integer":
+    case "select_one":
+    case "select_one_ref":
+      result[field.name] = data[field.name] || null;
+      break;
+    case "select_many":
+      field.choices.forEach(({ name }) => {
+        const currentChoiceName = `${field.name}_${name}`;
+
+        if (!data[field.name]) {
+          result[currentChoiceName] = null;
+        } else {
+          result[currentChoiceName] = data[field.name].includes(name) ? true : false;
+        }
+      });
+      break;
+    case "select_many_ref":
+      lists[field.list].forEach(({ name }) => {
+        const currentChoiceName = `${field.name}_${name}`;
+        if (!data[field.name]) {
+          result[currentChoiceName] = null;
+        } else {
+          result[currentChoiceName] = data[field.name].includes(name) ? true : false;
+        }
+      });
+      break;
+
+    case "matrix_select_one":
+      field.subQuestions.forEach((f) => {
+        const currentChoiceName = f.id;
+        result[currentChoiceName] = data[currentChoiceName] || null;
+      });
+      break;
+
+    case "dental_arch_table":
+      field.fields.forEach((f) => {
+        const currentChoiceName = f.name;
+
+        result[currentChoiceName] = data[currentChoiceName] || null;
+      });
+
+      break;
+    case "dental_arch_table_2_rows":
+      field.firstRow.forEach((f) => {
+        const currentChoiceName = f.name;
+        result[currentChoiceName] = data[currentChoiceName] || null;
+      });
+
+      field.secondRow.forEach((f) => {
+        const currentChoiceName = f.name;
+        result[currentChoiceName] = data[currentChoiceName] || null;
+      });
+      break;
+    case "note":
+      break;
+    default:
+      throw new Error(`Unhandled field type ${field.type}`);
   }
 }

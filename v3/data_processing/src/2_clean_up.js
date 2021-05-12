@@ -16,7 +16,6 @@ const knex = require("knex")(require("../knexfile").development);
 
 const fs = require("fs");
 const readline = require("readline");
-const { survey } = require("./form_schema/tieu_hoc");
 const XLSX = require("xlsx");
 
 const mainSurveyMap = {
@@ -65,7 +64,7 @@ const main = async () => {
 
   XLSX.utils.book_append_sheet(wb, ws, "tieu_hoc");
 
-  XLSX.writeFile(wb, "out.xlsx");
+  // XLSX.writeFile(wb, "out.xlsx");
 
   knex.destroy();
 };

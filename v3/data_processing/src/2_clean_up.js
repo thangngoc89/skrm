@@ -14,9 +14,8 @@
 
 const knex = require("knex")(require("../knexfile").development);
 
-const fs = require("fs");
-const readline = require("readline");
 const XLSX = require("xlsx");
+const pCon = require("promise-concurrency");
 
 const mainSurveyMap = {
   tieu_hoc: require("./form_schema/tieu_hoc").survey,
@@ -25,46 +24,51 @@ const mainSurveyMap = {
 };
 
 const main = async () => {
-  const count = await knex("survey").count("surveyId").first();
-  const totalSurvey = count["count(`surveyId`)"];
+  // const count = await knex("survey").count("surveyId").first();
+  // const totalSurvey = count["count(`surveyId`)"];
 
-  const data = await knex("survey").select("*").where("surveyType", "=", "tieu_hoc").first();
+  const data = await knex("survey").select("*").where("surveyType", "=", "tieu_hoc");
+  let i = 0;
 
-  const survey = data;
+  const jobs = data.map((survey) => {
+    return async () => {
+      const allForms = await knex("surveyData")
+        .select("*")
+        .where("surveyId", "=", survey.surveyId)
+        .orderBy("surveyDataId", "DESC");
 
-  const allForms = await knex("surveyData")
-    .select("*")
-    .where("surveyId", "=", survey.surveyId)
-    .orderBy("surveyDataId", "DESC");
+      // Filter out old versions
+      const latestForms = allForms.reduce((acc, form) => {
+        if (acc.find(({ surveyForm }) => surveyForm === form.surveyForm)) {
+          return acc;
+        } else {
+          return [...acc, form];
+        }
+      }, []);
 
-  // Filter out old versions
-  const latestForms = allForms.reduce((acc, form) => {
-    if (acc.find(({ surveyForm }) => surveyForm === form.surveyForm)) {
-      return acc;
-    } else {
-      return [...acc, form];
-    }
-  }, []);
+      const surveyType = survey.surveyType;
 
-  const surveyType = survey.surveyType;
+      let row = { voser_id: survey.surveyId };
 
-  let row = { voser_id: survey.surveyId };
-
-  latestForms.forEach(({ surveyForm, data }) => {
-    const formSchema = mainSurveyMap[surveyType].forms.find((f) => f.form.name === surveyForm);
-    makeFormData(JSON.parse(data), formSchema, row);
+      latestForms.forEach(({ surveyForm, data }) => {
+        const formSchema = mainSurveyMap[surveyType].forms.find((f) => f.form.name === surveyForm);
+        makeFormData(JSON.parse(data), formSchema, row);
+      });
+      console.log("Executed", ++i);
+      return row;
+    };
   });
 
-  console.log(row);
+  const rows = await pCon(jobs, 30);
 
   const headers = ["voser_id", ...surveyHeaders(mainSurveyMap.tieu_hoc.forms)];
 
   const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet([row], { header: headers });
+  const ws = XLSX.utils.json_to_sheet(rows, { header: headers });
 
   XLSX.utils.book_append_sheet(wb, ws, "tieu_hoc");
 
-  // XLSX.writeFile(wb, "out.xlsx");
+  XLSX.writeFile(wb, "out.xlsx");
 
   knex.destroy();
 };
